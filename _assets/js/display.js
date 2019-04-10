@@ -1,14 +1,17 @@
 (function($) {
-    Swal.fire({
-        title: 'Carregando'
-    });
+
     $.gDisplay = {
         loadStart: function() {
-
-            Swal.showLoading();
+            Swal.fire({
+                title: 'Carregando...',
+                showConfirmButton: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                }
+            });
         },
         loadStop: function(target) {
-            Swal.hideLoading()
+            Swal.close();
         },
         loadError: function(target, msg) {},
         showAlert: function(json, success, error) {},

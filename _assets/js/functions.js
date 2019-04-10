@@ -1,11 +1,12 @@
 (function($) {
-    var pilhaApi = 0;
+    var prefix = 'parceiro_';
+    Lockr.prefix = prefix;
 
     $.gApi = {
 
-        exec: function(method, endpoint, param, callbackSuccess, callbackError, preloader) {
+        exec: function(method, endpoint, param, callbackSuccess, callbackError) {
             var headers = {}
-            headers.Authorization = 'Bearer ' + authLocalStorage;
+            headers.Authorization = 'YnJ1bm86SW50ZWdyYWNhb1BhcmNlaXJvcw==';
 
             var new_param = (jQuery.isEmptyObject(param)) ? null : JSON.stringify(param);
 
@@ -14,7 +15,7 @@
                 url: endpoint,
                 data: new_param,
                 dataType: 'json',
-                async: trie,
+                async: true,
                 contentType: 'application/json',
                 processData: true,
                 headers: headers,
@@ -34,4 +35,32 @@
             });
         }
     }
+
+    $.lockrStorage = {
+        set: function(key, param) {
+            Lockr.set(key, param);
+        },
+        get: function(key) {
+            return JSON.parse(localStorage.getItem(prefix + key)).data;
+        },
+        add: function(key, value) {
+            Lockr.sadd(key, value);
+        },
+        item: function(key) {
+            Lockr.smembers(key);
+        },
+        exist: function(key, value) {
+            return Lockr.sismember(key, value)
+        },
+        removeItem: function(key, value) {
+            Lockr.srem(key, value)
+        },
+        getAll: function() {
+            return Lockr.getAll(true);
+        },
+        clear: function() {
+            Lockr.flush();
+        }
+    }
+
 })(jQuery);
