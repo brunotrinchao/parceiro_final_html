@@ -8,6 +8,8 @@ Parceiro = function() {
         },
         onLoad: function() {
 
+            $this.ParceiroMethods.loadPage();
+
             // Carrega produtos
             if (!jQuery.lockrStorage.get('produtos')) {
                 jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao', {},
@@ -66,7 +68,7 @@ Parceiro = function() {
                     html += '<ul class="dropdown-menu">';
                     $.each(item.Submenu, function(i, submenu) {
                         html += '<li class="dropdown-submenu">';
-                        html += '<a tabindex="-1" href="#" data-produto="' + item.id + '" data-tipo="' + submenu.Url + '" class="dropdown-item item-load-page">';
+                        html += '<a tabindex="-1" href="#" data-page="indicar" data-produto="' + item.id + '" data-tipo="' + submenu.Url + '" class="dropdown-item item-load-page">';
                         html += submenu.Titulo;
                         html += '</a>';
                         html += '</li>';
@@ -112,7 +114,7 @@ Parceiro = function() {
                         break;
                         // case 'regula':
                         //     listaProdutos[i].Submenu = [{
-                        //         Titulo: 'Auto'
+                        //         Titulo: 'Auto' 
                         //     }, {
                         //         Titulo: 'Imóvel'
                         //     }]
@@ -125,6 +127,7 @@ Parceiro = function() {
             return listaProdutos;
         },
         buildLoadPage: function(data) {
+            console.log(data);
             switch (data.produto) {
                 case 1: // Imóvel
                     console.log('Carrega Imóvel');
@@ -139,6 +142,11 @@ Parceiro = function() {
                 default:
                     break;
             }
+        },
+        loadPage: function() {
+            $('#load_page').load('pages/home.html', function() {
+                console.log('ok');
+            });
         }
     };
     ParceiroMethods.initialize();

@@ -33,6 +33,16 @@
                     }
                 }
             });
+        },
+        load: function(page, container, param, callBack) {
+            var new_container = (!container || container === undefined || container == '') ? '#load_page' : container;
+            console.log(container);
+            var new_param = (jQuery.isEmptyObject(param)) ? null : param;
+            $('#load_page').load('./pages/' + page, new_param, function() {
+                if (typeof callbackSuccess === 'function') {
+                    callbackSuccess.call(this);
+                }
+            })
         }
     }
 
