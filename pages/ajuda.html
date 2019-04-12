@@ -1,0 +1,29 @@
+<div id="ajuda">
+    <div class="row load-cards">
+    </div>
+</div>
+
+<script>
+    Ajuda = function() {
+        $this = this;
+
+        AjudaMethods = {
+            initialize: function() {
+                // jQuery.gDisplay.loadStart();
+                this.onLoad();
+            },
+            onLoad: function() {
+                $('.titulo_pagina h1').text('Ajuda');
+            }
+        }
+        AjudaMethods.initialize();
+    };
+
+    $(function() {
+        Ajuda();
+    });
+</script>
+
+<style>
+
+</style>

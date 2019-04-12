@@ -13,7 +13,7 @@
                 this.onLoad();
             },
             onLoad: function() {
-                console.log('carregou Home');
+                $('.titulo_pagina h1').text('Produtos');
                 HomeMethods.buildCards();
             },
             buildCards: function() {
@@ -21,7 +21,6 @@
                 var html = '';
                 if (produtos.length) {
                     $.each(produtos, function(i, item) {
-                        var image = new Image();
                         var base = item.ImagemBase64;
                         var extensao = item.Extensao.substring(1, 5);
                         var src = 'data:image/' + extensao + ';base64,' + base;

@@ -1,0 +1,29 @@
+<div id="indicar">
+    <div class="row load-cards">
+    </div>
+</div>
+
+<script>
+    Indicar = function() {
+        $this = this;
+
+        IndicarMethods = {
+            initialize: function() {
+                // jQuery.gDisplay.loadStart();
+                this.onLoad();
+            },
+            onLoad: function() {
+                $('.titulo_pagina h1').text('Indicar');
+            }
+        }
+        IndicarMethods.initialize();
+    };
+
+    $(function() {
+        Indicar();
+    });
+</script>
+
+<style>
+
+</style>
