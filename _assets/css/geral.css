@@ -1,25 +1,35 @@
 body {
-	background-image: url(../img/banner.jpg);
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
+    background-image: url(../img/banner.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 #load_page {}
 
+
 /***************************************
 			HERADER
 **************************************/
+
 #header {
-	height: 300px;
+    height: 300px;
 }
 
 .dropdown-submenu {
-	position: relative;
+    position: relative;
 }
 
 .dropdown-submenu .dropdown-menu {
-	top: 0;
-	left: 100%;
-	margin-top: -1px;
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
+.menu-lista {
+    display: none;
+}
+
+.logado {
+    display: none;
 }

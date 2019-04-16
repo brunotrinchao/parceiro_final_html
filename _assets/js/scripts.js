@@ -8,28 +8,27 @@ Parceiro = function() {
         },
         onLoad: function() {
 
-            // Carrega produtos
-            if (!jQuery.lockrStorage.get('produtos')) {
-                jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao', {},
-                    function(json) {
-                        if (json.length > 0) {
-                            jQuery.lockrStorage.set('produtos', json);
-                            var listaProdutos = $this.ParceiroMethods.buildListPro();
-                            var menuProdutos = $this.ParceiroMethods.buidDropDown('Indicar', listaProdutos);
-                            $('.nav-item-produtos').html(menuProdutos);
-                            jQuery.gApi.load('home.html');
-                        }
-                    },
-                    function(err) {
-                        console.log(err);
-                    });
+            // Login
+            if (!jQuery.lockrStorage.get('usuario')) {
+                $('form[name=form-login]').submit(function(e) {
+                    e.preventDefault();
+                    var dados = $(this).serializeObject();
+                    jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/Parceiros/Usuarios/' + dados.login + '/' + dados.senha, {},
+                        function(json) {
+                            if (sizeObj(json) > 0) {
+                                jQuery.lockrStorage.set('usuario', json);
+                                ParceiroMethods.showProdutos();
+                                ParceiroMethods.showLogado(true);
+                            }
+                        },
+                        function(err) {
+                            console.log(err);
+                        });
+                });
             } else {
-                // Produtos
-                var listaProdutos = this.buildListPro();
-                var menuProdutos = this.buidDropDown('Indicar', listaProdutos);
-                $('.nav-item-produtos').html(menuProdutos);
-
-                jQuery.gApi.load('home.html');
+                ParceiroMethods.showProdutos();
+                $('.menu-lista').show();
+                ParceiroMethods.showLogado(true);
             }
 
             // DropDown
@@ -46,7 +45,6 @@ Parceiro = function() {
                 var data = $(this).data();
                 ParceiroMethods.buildLoadPage(data);
             });
-
 
 
         },
@@ -70,7 +68,7 @@ Parceiro = function() {
                     html += '<ul class="dropdown-menu">';
                     $.each(item.Submenu, function(i, submenu) {
                         html += '<li class="dropdown-submenu">';
-                        html += '<a tabindex="-1" href="#" data-page="indicar" data-produto="' + item.id + '" data-tipo="' + submenu.Url + '" class="dropdown-item item-load-page">';
+                        html += '<a tabindex="-1" href="#" data-page="indicar" data-title="Indicação" data-produto="' + item.id + '" data-tipo="' + submenu.Url + '" class="dropdown-item item-load-page">';
                         html += submenu.Titulo;
                         html += '</a>';
                         html += '</li>';
@@ -129,14 +127,51 @@ Parceiro = function() {
             return listaProdutos;
         },
         buildLoadPage: function(data) {
-            console.log(data);
-            jQuery.gApi.load(data.page + '.html', '', data, function() {
-                console.log(teste);
+            // window.history.pushState(data.page, data.title, data.page + '.html');
+            jQuery.gApi.load(data.page + '.html', '', data, function(e) {
+                console.log(e);
             });
+        },
+        showProdutos: function() {
+            // Carrega produtos
+            if (!jQuery.lockrStorage.get('produtos')) {
+                jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao', {},
+                    function(json) {
+                        if (json.length > 0) {
+                            jQuery.lockrStorage.set('produtos', json);
+                            var listaProdutos = $this.ParceiroMethods.buildListPro();
+                            var menuProdutos = $this.ParceiroMethods.buidDropDown('Indicar', listaProdutos);
+                            $('.nav-item-produtos').html(menuProdutos);
+                            jQuery.gApi.load('home.html');
+                        }
+                    },
+                    function(err) {
+                        console.log(err);
+                    });
+            } else {
+                // Produtos
+                var listaProdutos = this.buildListPro();
+                var menuProdutos = this.buidDropDown('Indicar', listaProdutos);
+                $('.nav-item-produtos').html(menuProdutos);
+                jQuery.gApi.load('home.html');
+            }
+        },
+        showLogado: function(logado) {
+            if (logado) {
+                $('.menu-lista').css('display', 'inline-flex');
+                $('.logado').css('display', 'block');
+                $('form[name=form-login]').css('display', 'none');
+
+            } else {
+                $('.menu-lista').css('display', 'none');
+                $('.logado').css('display', 'none');
+                $('form[name=form-login]').css('display', 'inline-flex');
+            }
         }
     };
     ParceiroMethods.initialize();
 };
+
 
 $(function() {
     Parceiro();

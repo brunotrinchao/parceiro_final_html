@@ -14,6 +14,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="./_assets/css/plugins/bootstrap.min.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="./_assets/css/plugins/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="./_assets/css/plugins/select2.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.css" />
     <link rel="stylesheet" href="./_assets/css/geral.css" />
 </head>
 
@@ -27,31 +30,34 @@
                 <a class="navbar-brand" href="#">
                     <img src="http://brunotrinchao.000webhostapp.com/_assets/img/logo_branca.png" alt="" class="" height="60px" />
                 </a>
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0 menu-lista">
                     <li class="nav-item active">
-                        <a class="nav-link item-load-page" data-page="home" href="#">Home <span
+                        <a class="nav-link item-load-page" data-page="home" data-title="Produtos" href="#">Home <span
 								class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link item-load-page" data-page="relatorio" href="#">Relatório </a>
+                        <a class="nav-link item-load-page" data-page="relatorio" data-title="Relatórios" href="#">Relatório </a>
                     </li>
                     <li class="nav-item nav-item-produtos">
 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link item-load-page" data-page="ajuda" href="#">Ajuda</a>
+                        <a class="nav-link item-load-page" data-page="ajuda" data-title="Ajuda" href="#">Ajuda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link item-load-page" data-page="arquivos" href="#">Arquivos</a>
+                        <a class="nav-link item-load-page" data-page="arquivos" data-title="Arquivos" href="#">Arquivos</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Login" aria-label="Search" />
-                    <input class="form-control mr-sm-2" type="search" placeholder="Senha" aria-label="Search" />
+                <form name="form-login" class="form-inline my-2 my-lg-0">
+                    <input name="login" class="form-control mr-sm-2" value="domicio.imoveis" type="search" placeholder="Login" aria-label="Search" />
+                    <input name="senha" class="form-control mr-sm-2" value="dom0734" type="search" placeholder="Senha" aria-label="Search" />
                     <button class="btn btn-primary my-2 my-sm-0" type="submit">
 						OK
 					</button>
                 </form>
+                <div class="logado">
+                    <p>NOME <a href="" class="btn btn-link">Sair</a></p>
+                </div>
             </div>
         </nav>
     </div>
@@ -67,11 +73,19 @@
     </footer>
     <script src="./_assets/js/plugins/jquery-3.3.1.min.js"></script>
     <script src="./_assets/js/plugins/bootstrap.min.js"></script>
+    <script src="./_assets/js/plugins/moment.min.js"></script>
+    <script src="./_assets/js/plugins/moment-with-locales.js"></script>
+    <script src="./_assets/js/plugins/daterangepicker.min.js"></script>
     <script src="./_assets/js/plugins/sweetalert2.all.min.js"></script>
     <script src="./_assets/js/plugins/lockr.js"></script>
+    <script src="./_assets/js/plugins/select2.full.js"></script>
     <script src="./_assets/js/display.js"></script>
     <script src="./_assets/js/functions.js"></script>
+    <script src="./_assets/js/validate.js"></script>
     <script src="./_assets/js/scripts.js"></script>
+    <script>
+        moment.locale('pt-br');
+    </script>
 </body>
 
 </html>
