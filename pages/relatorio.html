@@ -21,8 +21,9 @@
                         </div>
                     </div>
                     <div class="col col-md-3">
-                        <div class="form-group"></div>
-                        <button type="submit" class="form-control btn btn-light">Buscar</button>
+                        <div class="form-group">
+                            <button type="submit" class="form-control btn btn-light">Buscar</button>
+                        </div>
                     </div>
                 </div>
         </div>
@@ -48,9 +49,26 @@
 </div>
 </div>
 
+<div class="modal" tabindex="-1" role="dialog" id="detalhe">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalhe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     Relatorio = function() {
         $this = this;
+        var storeRelatorio = {};
 
         RelatorioMethods = {
             initialize: function() {
@@ -72,8 +90,10 @@
                 }
 
                 $('#reportrange').daterangepicker({
+                    showDropdowns: true,
                     startDate: start,
                     endDate: end,
+                    maxDate: end,
                     ranges: {
                         'Hoje': [moment(), moment()],
                         'Antem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -93,7 +113,8 @@
                         toLabel: "Para",
                         customRangeLabel: "Personalizar",
                     },
-                    alwaysShowCalendars: true,
+                    alwaysShowCalendars: false,
+                    autoUpdateInput: false,
                 }, cb);
 
                 cb(start, end);
@@ -131,16 +152,20 @@
                         var url =
                             'http://integracaogtsis.tempsite.ws/api/Indicacoes/Supercredito/Parceiros/' +
                             parceiro;
+                        var jsonUrl = {
+                            idProduto: dados.idProduto,
+                            DataInicial: DataRange[0],
+                            DataFinal: DataRange[1],
+                            TamanhoPagina: 10,
+                            idUsuarioParceiro: usuario.id,
+                            NumeroPagina: 1
+                        }
 
-                        dados.DataInicial = DataRange[0];
-                        dados.DataFinal = DataRange[1];
-                        dados.TamanhoPagina = 10;
-                        dados.idUsuarioParceiro = usuario.id;
-                        dados.NumeroPagina = 1;
 
-                        jQuery.gApi.exec('GET', url + '?' + jQuery.param(dados), {},
+                        jQuery.gApi.exec('GET', url + '?' + jQuery.param(jsonUrl), {},
 
                             function(json) {
+                                storeRelatorio = json.Data;
                                 var htmlTabela = RelatorioMethods.buildTable(json.Data);
                                 $('.table-load').html(htmlTabela);
                             },
@@ -152,12 +177,17 @@
                     return false;
                 });
 
-
+                $(document).on('click', 'a.detalhe', function(e) {
+                    e.preventDefault();
+                    var id = $(this).data('id');
+                    RelatorioMethods.buildModalDetail(id);
+                    return false;
+                });
 
             },
             buildTable: function(data) {
                 var html = "";
-                console.log(data.length);
+                console.log(data);
                 if (data.length <= 0 || data.length == undefined) {
                     html += '<tr>';
                     html += '<td scope="row" colspan="5">';
@@ -167,8 +197,11 @@
                 }
                 $.each(data, function(i, item) {
                     html += '<tr>';
-                    html += '<td scope="row"><a href="" class="btn btn-link">' + checkNull(item.Cliente
-                            .Nome) +
+                    html +=
+                        '<td scope="row"><a href="" class="detalhe btn btn-link" data-id="' + item.id +
+                        '">' +
+                        checkNull(item
+                            .Cliente.Nome) +
                         '</a></td>';
                     html += '<td>' + checkNull(item.Cliente.Telefone) + '</td>';
                     html += '<td>' + checkNull(item.Cliente.Celular) + '</td>';
@@ -179,7 +212,39 @@
                     html += '</tr>';
                 });
                 return html;
+            },
+            buildModalDetail: function(id) {
+                var detail = RelatorioMethods.filtraIndicacao(id);
+                if (detail) {
+                    var html = '';
+                    html += '<div class="container-fluid">';
+                    html += '<div class="row">';
+                    html += '<div class="col-md-4">';
+                    html += '<label>Nome</label>';
+                    html += detail.Cliente.Nome;
+                    html += '</div>';
+                    html += '<div class="col-md-4">';
+                    html += '<label>Status</label>';
+                    html += (detail.Cliente.Ativo) ? 'Ativo' : 'Inativo';
+                    html += '</div>';
+                    html += '';
+                    html += '';
+                    html += '</div>';
+                    html += '</div>';
+                    $('#detalhe .modal-body').empty().html(html);
+                    $('#detalhe').modal('show');
+                }
+            },
+            filtraIndicacao(id) {
+                var ret = null;
+                $.each(storeRelatorio, function(i, item) {
+                    if (item.id == id) {
+                        ret = item;
+                    }
+                });
+                return ret;
             }
+
 
         }
         RelatorioMethods.initialize();
