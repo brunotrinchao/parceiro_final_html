@@ -162,3 +162,34 @@ function alerta(titulo, texto, tipo, texto_botao) {
 function checkNull(value) {
     return (value == null || value == '' || value == undefined) ? '' : value;
 }
+
+function addInput(label, atributos, span) {
+    var html = '<input ';
+    $.each(atributos, function(key, value) {
+        html += key + '="' + value + '"';
+    });
+    html += '';
+    html += ' class="form-control"';
+    html += '>';
+
+
+
+    return addControlForm(label, html, null, span);
+
+}
+
+function addControlForm(label, input, classe, span) {
+    var new_class = (!classe) ? '' : classe;
+    var new_label = (!label) ? '' : '<label>' + label + '</label>';
+    var new_input = (!input) ? '' : input;
+
+    var html = '<div class="' + span + '">';
+    html += '<div class="form-group ' + new_class + '">';
+    html += new_label;
+    html += new_input;
+    html += '</div>';
+    html += '</div>';
+
+    return html;
+
+}

@@ -90,7 +90,8 @@
                 }
 
                 $('#reportrange').daterangepicker({
-                    showDropdowns: true,
+                    // showDropdowns: true,
+                    format: "DD/MM/YYYY",
                     startDate: start,
                     endDate: end,
                     maxDate: end,
@@ -112,10 +113,24 @@
                         fromLabel: "De",
                         toLabel: "Para",
                         customRangeLabel: "Personalizar",
+                        startDate: start,
+                        maxDate: end,
+                        daysOfWeek: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
+                        monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                            'Julho', 'Agosto', 'Setembro', 'Outubro',
+                            'Novembro', 'Dezembro'
+                        ],
+                        firstDay: 1,
+                        showWeekNumbers: false,
+                        buttonClasses: ['dark-gray'],
+                        applyClass: 'blue'
+
                     },
                     alwaysShowCalendars: false,
-                    autoUpdateInput: false,
+                    autoUpdateInput: false
                 }, cb);
+
+
 
                 cb(start, end);
                 // Select Produtos
@@ -219,15 +234,21 @@
                     var html = '';
                     html += '<div class="container-fluid">';
                     html += '<div class="row">';
-                    html += '<div class="col-md-4">';
-                    html += '<label>Nome</label>';
-                    html += detail.Cliente.Nome;
-                    html += '</div>';
-                    html += '<div class="col-md-4">';
-                    html += '<label>Status</label>';
-                    html += (detail.Cliente.Ativo) ? 'Ativo' : 'Inativo';
-                    html += '</div>';
-                    html += '';
+                    html += addInput('Nome', {
+                        type: "text",
+                        value: detail.Cliente.Nome,
+                        disabled: true
+                    }, 'col-md-7');
+                    html += addInput(((detail.Cliente.PJ) ? 'CNPJ' : 'CPF'), {
+                        type: "text",
+                        value: checkNull(detail.Cliente.CpfCnpj),
+                        disabled: true
+                    }, 'col-md-5');
+                    html += addInput('Telefone', {
+                        type: "text",
+                        value: checkNull(detail.Cliente.Telefone),
+                        disabled: true
+                    }, 'col-md-4');
                     html += '';
                     html += '</div>';
                     html += '</div>';
