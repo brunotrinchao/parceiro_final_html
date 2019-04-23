@@ -31,7 +31,7 @@
     </div>
     <div class="col col-12">
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" data-detail-view="true">
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">Nome</th>
@@ -135,7 +135,7 @@
                 cb(start, end);
                 // Select Produtos
                 var selectData = {
-                    id: null,
+                    id: '',
                     text: 'Selecione um produto',
                     selectDefault: false,
                     selected: true
@@ -161,6 +161,7 @@
                     e.preventDefault();
                     var usuario = jQuery.lockrStorage.get('usuario');
                     var dados = $(this).serializeObject();
+                    console.log($('form[name=filtra-relatorio]').gValidate());
                     if (sizeObj(usuario) > 0 && $('form[name=filtra-relatorio]').gValidate()) {
                         var parceiro = usuario.Parceiro.id;
                         var DataRange = dados.DataRange.split('|');
@@ -203,7 +204,7 @@
             buildTable: function(data) {
                 var html = "";
                 console.log(data);
-                if (data.length <= 0 || data.length == undefined) {
+                if (data == null || data == undefined) {
                     html += '<tr>';
                     html += '<td scope="row" colspan="5">';
                     html += '<p class="text-center text-secondary"> Nenhum resultado encontrado! </p>';
@@ -224,6 +225,7 @@
                     html += '<td><span class="badge badge-pill badge-primary">' + checkNull(item
                         .StatusProspect
                         .Descricao) + '</span></td>';
+                    html +='<span id="">teste</span>';
                     html += '</tr>';
                 });
                 return html;
@@ -238,15 +240,25 @@
                         type: "text",
                         value: detail.Cliente.Nome,
                         disabled: true
-                    }, 'col-md-7');
+                    }, 'col-md-5');
                     html += addInput(((detail.Cliente.PJ) ? 'CNPJ' : 'CPF'), {
                         type: "text",
                         value: checkNull(detail.Cliente.CpfCnpj),
                         disabled: true
-                    }, 'col-md-5');
+                    }, 'col-md-4');
+                    html += addInput('Sexo', {
+                        type: "text",
+                        value: (checkNull(detail.Cliente.Sexo) == 'M')? 'Masculino' : 'Feminino',
+                        disabled: true
+                    }, 'col-md-3');
                     html += addInput('Telefone', {
                         type: "text",
                         value: checkNull(detail.Cliente.Telefone),
+                        disabled: true
+                    }, 'col-md-4');
+                    html += addInput('Celular', {
+                        type: "text",
+                        value: checkNull(detail.Cliente.Celular),
                         disabled: true
                     }, 'col-md-4');
                     html += '';
