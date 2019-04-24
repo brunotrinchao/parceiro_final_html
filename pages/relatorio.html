@@ -31,7 +31,7 @@
     </div>
     <div class="col col-12">
         <div class="table-responsive">
-            <table class="table table-striped" data-detail-view="true">
+            <table class="table table-striped">
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">Nome</th>
@@ -53,13 +53,26 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detalhe</h5>
+                <h5 class="modal-title"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
             </div>
             <div class="modal-body">
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" id="cliente-tab" data-toggle="tab" href="#cliente" role="tab" aria-controls="cliente" aria-selected="true">Cliente</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="endereco-tab" data-toggle="tab" href="#endereco" role="tab" aria-controls="endereco" aria-selected="false">Endereço</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="detalhes-tab" data-toggle="tab" href="#detalhes" role="tab" aria-controls="detalhes" aria-selected="false">Negócio</a>
+					</li>
+				</ul>
+				<div class="load-detalhes">
 
+				</div>
             </div>
         </div>
     </div>
@@ -79,7 +92,7 @@
                 $('.titulo_pagina h1').text('Relatório');
 
                 // Date ranger
-                var start = moment().subtract(29, 'days');
+                var start = moment().subtract(1, 'years');
                 var end = moment();
 
                 function cb(start, end) {
@@ -90,7 +103,6 @@
                 }
 
                 $('#reportrange').daterangepicker({
-                    // showDropdowns: true,
                     format: "DD/MM/YYYY",
                     startDate: start,
                     endDate: end,
@@ -127,7 +139,8 @@
 
                     },
                     alwaysShowCalendars: false,
-                    autoUpdateInput: false
+                    autoUpdateInput: false,
+					showDropdowns: true
                 }, cb);
 
 
@@ -161,7 +174,6 @@
                     e.preventDefault();
                     var usuario = jQuery.lockrStorage.get('usuario');
                     var dados = $(this).serializeObject();
-                    console.log($('form[name=filtra-relatorio]').gValidate());
                     if (sizeObj(usuario) > 0 && $('form[name=filtra-relatorio]').gValidate()) {
                         var parceiro = usuario.Parceiro.id;
                         var DataRange = dados.DataRange.split('|');
@@ -199,11 +211,16 @@
                     RelatorioMethods.buildModalDetail(id);
                     return false;
                 });
+				$('#detalhe').on('hidden.bs.modal', function (e) {
+				$('#detalhe a[href="#cliente"]').tab('show') // Select tab by name
+				});
+
+
 
             },
             buildTable: function(data) {
+				console.log(data);
                 var html = "";
-                console.log(data);
                 if (data == null || data == undefined) {
                     html += '<tr>';
                     html += '<td scope="row" colspan="5">';
@@ -214,10 +231,9 @@
                 $.each(data, function(i, item) {
                     html += '<tr>';
                     html +=
-                        '<td scope="row"><a href="" class="detalhe btn btn-link" data-id="' + item.id +
+                        '<td scope="row"><a href="#" class="detalhe btn btn-link" data-id="' + item.id +
                         '">' +
-                        checkNull(item
-                            .Cliente.Nome) +
+                        checkNull(item.Cliente.Nome) +
                         '</a></td>';
                     html += '<td>' + checkNull(item.Cliente.Telefone) + '</td>';
                     html += '<td>' + checkNull(item.Cliente.Celular) + '</td>';
@@ -225,32 +241,35 @@
                     html += '<td><span class="badge badge-pill badge-primary">' + checkNull(item
                         .StatusProspect
                         .Descricao) + '</span></td>';
-                    html +='<span id="">teste</span>';
                     html += '</tr>';
                 });
                 return html;
             },
             buildModalDetail: function(id) {
                 var detail = RelatorioMethods.filtraIndicacao(id);
+				console.log(detail);
                 if (detail) {
                     var html = '';
-                    html += '<div class="container-fluid">';
-                    html += '<div class="row">';
-                    html += addInput('Nome', {
+                    html += '<div class="tab-content" id="myTabContent">';
+                    html += '<div class="container-fluid tab-content">';
+					// Cliente
+                    html += '<div class="tab-pane fade show active" id="cliente">';
+                    html += '<div class="row py-3">';
+                    html += addInput('E-mail', {
                         type: "text",
-                        value: detail.Cliente.Nome,
+                        value: detail.Cliente.Email,
                         disabled: true
                     }, 'col-md-5');
+                    html += addInput('Sexo', {
+                        type: "text",
+                        value: (checkNull(detail.Cliente.Sexo) == 'M') ? 'Masculino' : 'Feminino',
+                        disabled: true
+                    }, 'col-md-3');
                     html += addInput(((detail.Cliente.PJ) ? 'CNPJ' : 'CPF'), {
                         type: "text",
                         value: checkNull(detail.Cliente.CpfCnpj),
                         disabled: true
                     }, 'col-md-4');
-                    html += addInput('Sexo', {
-                        type: "text",
-                        value: (checkNull(detail.Cliente.Sexo) == 'M')? 'Masculino' : 'Feminino',
-                        disabled: true
-                    }, 'col-md-3');
                     html += addInput('Telefone', {
                         type: "text",
                         value: checkNull(detail.Cliente.Telefone),
@@ -261,10 +280,134 @@
                         value: checkNull(detail.Cliente.Celular),
                         disabled: true
                     }, 'col-md-4');
+                    html += addTextarea('Contato', {
+                        row: "3",
+                        disabled: true
+                    }, checkNull(detail.Cliente.Contato), 'col-md-12');
                     html += '';
                     html += '</div>';
                     html += '</div>';
-                    $('#detalhe .modal-body').empty().html(html);
+					// Endereco
+					html += '<div class="tab-pane fade" id="endereco">';
+					html += '<div class="row py-3">';
+					html += addInput('Endereço', {
+                        type: "text",
+                        value: detail.Cliente.Endereco,
+                        disabled: true
+                    }, 'col-md-10');
+					html += addInput('Número', {
+                        type: "text",
+                        value: checkNull(detail.Cliente.Numero),
+                        disabled: true
+                    }, 'col-md-2');
+					html += addInput('Complemento', {
+                        type: "text",
+                        value: checkNull(detail.Cliente.Complemento),
+                        disabled: true
+                    }, 'col-md-12');
+					html += addInput('Bairro', {
+                        type: "text",
+                        value: checkNull(detail.Cliente.Bairro.Nome),
+                        disabled: true
+                    }, 'col-md-4');
+					html += addInput('CEP', {
+                        type: "text",
+                        value: checkNull(detail.Cliente.Cep),
+                        disabled: true
+                    }, 'col-md-3');
+					html += addInput('Cidade', {
+                        type: "text",
+                        value: checkNull(detail.Cliente.Bairro.Cidade.Nome),
+                        disabled: true
+                    }, 'col-md-3');
+					html += addInput('UF', {
+                        type: "text",
+                        value: checkNull(detail.Cliente.Bairro.Cidade.UF),
+                        disabled: true
+                    }, 'col-md-2');
+                    html += '</div>';
+                    html += '</div>';
+					// Detalhes
+					html += '<div class="tab-pane fade" id="detalhes">';
+					html += '<div class="row py-3">';
+					if(detail.Cliente.DetalhesIndicacaoConsorcios){
+						html += addInput('Produto', {
+							type: "text",
+							value: 'Consórcio',
+							disabled: true
+							}, 'col-md-2');
+						html += addInput('Tipo do bem', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.TipoBem),
+							disabled: true
+							}, 'col-md-3');
+						html += addInput('Valor (R$)', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.ValorBem),
+							disabled: true
+							}, 'col-md-3');
+						html += addInput('Situação', {
+							type: "text",
+							value: checkNull(detail.StatusProspect.Descricao),
+							disabled: true
+							}, 'col-md-4');
+						html += addTextarea('Observação', {
+                        row: "3",
+                        disabled: true
+                    }, checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.Observacao), 'col-md-12');
+					}
+					if(detail.Cliente.DetalhesIndicacaoFinanciamentos){
+						html += addInput('Produto', {
+							type: "text",
+							value: 'Financiamento',
+							disabled: true
+							}, 'col-md-3');
+						html += addInput('Tipo do bem', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.TipoBem),
+							disabled: true
+							}, 'col-md-3');
+						html += addInput('Tipo do financiamento', {
+							type: "text",
+							value: detail.Cliente.DetalhesIndicacaoFinanciamentos.TipoFinanciamento,
+							disabled: true
+							}, 'col-md-3');
+						html += addInput('Valor do bem (R$)', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.ValorBem),
+							disabled: true
+							}, 'col-md-3');
+						html += addInput('Financiamento (R$)', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.ValorFinanciamento),
+							disabled: true
+							}, 'col-md-3');
+						html += addInput('Imediato?', {
+							type: "text",
+							value: (detail.Cliente.DetalhesIndicacaoFinanciamentos.CompraImediata)?'Sim':'Não',
+							disabled: true
+							}, 'col-md-3');
+
+						html += addInput('Situação', {
+							type: "text",
+							value: checkNull(detail.StatusProspect.Descricao),
+							disabled: true
+							}, 'col-md-4');
+					}
+					if(detail.Cliente.DetalhesIndicacaoImovel){
+						html += addInput('Produto', {
+							type: "text",
+							value: 'Imóvel',
+							disabled: true
+							}, 'col-md-3');
+					}
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+
+                    $('#detalhe .modal-title').empty().text(detail.Cliente.Nome);
+                    $('#detalhe .modal-body .load-detalhes').empty().html(html);
                     $('#detalhe').modal('show');
                 }
             },

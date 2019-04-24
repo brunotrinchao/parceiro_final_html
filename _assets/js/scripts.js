@@ -160,12 +160,13 @@ Parceiro = function() {
             if (logado) {
                 $('.menu-lista').css('display', 'inline-flex');
                 $('.logado').css('display', 'block');
+                $('.logado .load-nome').text(jQuery.lockrStorage.get('usuario').Nome);
                 $('form[name=form-login]').css('display', 'none');
-
             } else {
                 $('.menu-lista').css('display', 'none');
                 $('.logado').css('display', 'none');
                 $('form[name=form-login]').css('display', 'inline-flex');
+				 $('.logado .load-nome').text('');
             }
         }
     };

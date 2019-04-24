@@ -163,16 +163,30 @@ function checkNull(value) {
     return (value == null || value == '' || value == undefined) ? '' : value;
 }
 
-function addInput(label, atributos, span) {
+function addInput(label, atributos, span, placeholder) {
     var html = '<input ';
     $.each(atributos, function(key, value) {
         html += key + '="' + value + '"';
     });
-    html += '';
+    if(placeholder){
+    html += ' placeholder="'+label+'"';
+	}
     html += ' class="form-control"';
     html += '>';
 
+    return addControlForm(label, html, null, span);
 
+}
+function addTextarea(label, atributos,value, span, placeholder) {
+    var html = '<textarea ';
+    $.each(atributos, function(key, value) {
+        html += key + '="' + value + '"';
+    });
+	if(placeholder){
+    html += ' placeholder="'+label+'"';
+	}
+    html += ' class="form-control"';
+    html += '>'+value+'</textarea>';
 
     return addControlForm(label, html, null, span);
 
