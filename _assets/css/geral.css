@@ -11,7 +11,12 @@ body {
 /***************************************
 			HERADER
 **************************************/
-
+.menu-lista > li > a{
+    color:#fff;
+}
+.menu-lista > li .dropdown > a{
+    color:#fff;
+}
 .logado {
     display: none;
 }

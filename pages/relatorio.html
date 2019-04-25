@@ -46,6 +46,8 @@
             </table>
         </div>
     </div>
+    <div class="col col-12 load-paginate">
+    </div>
 </div>
 </div>
 
@@ -196,6 +198,9 @@
                                 storeRelatorio = json.Data;
                                 var htmlTabela = RelatorioMethods.buildTable(json.Data);
                                 $('.table-load').html(htmlTabela);
+                                jQuery.gPaginate.show(json._Links, function(e){
+                                    $('.load-paginate').html(e);
+                                });
                             },
                             function(err) {
                                 alerta('Erro', err.responseJSON.Message.Error, 'error');
@@ -212,9 +217,28 @@
                     return false;
                 });
 				$('#detalhe').on('hidden.bs.modal', function (e) {
-				$('#detalhe a[href="#cliente"]').tab('show') // Select tab by name
+				    $('#detalhe a[href="#cliente"]').tab('show')
 				});
 
+
+                // Paginação
+                $(document).on('click', '.pagination .page-item a', function(e) {
+                    var data = $(this).data();
+                    console.log(data);
+                    var url = $(this).attr('href');
+                    jQuery.gApi.exec('GET', url, {},
+
+                            function(json) {
+                                storeRelatorio = json.Data;
+                                var htmlTabela = RelatorioMethods.buildTable(json.Data);
+                                $('.table-load').html(htmlTabela);
+                            },
+                            function(err) {
+                                alerta('Erro', err.responseJSON.Message.Error, 'error');
+
+                            });
+                    return false;
+                });
 
 
             },
@@ -400,6 +424,53 @@
 							value: 'Imóvel',
 							disabled: true
 							}, 'col-md-3');
+                        html += addInput('Cliente tipo', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoCliente),
+							disabled: true
+							}, 'col-md-3');
+                        html += addInput('Imóvel tipo', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoImovel),
+							disabled: true
+							}, 'col-md-3');
+                        html += addInput('Uso', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoUso),
+							disabled: true
+							}, 'col-md-3');
+                        html += addInput('Operação', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoOperacao),
+							disabled: true
+							}, 'col-md-3');
+                        html += addInput('Valor do bem (R$)', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.ValorBem),
+							disabled: true
+							}, 'col-md-3');
+                    html += '</div>';
+                    html += '<div class="row py-3">';
+                        html += addInput('Bairro 1', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.PrimeiroBairroPreferencia),
+							disabled: true
+							}, 'col-md-4');
+                        html += addInput('Bairro 2', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.SegundoBairroPreferencia),
+							disabled: true
+							}, 'col-md-4');
+                        html += addInput('Bairro 3', {
+							type: "text",
+							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TerceiroBairroPreferencia),
+							disabled: true
+							}, 'col-md-4');
+                        html += addInput('Situação', {
+							type: "text",
+							value: checkNull(detail.StatusProspect.Descricao),
+							disabled: true
+							}, 'col-md-4');
 					}
                     html += '</div>';
                     html += '</div>';

@@ -83,6 +83,45 @@
             Lockr.flush();
         }
     };
+
+    $.gPaginate = {
+        show: function(links, callback){
+            if(links.Count > 1){
+                var url = new URL(links.Self);
+                console.log(url);
+                var html = '<nav class="pt-5">';
+                html += '<ul class="pagination justify-content-center">';
+                // html += '<li class="page-item disabled">';
+                // html += '<a class="page-link" href="1" aria-label="Previous">';
+                // html += '<span aria-hidden="true">&laquo;</span>';
+                // html += '</a>';
+                // html += '</li>';
+                for (var i = 0; i < links.Count; i++){
+                    var n = i + 1;
+                    var active = (n == 1)?' active' : '';
+                    var params = getParams(links.Self);
+                    params.NumeroPagina = n;
+
+                    var urlLink = url.origin +''+ url.pathname + '?'+ $.param(params);
+                    html += '<li class="page-item '+active+'">';
+                    html += '<a class="page-link" id="page-link-'+n+'" data-link="'+n+'" href="'+urlLink+'">';
+                    html += n;
+                    html += '</a>';
+                    html += '</li>';
+                }
+                // html += '<li class="page-item">';
+                // html += '<a class="page-link" href="2" aria-label="Next">';
+                // html += '<span aria-hidden="true">&raquo;</span>';
+                // html += '</a>';
+                // html += '</li>';
+                html += '</ul>';
+                html += '</nav>';
+            }
+            if (typeof callback === "function") {
+                callback.call(this, html);
+            }
+        }
+    };
 })(jQuery);
 
 $.fn.serializeObject = function() {
@@ -205,5 +244,20 @@ function addControlForm(label, input, classe, span) {
     html += '</div>';
 
     return html;
+}
+
+function montaLinkPaginate(link){
 
 }
+function getParams (url) {
+	var params = {};
+	var parser = document.createElement('a');
+	parser.href = url;
+	var query = parser.search.substring(1);
+	var vars = query.split('&');
+	for (var i = 0; i < vars.length; i++) {
+		var pair = vars[i].split('=');
+		params[pair[0]] = decodeURIComponent(pair[1]);
+	}
+	return params;
+};
