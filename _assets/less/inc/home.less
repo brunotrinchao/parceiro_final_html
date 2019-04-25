@@ -1,0 +1,33 @@
+ #home .load-cards .card {
+        position: relative;
+        width: 100%;
+        /* height: 400px; */
+        display: flex;
+        align-items: center;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        overflow: hidden;
+	.card-img-box{
+		position: relative;
+		&:after {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: #d7cd91;
+			background: -moz-linear-gradient(top, #d7cd91 0%, #2c546d 100%);
+			background: -webkit-linear-gradient(top, #d7cd91 0%, #2c546d 100%);
+			background: linear-gradient(to bottom, #d7cd91 0%, #2c546d 100%);
+			z-index: 1;
+			content: "";
+			opacity: 0.4;
+			-webkit-transition: all 0.17s linear;
+			-moz-transition: all 0.17s linear;
+			-ms-transition: all 0.2s linear;
+			-o-transition: all 0.2s linear;
+			transition: all 0.17s linear;
+		}
+	}
+}

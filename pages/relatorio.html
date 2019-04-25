@@ -1,35 +1,35 @@
 <div id="relatorio">
-    <div class="row">
-        <div class="col col-12 mb-5 alert alert-light">
+    <div class="row ">
+        <div class="col col-12 mb-5 alert filtro">
             <form name="filtra-relatorio" id="filtra-relatorio">
                 <div class="form-row filtros align-items-end">
-                    <div class="col col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label id="lbl_select-produtos" for="select-produtos">Produtos</label>
-                            <select class="form-control input-lg" validate="required" name="idProduto" id="select-produtos">
+                            <select style="width: 100%" validate="required" name="idProduto" id="select-produtos">
 							</select>
                         </div>
                     </div>
-                    <div class="col col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label id="lbl_DataRange" for="reportrange">Período</label>
-                            <div id="reportrange" class="rounded bg-white p-1 border" style="background: #fff; cursor: pointer; width: 100%">
-                                <i class="fa fa-calendar-alt"></i>&nbsp;
+							<div></div>
+							<button id="reportrange" type="button" class="btn btn-light">
+								<i class="fa fa-calendar-alt"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
-                            </div>
+							</button>
                             <input type="hidden" validate="required" id="DataRange" name="DataRange">
                         </div>
                     </div>
-                    <div class="col col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <button type="submit" class="form-control btn btn-light">Buscar</button>
+                            <button type="submit" class="btn btn-primary">Buscar</button>
                         </div>
                     </div>
                 </div>
+			</form>
         </div>
-        </form>
-    </div>
-    <div class="col col-12">
+    <div class="col col-12 px-0">
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead class="thead-light">
@@ -173,7 +173,7 @@
                     });
                 }
                 $('#select-produtos').select2({
-                    theme: "bootstrap"
+                    theme: "bootstrap4"
                 });
 
                 // Busca pelos filtros
@@ -506,7 +506,3 @@
         Relatorio();
     });
 </script>
-
-<style>
-
-</style>

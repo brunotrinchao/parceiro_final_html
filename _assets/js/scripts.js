@@ -9,7 +9,8 @@ Parceiro = function() {
         onLoad: function() {
 
             // Login
-            if (!jQuery.lockrStorage.get('usuario')) {
+			var usuariosStorage = jQuery.lockrStorage.get('usuario');
+            if (!usuariosStorage || usuariosStorage === undefined) {
                 $('form[name=form-login]').submit(function(e) {
                     e.preventDefault();
                     var dados = $(this).serializeObject();
@@ -17,7 +18,7 @@ Parceiro = function() {
                         function(json) {
                             if (sizeObj(json) > 0) {
                                 jQuery.lockrStorage.set('usuario', json);
-                                ParceiroMethods.showProdutos();
+                                // ParceiroMethods.showProdutos();
                                 ParceiroMethods.showLogado(true);
                             }
                         },
@@ -26,10 +27,10 @@ Parceiro = function() {
                         });
                 });
             } else {
-                ParceiroMethods.showProdutos();
                 $('.menu-lista').show();
                 ParceiroMethods.showLogado(true);
             }
+        	ParceiroMethods.showProdutos();
 
             // DropDown
             $(".dropdown-submenu a.test").on("click", function(e) {
@@ -46,7 +47,10 @@ Parceiro = function() {
                 ParceiroMethods.buildLoadPage(data);
             });
 
-
+			$(document).on('click', '#logout', function(){
+				console.log(jQuery.lockrStorage.removeItem('usuario'));
+				return false;
+			});
         },
         buidDropDown: function(titulo, data) {
             // Monta menu
@@ -134,7 +138,9 @@ Parceiro = function() {
         },
         showProdutos: function() {
             // Carrega produtos
-            if (!jQuery.lockrStorage.get('produtos')) {
+			var produtoStorage = jQuery.lockrStorage.get('produtos')
+			console.log(produtoStorage);
+            if (!produtoStorage || produtoStorage === undefined) {
                 jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao', {},
                     function(json) {
                         if (json.length > 0) {
@@ -158,11 +164,13 @@ Parceiro = function() {
         },
         showLogado: function(logado) {
             if (logado) {
+				$('html').addClass('user-logado');
                 $('.menu-lista').css('display', 'inline-flex');
                 $('.logado').css('display', 'block');
                 $('.logado .load-nome').text(jQuery.lockrStorage.get('usuario').Nome);
                 $('form[name=form-login]').css('display', 'none');
             } else {
+				$('html').removeClass('user-logado');
                 $('.menu-lista').css('display', 'none');
                 $('.logado').css('display', 'none');
                 $('form[name=form-login]').css('display', 'inline-flex');

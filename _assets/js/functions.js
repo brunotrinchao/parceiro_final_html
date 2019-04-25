@@ -59,6 +59,8 @@
         },
         get: function(key) {
             var ret = JSON.parse(localStorage.getItem(prefix + key));
+			console.log(key);
+			console.log(ret);
             if (ret) {
                 return ret.data;
             }
@@ -68,13 +70,13 @@
             Lockr.sadd(key, value);
         },
         item: function(key) {
-            Lockr.smembers(key);
+            return Lockr.smembers(key);
         },
         exist: function(key, value) {
             return Lockr.sismember(key, value);
         },
-        removeItem: function(key, value) {
-            Lockr.srem(key, value);
+        removeItem: function(key) {
+            Lockr.rm(key);
         },
         getAll: function() {
             return Lockr.getAll(true);
