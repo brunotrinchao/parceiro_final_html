@@ -42,6 +42,12 @@
                     </tr>
                 </thead>
                 <tbody class="table-load">
+                    
+                    <tr>
+                        <td scope="row" colspan="5">
+                        <p class="text-center text-secondary"> Nenhum resultado encontrado! </p>
+                        </td>
+                        </tr>
                 </tbody>
             </table>
         </div>
@@ -73,7 +79,6 @@
 					</li>
 				</ul>
 				<div class="load-detalhes">
-
 				</div>
             </div>
         </div>
@@ -272,7 +277,6 @@
             },
             buildModalDetail: function(id) {
                 var detail = RelatorioMethods.filtraIndicacao(id);
-				console.log(detail);
                 if (detail) {
                     var html = '';
                     html += '<div class="tab-content" id="myTabContent">';
