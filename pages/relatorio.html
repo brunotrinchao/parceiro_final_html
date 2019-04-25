@@ -224,7 +224,8 @@
                 // Paginação
                 $(document).on('click', '.pagination .page-item a', function(e) {
                     var data = $(this).data();
-                    console.log(data);
+                    $('.pagination .page-item').removeClass('active');
+                    $('.pagination #page-link-' + data.link).parent().addClass('active');
                     var url = $(this).attr('href');
                     jQuery.gApi.exec('GET', url, {},
 
