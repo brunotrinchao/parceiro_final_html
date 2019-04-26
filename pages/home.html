@@ -13,8 +13,15 @@
                 this.onLoad();
             },
             onLoad: function() {
-                $('.titulo_pagina h1').text('Produtos');
+				// var titulo = ($('html').hasClass('user-logado'))? 'Produtos': 'Seja bem vindo ao portal do parceiro';
+                $('.titulo_pagina h1').text('Seja bem vindo ao portal do parceiro');
                 HomeMethods.buildCards();
+
+				var altLoadPage = $('#load_page').innerHeight();
+				$('.card-img-box').css({
+					height: (altLoadPage - 150),
+					maxHeight: 440
+				});
             },
             buildCards: function() {
                 var produtos = jQuery.lockrStorage.get('produtos');
@@ -26,8 +33,8 @@
                         var src = 'data:image/' + extensao + ';base64,' + base;
 
                         html += '<div class="col-lg-3 col-md-6 col-sm-12 p-3">';
-                        html += '<div class="card h-200">';
-                        html += '<div class="card-img-box"><img src="' + src + '" class="card-img-top img-fluid"></div>';
+                        html += '<div class="card h-200 shadow border-0">';
+                        html += '<div class="card-img-box" style="background-image:url('+src+')"></div>';
                         html += '<div class="card-body">';
                         html += '<h5 class="card-title">' + item.Titulo + '</h5>';
                         html += '</div>';
@@ -44,4 +51,8 @@
     $(function() {
         Home();
     });
+
+	$( window ).resize(function() {
+		var altLoadPage = $('#load_page').innerHeight();
+		$('.card-img-box').height(altLoadPage - 150);	});
 </script>

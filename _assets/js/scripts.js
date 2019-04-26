@@ -45,10 +45,17 @@ Parceiro = function() {
                 e.preventDefault();
                 var data = $(this).data();
                 ParceiroMethods.buildLoadPage(data);
+				var li = $(this).parents('li.nav-item');
+				$('.nav-item').removeClass('active');
+				$(li).addClass('active');
             });
 
 			$(document).on('click', '#logout', function(){
-				console.log(jQuery.lockrStorage.removeItem('usuario'));
+				jQuery.lockrStorage.removeItem('usuario');
+				if (!jQuery.lockrStorage.get('usuario') || 
+				jQuery.lockrStorage.get('usuario') === undefined) {
+					ParceiroMethods.showLogado(false);
+				}
 				return false;
 			});
         },
@@ -174,7 +181,8 @@ Parceiro = function() {
                 $('.menu-lista').css('display', 'none');
                 $('.logado').css('display', 'none');
                 $('form[name=form-login]').css('display', 'inline-flex');
-				 $('.logado .load-nome').text('');
+				$('.logado .load-nome').text('');
+				ParceiroMethods.buildLoadPage({page:home});
             }
         }
     };

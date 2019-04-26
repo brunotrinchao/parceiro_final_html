@@ -1,7 +1,11 @@
 .user-logado{
 	#header{
-		min-height: 200px;
-		height: auto;
+		height: 200px;
+		.titulo_pagina{
+			width: 100%;
+			height: auto;
+			margin-top: 30px
+		}
 	}
 	#load_page{
 		min-height: ~"calc(100vh - (200px + 55px))"
@@ -13,6 +17,11 @@
 }
 #header {
     height: 300px;
+	-webkit-transition: all 0.17s linear;
+	-moz-transition: all 0.17s linear;
+	-ms-transition: all 0.17s linear;
+	-o-transition: all 0.17s linear;
+	transition: all 0.17s linear;
 
     .dropdown-submenu {
         position: relative;
@@ -23,8 +32,22 @@
         left: 100%;
         margin-top: -1px;
     }
+	.nav-item.active{
+		.dropdown{
+			> a{
+				color:#fff;
+			}
+		}
+	}
 
     .menu-lista {
         display: none;
     }
+	.titulo_pagina{
+		width: 100%;
+		height: ~'calc(100% - 90px)';
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 }
