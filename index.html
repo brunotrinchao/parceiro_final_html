@@ -28,10 +28,10 @@
                 <a class="navbar-brand" href="#">
                     <img src="http://brunotrinchao.000webhostapp.com/_assets/img/logo_branca.png" alt="" class="" height="60px" />
                 </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-            <div class="collapse navbar-collapse">
+            <div class="collapse navbar-collapse" id="navbarToggler">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0 menu-lista">
                     <li class="nav-item active">
                         <a class="nav-link item-load-page" data-page="home" data-title="Produtos" href="#">Home <span
@@ -70,7 +70,7 @@
         <div class="rounded p-3" id="load_page">
         </div>
     </div>
-    <footer id="footer">
+    <footer id="footer" class="bg-light">
         teste
     </footer>
     <script src="./_assets/js/plugins/jquery-3.3.1.min.js"></script>
@@ -81,12 +81,23 @@
     <script src="./_assets/js/plugins/sweetalert2.all.min.js"></script>
     <script src="./_assets/js/plugins/lockr.js"></script>
     <script src="./_assets/js/plugins/select2.full.js"></script>
+    <script src="./_assets/js/plugins/jquery.mask.min.js"></script>
+    <script src="./_assets/js/plugins/jquery.maskMoney.min.js"></script>
     <script src="./_assets/js/display.js"></script>
     <script src="./_assets/js/functions.js"></script>
     <script src="./_assets/js/validate.js"></script>
     <script src="./_assets/js/scripts.js"></script>
     <script>
         moment.locale('pt-br');
+        var SPMaskBehavior = function (val) {
+  return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+},
+spOptions = {
+  onKeyPress: function(val, e, field, options) {
+      field.mask(SPMaskBehavior.apply({}, arguments), options);
+    }
+};
+        
     </script>
 </body>
 

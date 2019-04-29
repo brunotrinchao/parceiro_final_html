@@ -38,18 +38,55 @@
                 }
             });
         },
-        load: function(page, container, param, callBack) {
+        load: function(page, container, param, callbackSuccess) {
             jQuery.gDisplay.loadStart();
             var new_container = !container || container === undefined || container == "" ?
                 "#load_page" :
                 container;
             var new_param = jQuery.isEmptyObject(param) ? null : $.param(param);
-            $("#load_page").load("./pages/" + page, new_param, function() {
-                jQuery.gDisplay.loadStop();
-                if (typeof callbackSuccess === "function") {
-                    callbackSuccess.call(this);
+
+
+            jQuery.ajax({
+                type: "GET",
+                url: "./pages/" + page,
+                data: param,
+                async: true,
+                beforeSend: function() {
+                    jQuery.gDisplay.loadStart();
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    jQuery.gDisplay.loadStop();
+
+                    jQuery(new_container).prepend('Carregamento interrompido...');
+
+                    var debug = {
+                        page: page,
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        params: param
+                    }
+
+                    console.warn('Erro ao carregar ajax: ', debug);
+                },
+                success: function(resp) {
+                    jQuery.gDisplay.loadStop();
+
+                    jQuery(new_container).html(resp);
+
+                    if (typeof callbackSuccess === 'function') {
+                        callbackSuccess.call(this, param);
+                    }
                 }
             });
+
+
+
+            // $("#load_page").load("./pages/" + page, new_param, function(e) {
+            //     jQuery.gDisplay.loadStop();
+            //     if (typeof callback === "function") {
+            //         callback.call(this);
+            //     }
+            // });
         }
     };
 
@@ -59,8 +96,6 @@
         },
         get: function(key) {
             var ret = JSON.parse(localStorage.getItem(prefix + key));
-			console.log(key);
-			console.log(ret);
             if (ret) {
                 return ret.data;
             }
@@ -206,18 +241,52 @@ function checkNull(value) {
 
 function addInput(label, atributos, span, placeholder) {
     var html = '<input ';
+    var classe = '';
     $.each(atributos, function(key, value) {
-        html += key + '="' + value + '"';
+        if(key != 'class'){
+            html += key + '="' + value + '"';
+        }else{
+            classe += ' ' + value;
+
+        }
+
     });
     if(placeholder){
     html += ' placeholder="'+label+'"';
 	}
-    html += ' class="form-control"';
+    html += ' class="form-control '+classe+'"';
     html += '>';
 
     return addControlForm(label, html, null, span);
 
 }
+
+function addRadio(label, type, atributos, span, options, checkFirst) {
+    var html = '<div>';
+    
+    var i = 1;
+    $.each(options, function(key, value) {
+    html += '<div class="form-check form-check-inline">';
+
+    html += '<input class="form-check-input "';
+    $.each(atributos, function(key, value) {
+        html += key + '="' + value + '"';
+        if(checkFirst && i == 1){
+            html += ' checked= checked ' 
+        }
+        i++;
+    });
+    html += ' type="'+type+'" id="inline'+type+''+key+'" value="'+key+'">';
+    html += '<label class="form-check-label" for="inline'+type+''+key+'">'+value+'</label>';
+
+    html += '</div>';
+});
+html += '</div>';
+
+    return addControlForm(label, html, null, span);
+
+}
+
 function addTextarea(label, atributos,value, span, placeholder) {
     var html = '<textarea ';
     $.each(atributos, function(key, value) {
@@ -233,9 +302,26 @@ function addTextarea(label, atributos,value, span, placeholder) {
 
 }
 
+function addSelect(label, atributos, span, options) {
+    var html = '<select ';
+    $.each(atributos, function(key, value) {
+        html += key + '="' + value + '"';
+    });
+    html += ' class="form-control"';
+    html += '>';
+    html += '<option value="">.: Selecione :.</option>';
+    $.each(options, function(key, value) {
+        html += '<option value="'+key+'">'+value+'</option>';
+    });
+    html += '</select>';
+
+    return addControlForm(label, html, null, span);
+
+}
+
 function addControlForm(label, input, classe, span) {
     var new_class = (!classe) ? '' : classe;
-    var new_label = (!label) ? '' : '<label>' + label + '</label>';
+    var new_label = (!label) ? '' : '<label class="font-weight-bold">' + label + '</label>';
     var new_input = (!input) ? '' : input;
 
     var html = '<div class="' + span + '">';
@@ -263,3 +349,46 @@ function getParams (url) {
 	}
 	return params;
 };
+
+
+function getFieldsFormCliente(){
+    var html = '';
+    html += '<div class="row">';
+    html += addInput(null, {type: "hidden",value: 1,name: 'produto'}, '');
+    html += addInput('Nome*', {type: "text",id: 'Nome',validate: 'required',name: 'nome'}, 'col-md-12 col-lg-4');
+    html += addInput('E-mal*', {type: "email",id: 'Email',validate: 'required',name: 'email'}, 'col-md-12 col-lg-4');
+    html += addRadio('Tipo*', 'radio', {name: 'TipoCliente'}, 'col-md-12 col-lg-4', {F: 'Pessoa Física', J: 'Pessoa Jurídica'}, true);
+    html += addInput('<span class="pessoa_cliente">CPF</span>', {type: "text",id: 'pessoaTipo',validate: 'required',name: 'CPF'}, 'col-md-12 col-lg-3');
+    html += addInput('Telefone*', {type: "text",id: 'Tefefone',validate: 'required',name: 'telefone', class:'phone'}, 'col-md-12 col-lg-3');
+    html += addInput('Celular', {type: "text",id: 'Celular',name: 'celular', class:'phone'}, 'col-md-12 col-lg-3');
+    html += addInput('Nascimento', {type: "date",id: 'nacimento',name: 'nacimento', class:'calendar'}, 'col-md-12 col-lg-3');
+    html += addSelect('Sexo', {id: 'sexo',name: 'sexo'}, 'col-md-12 col-lg-3', { 1: 'Masculino',2: 'Feminino'});
+    html += addInput('Contato', {type: "text",id: 'Contato',name: 'Contato', }, 'col-md-12 col-lg-9');
+    html += '<script>';
+    html += '$(function() {';
+    html += "$('#pessoaTipo').mask('999.999.999-99', {reverse: true});";
+    html += "$('input[name=TipoCliente]').change(";
+    html += "function(){";
+    html += "var vTipo =  $(this).val();";
+    html += "var maskTipo = (vTipo == 'F')? '999.999.999-99' : '99.999.999/9999-99';";
+    html += "$('span.pessoa_cliente').text((vTipo == 'F')? 'CPF' : 'CNPJ');";
+    html += "$('#pessoaTipo').mask(maskTipo, {reverse: true});";
+    html += "}";
+    html += ")";
+    html += '});';
+    html += '<\/script>';
+    html += '</div>';
+    return html;
+}
+function getFieldsFormEndereco(){
+    var html = '';
+    html += '<div class="row">';
+    html += addInput('CEP*', {type: "text",id: 'cep',validate: 'required',name: 'cep'}, 'col-md-12 col-lg-2');
+    html += '<script>';
+    html += '$(function() {';
+    html += "$('#cep').mask('99.999-999', {reverse: true});";
+    html += '});';
+    html += '<\/script>';
+    html += '</div>';
+    return html;
+}

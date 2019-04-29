@@ -1,5 +1,20 @@
-<div id="indicar">
-    <div class="row load-cards">
+<div id="indicar" class="container">
+    <div class="load-cadastro">
+        <form id="nova-indicacao">
+            <div class="load-form"></div>
+            <div class="row">
+                <div class="col-12 box-form-completo">
+                    <div class="alert alert-info" role="alert">
+                        <h6 class="alert-heading">Ajude nosso consultor</h6>
+                        <hr>
+                        <a href="#" class="alert-link show-form-completo">Clique aqui</a> caso queira inserir as informações pessoais, o perfil e as necessidades do cliente.
+                      </div>
+                </div>
+                <div class="col-12">
+                <button type="submit" class="btn btn-success float-right">Salvar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -14,6 +29,91 @@
             },
             onLoad: function() {
                 $('.titulo_pagina h1').text('Indicar');
+
+                $('#indicar .load-cadastro .load-form').empty().html(IndicarMethods.buildForm(PARAM_PAGE.produto));
+                $('.show-form-completo').attr('data-produto', PARAM_PAGE.produto);
+                $('.show-form-completo').attr('data-page', PARAM_PAGE.produtoPage);
+                $('.money').maskMoney({
+                    prefix:'R$ ', 
+                    allowNegative: true, 
+                    thousands:'.', 
+                    decimal:',', 
+                    affixesStay: false
+                });
+                $('.phone').mask(SPMaskBehavior, spOptions);
+
+                // Carrega formulario completo
+                $('.show-form-completo').on('click', function(){
+                    $('#indicar').addClass('completo');
+                    var param = $(this).data();
+                    console.log(param);
+                    jQuery.gApi.load('indicacao-completa/' + param.page + '.html', '',param);
+                    return false;
+                });
+
+            },
+            buildForm: function(produto){
+                var html = '';
+                html += addInput(null, {
+                        type: "hidden",
+                        value: produto,
+                        name: 'produto'
+                        }, '');
+                html += '<div class="row">';
+                switch (produto) {
+                    case 1: // imovel
+                    PARAM_PAGE.produtoPage = 'imovel';
+                    html += addInput('Produto', {
+                        type: "text",
+                        disabled: true,
+                        value: 'Imóvel'
+                        }, 'col-md-12 col-lg-3');
+                    html += addInput('Nome', {
+                        type: "text",
+                        id: 'Nome',
+                        validate: 'required',
+                        name: 'nome'
+                        }, 'col-md-12 col-lg-6');
+                    html += addInput('Telefone', {
+                        type: "text",
+                        id: 'Telefone',
+                        validate: 'required',
+                        name: 'telefone',
+                        class: 'phone',
+                        }, 'col-md-12 col-lg-3');
+                    html += addSelect('Qual a necessidade?', {
+                        id: 'necessidade',
+                        validate: 'required',
+                        name: 'necessidade'
+                        }, 'col-md-12 col-lg-3', {1:'Comprar', 2:'Vender', 3:'Alugar'});
+                        
+                    html += addSelect('Tipo', {
+                        id: 'tipo',
+                        validate: 'required',
+                        name: 'tipo'
+                        }, 'col-md-12 col-lg-3', {
+                            1: 'Proprietário',
+                            2: 'Interessado',
+                        });
+                    html += addInput('Valor do bem', {
+                        type: "text",
+                        id: 'ValorBem',
+                        validate: 'required',
+                        name: 'bem',
+                        class: 'money'
+                        }, 'col-md-12 col-lg-3');
+                    html += addTextarea('Observações', {
+                        row: "3",
+                        name: 'observacoes'
+                    }, '', 'col-md-12 col-lg-12');
+                        break;
+                    default:
+                        break;
+                        html += '</div>';
+                }
+
+                return html;
+
             }
         }
         IndicarMethods.initialize();

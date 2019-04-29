@@ -3,27 +3,27 @@
         <div class="col col-12 mb-5 alert filtro">
             <form name="filtra-relatorio" id="filtra-relatorio">
                 <div class="form-row filtros align-items-end">
-                    <div class="col-md-4">
+                    <div class="col-md-12 col-lg-3">
                         <div class="form-group">
                             <label id="lbl_select-produtos" for="select-produtos">Produtos</label>
                             <select style="width: 100%" validate="required" name="idProduto" id="select-produtos">
 							</select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-12 col-lg-4">
                         <div class="form-group">
                             <label id="lbl_DataRange" for="reportrange">Período</label>
 							<div></div>
-							<button id="reportrange" type="button" class="btn btn-light">
+							<button id="reportrange" type="button" class="btn btn-light btn-block">
 								<i class="fa fa-calendar-alt"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
 							</button>
                             <input type="hidden" validate="required" id="DataRange" name="DataRange">
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-12 col-lg-3">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Buscar</button>
+                            <button type="submit" class="btn btn-primary btn-search"><i class="fa fa-search"></i> Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" id="detalhe">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -261,14 +261,14 @@
                 $.each(data, function(i, item) {
                     html += '<tr>';
                     html +=
-                        '<td scope="row"><a href="#" class="detalhe btn btn-link" data-id="' + item.id +
+                        '<td data-title="Nome" scope="row"><a href="#" class="detalhe btn btn-link" data-id="' + item.id +
                         '">' +
                         checkNull(item.Cliente.Nome) +
                         '</a></td>';
-                    html += '<td>' + checkNull(item.Cliente.Telefone) + '</td>';
-                    html += '<td>' + checkNull(item.Cliente.Celular) + '</td>';
-                    html += '<td>' + checkNull(item.Cliente.Email) + '</td>';
-                    html += '<td><span class="badge badge-pill badge-primary">' + checkNull(item
+                    html += '<td data-title="Telefone">' + checkNull(item.Cliente.Telefone) + '</td>';
+                    html += '<td data-title="Celular">' + checkNull(item.Cliente.Celular) + '</td>';
+                    html += '<td data-title="E-mail">' + checkNull(item.Cliente.Email) + '</td>';
+                    html += '<td data-title="Status"><span class="badge badge-pill badge-primary">' + checkNull(item
                         .StatusProspect
                         .Descricao) + '</span></td>';
                     html += '</tr>';
@@ -288,31 +288,31 @@
                         type: "text",
                         value: detail.Cliente.Email,
                         disabled: true
-                    }, 'col-md-5');
+                    }, 'col-md-12 col-lg-5');
                     html += addInput('Sexo', {
                         type: "text",
                         value: (checkNull(detail.Cliente.Sexo) == 'M') ? 'Masculino' : 'Feminino',
                         disabled: true
-                    }, 'col-md-3');
+                    }, 'col-md-12 col-lg-3');
                     html += addInput(((detail.Cliente.PJ) ? 'CNPJ' : 'CPF'), {
                         type: "text",
                         value: checkNull(detail.Cliente.CpfCnpj),
                         disabled: true
-                    }, 'col-md-4');
+                    }, 'col-md-12 col-lg-4');
                     html += addInput('Telefone', {
                         type: "text",
                         value: checkNull(detail.Cliente.Telefone),
                         disabled: true
-                    }, 'col-md-4');
+                    }, 'col-md-12 col-lg-4');
                     html += addInput('Celular', {
                         type: "text",
                         value: checkNull(detail.Cliente.Celular),
                         disabled: true
-                    }, 'col-md-4');
+                    }, 'col-md-12 col-lg-4');
                     html += addTextarea('Contato', {
                         row: "3",
                         disabled: true
-                    }, checkNull(detail.Cliente.Contato), 'col-md-12');
+                    }, checkNull(detail.Cliente.Contato), 'col-md-12 col-lg-12');
                     html += '';
                     html += '</div>';
                     html += '</div>';
@@ -323,37 +323,37 @@
                         type: "text",
                         value: detail.Cliente.Endereco,
                         disabled: true
-                    }, 'col-md-10');
+                    }, 'col-md-12 col-lg-10');
 					html += addInput('Número', {
                         type: "text",
                         value: checkNull(detail.Cliente.Numero),
                         disabled: true
-                    }, 'col-md-2');
+                    }, 'col-md-12 col-lg-2');
 					html += addInput('Complemento', {
                         type: "text",
                         value: checkNull(detail.Cliente.Complemento),
                         disabled: true
-                    }, 'col-md-12');
+                    }, 'col-md-12 col-lg-12');
 					html += addInput('Bairro', {
                         type: "text",
                         value: checkNull(detail.Cliente.Bairro.Nome),
                         disabled: true
-                    }, 'col-md-4');
+                    }, 'col-md-12 col-lg-4');
 					html += addInput('CEP', {
                         type: "text",
                         value: checkNull(detail.Cliente.Cep),
                         disabled: true
-                    }, 'col-md-3');
+                    }, 'col-md-12 col-lg-3');
 					html += addInput('Cidade', {
                         type: "text",
                         value: checkNull(detail.Cliente.Bairro.Cidade.Nome),
                         disabled: true
-                    }, 'col-md-3');
+                    }, 'col-md-12 col-lg-3');
 					html += addInput('UF', {
                         type: "text",
                         value: checkNull(detail.Cliente.Bairro.Cidade.UF),
                         disabled: true
-                    }, 'col-md-2');
+                    }, 'col-md-12 col-lg-2');
                     html += '</div>';
                     html += '</div>';
 					// Detalhes
@@ -364,118 +364,118 @@
 							type: "text",
 							value: 'Consórcio',
 							disabled: true
-							}, 'col-md-2');
+							}, 'col-md-12 col-lg-2');
 						html += addInput('Tipo do bem', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.TipoBem),
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
 						html += addInput('Valor (R$)', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.ValorBem),
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
 						html += addInput('Situação', {
 							type: "text",
 							value: checkNull(detail.StatusProspect.Descricao),
 							disabled: true
-							}, 'col-md-4');
+							}, 'col-md-12 col-lg-4');
 						html += addTextarea('Observação', {
                         row: "3",
                         disabled: true
-                    }, checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.Observacao), 'col-md-12');
+                    }, checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.Observacao), 'col-md-12 col-lg-12');
 					}
 					if(detail.Cliente.DetalhesIndicacaoFinanciamentos){
 						html += addInput('Produto', {
 							type: "text",
 							value: 'Financiamento',
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
 						html += addInput('Tipo do bem', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.TipoBem),
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
 						html += addInput('Tipo do financiamento', {
 							type: "text",
 							value: detail.Cliente.DetalhesIndicacaoFinanciamentos.TipoFinanciamento,
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
 						html += addInput('Valor do bem (R$)', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.ValorBem),
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
 						html += addInput('Financiamento (R$)', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.ValorFinanciamento),
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
 						html += addInput('Imediato?', {
 							type: "text",
 							value: (detail.Cliente.DetalhesIndicacaoFinanciamentos.CompraImediata)?'Sim':'Não',
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
 
 						html += addInput('Situação', {
 							type: "text",
 							value: checkNull(detail.StatusProspect.Descricao),
 							disabled: true
-							}, 'col-md-4');
+							}, 'col-md-12 col-lg-4');
 					}
 					if(detail.Cliente.DetalhesIndicacaoImovel){
 						html += addInput('Produto', {
 							type: "text",
 							value: 'Imóvel',
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
                         html += addInput('Cliente tipo', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoCliente),
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
                         html += addInput('Imóvel tipo', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoImovel),
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
                         html += addInput('Uso', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoUso),
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
                         html += addInput('Operação', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoOperacao),
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
                         html += addInput('Valor do bem (R$)', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.ValorBem),
 							disabled: true
-							}, 'col-md-3');
+							}, 'col-md-12 col-lg-3');
                     html += '</div>';
                     html += '<div class="row py-3">';
                         html += addInput('Bairro 1', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.PrimeiroBairroPreferencia),
 							disabled: true
-							}, 'col-md-4');
+							}, 'col-md-12 col-lg-4');
                         html += addInput('Bairro 2', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.SegundoBairroPreferencia),
 							disabled: true
-							}, 'col-md-4');
+							}, 'col-md-12 col-lg-4');
                         html += addInput('Bairro 3', {
 							type: "text",
 							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TerceiroBairroPreferencia),
 							disabled: true
-							}, 'col-md-4');
+							}, 'col-md-12 col-lg-4');
                         html += addInput('Situação', {
 							type: "text",
 							value: checkNull(detail.StatusProspect.Descricao),
 							disabled: true
-							}, 'col-md-4');
+							}, 'col-md-12 col-lg-4');
 					}
                     html += '</div>';
                     html += '</div>';

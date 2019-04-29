@@ -1,6 +1,6 @@
 Parceiro = function() {
     $this = this;
-
+    PARAM_PAGE = {};
     ParceiroMethods = {
         initialize: function() {
             // jQuery.gDisplay.loadStart();
@@ -61,35 +61,48 @@ Parceiro = function() {
         },
         buidDropDown: function(titulo, data) {
             // Monta menu
+            
             var html = '';
-            html += '<div class="dropdown">';
-            html += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            html += '<li class="nav-item dropdown">';
+            html += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
             html += titulo;
             html += '</a>';
-            html += '<ul class="dropdown-menu">';
+            html += '<div class="dropdown-menu" aria-labelledby="navbarDropdown">';
             $.each(data, function(i, item) {
-                html += '<li class="dropdown-submenu">';
-                html += '<a tabindex="-1" href="#" class="test dropdown-item">';
+                html += '<a class="dropdown-item item-load-page" href="#" data-page="indicar" data-title="Indicação" data-produto="' + item.id + '">';
                 html += item.Titulo;
-                if (item.Submenu) {
-                    html += '<i class="fas fa-caret-right"></i>';
-                }
                 html += '</a>';
-                if (item.Submenu) {
-                    html += '<ul class="dropdown-menu">';
-                    $.each(item.Submenu, function(i, submenu) {
-                        html += '<li class="dropdown-submenu">';
-                        html += '<a tabindex="-1" href="#" data-page="indicar" data-title="Indicação" data-produto="' + item.id + '" data-tipo="' + submenu.Url + '" class="dropdown-item item-load-page">';
-                        html += submenu.Titulo;
-                        html += '</a>';
-                        html += '</li>';
-                    })
-                    html += '</ul>';
-                }
-                html += '</li>';
-            })
-            html += '</ul>';
+            });
             html += '</div>';
+            html += '</li>';
+            // html += '<div class="dropdown">';
+            // html += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+            // html += titulo;
+            // html += '</a>';
+            // html += '<ul class="dropdown-menu">';
+            // $.each(data, function(i, item) {
+            //     html += '<li class="dropdown-submenu">';
+            //     html += '<a tabindex="-1" href="#" class="test dropdown-item item-load-page"  data-page="indicar" data-title="Indicação" data-produto="' + item.id + '">';
+            //     html += item.Titulo;
+            //     // if (item.Submenu) {
+            //     //     html += '<i class="fas fa-caret-right"></i>';
+            //     // }
+            //     // html += '</a>';
+            //     // if (item.Submenu) {
+            //     //     html += '<ul class="dropdown-menu">';
+            //     //     $.each(item.Submenu, function(i, submenu) {
+            //     //         html += '<li class="dropdown-submenu">';
+            //     //         html += '<a tabindex="-1" href="#" data-page="indicar" data-title="Indicação" data-produto="' + item.id + '" data-tipo="' + submenu.Url + '" class="dropdown-item item-load-page">';
+            //     //         html += submenu.Titulo;
+            //     //         html += '</a>';
+            //     //         html += '</li>';
+            //     //     })
+            //     //     html += '</ul>';
+            //     // }
+            //     html += '</li>';
+            // })
+            // html += '</ul>';
+            // html += '</div>';
             return html;
         },
         buildListPro: function() {
@@ -139,8 +152,9 @@ Parceiro = function() {
         },
         buildLoadPage: function(data) {
             // window.history.pushState(data.page, data.title, data.page + '.html');
-            jQuery.gApi.load(data.page + '.html', '', data, function(e) {
-                console.log(e);
+            $('#navbarToggler').collapse('hide');
+            jQuery.gApi.load(data.page + '.html', '',data, function(params) {
+                PARAM_PAGE = params;
             });
         },
         showProdutos: function() {
