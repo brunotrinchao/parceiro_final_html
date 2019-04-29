@@ -1,22 +1,15 @@
-body {
-    background-image: url(../img/banner.jpg);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-#load_page {}
-
-
 /***************************************
 			HERADER
 **************************************/
-.menu-lista > li > a{
-    color:#fff;
+
+.menu-lista>li>a {
+    color: #fff;
 }
-.menu-lista > li .dropdown > a{
-    color:#fff;
+
+.menu-lista>li .dropdown>a {
+    color: #fff;
 }
+
 .logado {
     display: none;
 }
