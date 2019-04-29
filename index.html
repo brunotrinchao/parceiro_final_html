@@ -25,9 +25,9 @@
 <body>
     <div id="header">
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-                <a class="navbar-brand" href="#">
-                    <img src="http://brunotrinchao.000webhostapp.com/_assets/img/logo_branca.png" alt="" class="" height="60px" />
-                </a>
+            <a class="navbar-brand" href="#">
+                <img src="http://brunotrinchao.000webhostapp.com/_assets/img/logo_branca.png" alt="" class="" height="60px" />
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -43,12 +43,12 @@
                     <li class="nav-item nav-item-produtos">
 
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link item-load-page" data-page="ajuda" data-title="Ajuda" href="#">Ajuda</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link item-load-page" data-page="arquivos" data-title="Arquivos" href="#">Arquivos</a>
-                    </li>
+                    </li> -->
                 </ul>
                 <form name="form-login" class="form-inline my-2 my-lg-0 ml-auto">
                     <input name="login" class="form-control mr-sm-2" value="domicio.imoveis" type="search" placeholder="Login" aria-label="Search" />
@@ -62,9 +62,9 @@
                 </div>
             </div>
         </nav>
-    <div class="titulo_pagina text-white text-center">
-        <h1></h1>
-    </div>
+        <div class="titulo_pagina text-white text-center">
+            <h1></h1>
+        </div>
     </div>
     <div class="container-fluid bg-white">
         <div class="rounded p-3" id="load_page">
@@ -83,21 +83,21 @@
     <script src="./_assets/js/plugins/select2.full.js"></script>
     <script src="./_assets/js/plugins/jquery.mask.min.js"></script>
     <script src="./_assets/js/plugins/jquery.maskMoney.min.js"></script>
+    <script src="./_assets/js/plugins/jquery.autocomplete-address.min.js"></script>
     <script src="./_assets/js/display.js"></script>
     <script src="./_assets/js/functions.js"></script>
     <script src="./_assets/js/validate.js"></script>
     <script src="./_assets/js/scripts.js"></script>
     <script>
         moment.locale('pt-br');
-        var SPMaskBehavior = function (val) {
-  return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
-},
-spOptions = {
-  onKeyPress: function(val, e, field, options) {
-      field.mask(SPMaskBehavior.apply({}, arguments), options);
-    }
-};
-        
+        var SPMaskBehavior = function(val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+            },
+            spOptions = {
+                onKeyPress: function(val, e, field, options) {
+                    field.mask(SPMaskBehavior.apply({}, arguments), options);
+                }
+            };
     </script>
 </body>
 

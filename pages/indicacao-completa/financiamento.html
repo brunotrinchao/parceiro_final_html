@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="col-12">
-                <a href="#" data-page="indicar" data-title="Indicação" data-produto="1" class="item-load-page btn btn-link">Cadastro rápido</a>
+                <a href="#" data-page="indicar" data-title="Indicação" data-produto="2" class="item-load-page btn btn-link">Cadastro rápido</a>
                 <button type="submit" class="btn btn-success float-right">Salvar</button>
             </div>
         </form>
@@ -32,7 +32,7 @@
             onLoad: function() {
                 $('#indicar .load-dados-cliente').empty().html(getFieldsFormCliente());
                 $('#indicar .load-dados-endereco').empty().html(getFieldsFormEndereco());
-                $('#indicar .load-dados-informacoes').empty().html(ImovelMethods.buildForm());
+                // $('#indicar .load-dados-informacoes').empty().html(ImovelMethods.buildForm());
                 $('.money').maskMoney({
                     prefix: 'R$ ',
                     allowNegative: true,

@@ -9,7 +9,7 @@ Parceiro = function() {
         onLoad: function() {
 
             // Login
-			var usuariosStorage = jQuery.lockrStorage.get('usuario');
+            var usuariosStorage = jQuery.lockrStorage.get('usuario');
             if (!usuariosStorage || usuariosStorage === undefined) {
                 $('form[name=form-login]').submit(function(e) {
                     e.preventDefault();
@@ -30,7 +30,7 @@ Parceiro = function() {
                 $('.menu-lista').show();
                 ParceiroMethods.showLogado(true);
             }
-        	ParceiroMethods.showProdutos();
+            ParceiroMethods.showProdutos();
 
             // DropDown
             $(".dropdown-submenu a.test").on("click", function(e) {
@@ -41,27 +41,47 @@ Parceiro = function() {
             });
 
             // Carrega Pagina
-            $('.item-load-page').click(function(e) {
+            $(document).on('click', '.item-load-page', function(e) {
                 e.preventDefault();
                 var data = $(this).data();
                 ParceiroMethods.buildLoadPage(data);
-				var li = $(this).parents('li.nav-item');
-				$('.nav-item').removeClass('active');
-				$(li).addClass('active');
+                var li = $(this).parents('li.nav-item');
+                $('.nav-item').removeClass('active');
+                $(li).addClass('active');
             });
 
-			$(document).on('click', '#logout', function(){
-				jQuery.lockrStorage.removeItem('usuario');
-				if (!jQuery.lockrStorage.get('usuario') || 
-				jQuery.lockrStorage.get('usuario') === undefined) {
-					ParceiroMethods.showLogado(false);
-				}
-				return false;
-			});
+            $(document).on('click', '#logout', function() {
+                jQuery.lockrStorage.removeItem('usuario');
+                if (!jQuery.lockrStorage.get('usuario') ||
+                    jQuery.lockrStorage.get('usuario') === undefined) {
+                    ParceiroMethods.showLogado(false);
+                }
+                return false;
+            });
+
+            // nova indicação
+            $(document).on('submit', '#nova-indicacao', function(e) {
+                var dados = $(this).serializeObject();
+                console.log(dados);
+                if ($('form#nova-indicacao').gValidate()) {
+                    jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/Parceiros/Usuarios/' + dados.login + '/' + dados.senha, {},
+                        function(json) {
+                            if (sizeObj(json) > 0) {
+                                jQuery.lockrStorage.set('usuario', json);
+                                // ParceiroMethods.showProdutos();
+                                ParceiroMethods.showLogado(true);
+                            }
+                        },
+                        function(err) {
+                            console.log(err);
+                        });
+                }
+                return false;
+            });
         },
         buidDropDown: function(titulo, data) {
             // Monta menu
-            
+
             var html = '';
             html += '<li class="nav-item dropdown">';
             html += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
@@ -153,14 +173,14 @@ Parceiro = function() {
         buildLoadPage: function(data) {
             // window.history.pushState(data.page, data.title, data.page + '.html');
             $('#navbarToggler').collapse('hide');
-            jQuery.gApi.load(data.page + '.html', '',data, function(params) {
+            jQuery.gApi.load(data.page + '.html', '', data, function(params) {
                 PARAM_PAGE = params;
             });
         },
         showProdutos: function() {
             // Carrega produtos
-			var produtoStorage = jQuery.lockrStorage.get('produtos')
-			console.log(produtoStorage);
+            var produtoStorage = jQuery.lockrStorage.get('produtos')
+            console.log(produtoStorage);
             if (!produtoStorage || produtoStorage === undefined) {
                 jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao', {},
                     function(json) {
@@ -185,18 +205,18 @@ Parceiro = function() {
         },
         showLogado: function(logado) {
             if (logado) {
-				$('html').addClass('user-logado');
+                $('html').addClass('user-logado');
                 $('.menu-lista').css('display', 'inline-flex');
                 $('.logado').css('display', 'block');
                 $('.logado .load-nome').text(jQuery.lockrStorage.get('usuario').Nome);
                 $('form[name=form-login]').css('display', 'none');
             } else {
-				$('html').removeClass('user-logado');
+                $('html').removeClass('user-logado');
                 $('.menu-lista').css('display', 'none');
                 $('.logado').css('display', 'none');
                 $('form[name=form-login]').css('display', 'inline-flex');
-				$('.logado .load-nome').text('');
-				ParceiroMethods.buildLoadPage({page:home});
+                $('.logado .load-nome').text('');
+                ParceiroMethods.buildLoadPage({ page: home });
             }
         }
     };
