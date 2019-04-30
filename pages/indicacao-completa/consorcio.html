@@ -21,10 +21,10 @@
 </div>
 
 <script>
-    Financiamento = function() {
+    Consorcio = function() {
         $this = this;
 
-        FinanciamentoMethods = {
+        ConsorcioMethods = {
             initialize: function() {
                 this.onLoad();
                 this.getTipoUso();
@@ -32,7 +32,7 @@
             onLoad: function() {
                 $('#indicar .load-dados-cliente').empty().html(getFieldsFormCliente());
                 $('#indicar .load-dados-endereco').empty().html(getFieldsFormEndereco());
-                $('#indicar .load-dados-informacoes').empty().html(FinanciamentoMethods.buildForm());
+                $('#indicar .load-dados-informacoes').empty().html(ConsorcioMethods.buildForm());
                 $('.money').maskMoney({
                     prefix: 'R$ ',
                     allowNegative: true,
@@ -41,6 +41,7 @@
                     affixesStay: false
                 });
                 $('.phone').mask(SPMaskBehavior, spOptions);
+
                 $('.link-voltar-cad').attr('data-produto',PARAM_PAGE.produto);
                 $('.link-voltar-cad').attr('data-title',PARAM_PAGE.title);
             },
@@ -57,11 +58,12 @@
                     validate: 'required',
                     name: 'tipo'
                 }, 'col-md-12 col-lg-2', {
-                    1: 'Tradicional',
-                    2: 'Refinanciamento',
+                    1: 'Automóvel',
+                    2: 'Imóvel',
                 });
                 html += '<div class="col-md-12 col-lg-10">';
-                html += '<div class="row load-input-fin"></div></div>';
+                html += '<div class="row load-input-con"></div></div>';
+                
                 html += addTextarea('Observações', {
                     row: "3",
                     name: 'observacoes'
@@ -74,35 +76,30 @@
                     var id = $(this).val();
                     var html = '';
                     if (id == '1') {
-                        
-                        html += addInput(null, { type: "hidden",value: 2,name: 'CompraImediata'}, '');
-                        html += addInput('Renda comprovada', { type: "text", id: 'RendaComprovadaFaturamento',name: 'RendaComprovadaFaturamento', class: 'money',validate: 'required'}, 'col-md-12 col-lg-3');
-                        html += addInput('Valor do financiamento', { type: "text", id: 'ValorFinanciamento',name: 'ValorFinanciamento', class: 'money',validate: 'required'}, 'col-md-12 col-lg-3');
+                        html += addRadio('Tipo de veículo', 'checkbox', {name: 'idTipoOperacao',validate: 'required'}, 'col-md-12 col-lg-5', {1: 'Passeio',2: 'Náutico',3: 'Caminhão',4: 'Moto'}, false);
                     }
                     if (id == '2') {
-                        html += addSelect('Compra imediata?', {id: 'CompraImediata',validate: 'required',name: 'CompraImediata' }, 'col-md-12 col-lg-3', {1: 'Sim',2: 'Não' });
-                        html += addSelect('Necessidade de crédito?', {id: 'CompraImediata',validate: 'required',name: 'CompraImediata'}, 'col-md-12 col-lg-3', {1: 'Sim',2: 'Não'});
-                        html += addSelect('Bem alienado?', {id: 'BemAlienado',validate: 'required',name: 'BemAlienado'}, 'col-md-12 col-lg-3', {1: 'Sim',2: 'Não'});
+                        html += addRadio('Tipo de veículo', 'checkbox', {name: 'idTipoOperacao',validate: 'required'}, 'col-md-12 col-lg-7', {1: 'Residencial',2: 'Comercial',3: 'Terreno',4: 'Construção/reforma'}, false);
                     }
 
-                    html += addSelect('Tipo do bem', {id: 'idTipoBem',validate: 'required', name: 'idTipoBem'}, 'col-md-12 col-lg-3', {1: 'Automóvel',2: 'Imóvel'});
+                    html += addInput(' Entrada', {type: "text",id: 'ValorEntrada',name: 'ValorEntrada',class: 'money',validate: 'required'}, 'col-md-12 col-lg-2');
                     html += addInput('Valor do bem', {type: "text",id: 'ValorBem',name: 'ValorBem',class: 'money',validate: 'required'}, 'col-md-12 col-lg-3');
 
-                    $('.load-input-fin').html(html);
+                    $('.load-input-con').html(html);
                     $('.money').maskMoney({
-                    prefix: 'R$ ',
-                    allowNegative: true,
-                    thousands: '.',
-                    decimal: ',',
-                    affixesStay: false
-                });
+                        prefix: 'R$ ',
+                        allowNegative: true,
+                        thousands: '.',
+                        decimal: ',',
+                        affixesStay: false
+                    });
                 });
             }
         }
-        FinanciamentoMethods.initialize();
+        ConsorcioMethods.initialize();
     };
 
     $(function() {
-        Financiamento();
+        Consorcio();
     });
 </script>

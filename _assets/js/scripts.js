@@ -62,7 +62,6 @@ Parceiro = function() {
             // nova indicação
             $(document).on('submit', '#nova-indicacao', function(e) {
                 var dados = $(this).serializeObject();
-                console.log(dados);
                 if ($('form#nova-indicacao').gValidate()) {
                     jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/Parceiros/Usuarios/' + dados.login + '/' + dados.senha, {},
                         function(json) {
@@ -89,7 +88,9 @@ Parceiro = function() {
             html += '</a>';
             html += '<div class="dropdown-menu" aria-labelledby="navbarDropdown">';
             $.each(data, function(i, item) {
-                html += '<a class="dropdown-item item-load-page" href="#" data-page="indicar" data-title="Indicação" data-produto="' + item.id + '">';
+                var classLoad = (ParceiroMethods.serachString(item.Url, 'http'))? '' : 'item-load-page';
+                var linkUrl = (!ParceiroMethods.serachString(item.Url, 'http'))? '' : item.Url;
+                html += '<a class="dropdown-item '+classLoad+'" href="'+linkUrl+'" target="_blank" data-page="indicacao" data-url="'+item.Url+'" data-title="Indicação - '+item.Titulo+'" data-produto="' + item.id + '">';
                 html += item.Titulo;
                 html += '</a>';
             });
@@ -102,7 +103,7 @@ Parceiro = function() {
             // html += '<ul class="dropdown-menu">';
             // $.each(data, function(i, item) {
             //     html += '<li class="dropdown-submenu">';
-            //     html += '<a tabindex="-1" href="#" class="test dropdown-item item-load-page"  data-page="indicar" data-title="Indicação" data-produto="' + item.id + '">';
+            //     html += '<a tabindex="-1" href="#" class="test dropdown-item item-load-page"  data-page="indicacao" data-title="Indicação" data-produto="' + item.id + '">';
             //     html += item.Titulo;
             //     // if (item.Submenu) {
             //     //     html += '<i class="fas fa-caret-right"></i>';
@@ -112,7 +113,7 @@ Parceiro = function() {
             //     //     html += '<ul class="dropdown-menu">';
             //     //     $.each(item.Submenu, function(i, submenu) {
             //     //         html += '<li class="dropdown-submenu">';
-            //     //         html += '<a tabindex="-1" href="#" data-page="indicar" data-title="Indicação" data-produto="' + item.id + '" data-tipo="' + submenu.Url + '" class="dropdown-item item-load-page">';
+            //     //         html += '<a tabindex="-1" href="#" data-page="indicacao" data-title="Indicação" data-produto="' + item.id + '" data-tipo="' + submenu.Url + '" class="dropdown-item item-load-page">';
             //     //         html += submenu.Titulo;
             //     //         html += '</a>';
             //     //         html += '</li>';
@@ -175,19 +176,19 @@ Parceiro = function() {
             $('#navbarToggler').collapse('hide');
             jQuery.gApi.load(data.page + '.html', '', data, function(params) {
                 PARAM_PAGE = params;
+                $('.titulo_pagina h1').text(PARAM_PAGE.title);
             });
         },
         showProdutos: function() {
             // Carrega produtos
             var produtoStorage = jQuery.lockrStorage.get('produtos')
-            console.log(produtoStorage);
             if (!produtoStorage || produtoStorage === undefined) {
                 jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao', {},
                     function(json) {
                         if (json.length > 0) {
                             jQuery.lockrStorage.set('produtos', json);
                             var listaProdutos = $this.ParceiroMethods.buildListPro();
-                            var menuProdutos = $this.ParceiroMethods.buidDropDown('Indicar', listaProdutos);
+                            var menuProdutos = $this.ParceiroMethods.buidDropDown('Indicação', listaProdutos);
                             $('.nav-item-produtos').html(menuProdutos);
                             jQuery.gApi.load('home.html');
                         }
@@ -198,7 +199,7 @@ Parceiro = function() {
             } else {
                 // Produtos
                 var listaProdutos = this.buildListPro();
-                var menuProdutos = this.buidDropDown('Indicar', listaProdutos);
+                var menuProdutos = this.buidDropDown('Indicação', listaProdutos);
                 $('.nav-item-produtos').html(menuProdutos);
                 jQuery.gApi.load('home.html');
             }
@@ -218,6 +219,11 @@ Parceiro = function() {
                 $('.logado .load-nome').text('');
                 ParceiroMethods.buildLoadPage({ page: home });
             }
+        },
+        serachString: function(str, search){
+            var string = str,
+            substring = search;
+            return string.indexOf(substring) !== -1;
         }
     };
     ParceiroMethods.initialize();
