@@ -70,12 +70,12 @@ Parceiro = function() {
                             console.log(json);
                             if (json.Code >= 200 && json.Code < 300) {
                                 jQuery.gDisplay.showSuccess(json.Message.Success);
-                            }else{
-                                jQuery.gDisplay.showError(montaErro(json.Message.Error));
+                            } else {
+                                jQuery.gDisplay.showAlert(json.Message.Error);
                             }
                         },
-                        function(err) {
-                            jQuery.gDisplay.showError(montaErro(err.responseJSON.Message.Error));
+                        function(xhr, status, error) {
+                            jQuery.gDisplay.showError(xhr.responseJSON.Message.Error);
                         });
                 }
                 return false;
@@ -91,9 +91,9 @@ Parceiro = function() {
             html += '</a>';
             html += '<div class="dropdown-menu" aria-labelledby="navbarDropdown">';
             $.each(data, function(i, item) {
-                var classLoad = (ParceiroMethods.serachString(item.Url, 'http'))? '' : 'item-load-page';
-                var linkUrl = (!ParceiroMethods.serachString(item.Url, 'http'))? '' : item.Url;
-                html += '<a class="dropdown-item '+classLoad+'" href="'+linkUrl+'" target="_blank" data-page="indicacao" data-url="'+item.Url+'" data-title="Indicação - '+item.Titulo+'" data-produto="' + item.id + '">';
+                var classLoad = (ParceiroMethods.serachString(item.Url, 'http')) ? '' : 'item-load-page';
+                var linkUrl = (!ParceiroMethods.serachString(item.Url, 'http')) ? '' : item.Url;
+                html += '<a class="dropdown-item ' + classLoad + '" href="' + linkUrl + '" target="_blank" data-page="indicacao" data-url="' + item.Url + '" data-title="Indicação - ' + item.Titulo + '" data-produto="' + item.id + '">';
                 html += item.Titulo;
                 html += '</a>';
             });
@@ -223,19 +223,19 @@ Parceiro = function() {
                 ParceiroMethods.buildLoadPage({ page: home });
             }
         },
-        serachString: function(str, search){
+        serachString: function(str, search) {
             var string = str,
-            substring = search;
+                substring = search;
             return string.indexOf(substring) !== -1;
         },
-        montaObjPost: function(data){
+        montaObjPost: function(data) {
             var ret = {};
             var prod = {};
             $.each(data, function(i, item) {
                 var exp = i.split('_');
-                if(exp[1]){
+                if (exp[1]) {
                     prod[exp[1]] = item;
-                }else{
+                } else {
                     ret[i] = item;
                 }
             });
@@ -243,9 +243,9 @@ Parceiro = function() {
             ret['Produto'] = prod;
             return ret;
         },
-        getIdParceiro(){
+        getIdParceiro() {
             var usuario = jQuery.lockrStorage.get('usuario');
-            if(usuario.id){
+            if (usuario.id) {
                 return usuario.id
             }
             return false;

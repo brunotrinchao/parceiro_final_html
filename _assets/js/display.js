@@ -17,24 +17,24 @@
             Swal.fire({
                 type: 'warning',
                 title: 'Atenção',
-                html: msg,
-                showConfirmButton: false,
+                html: msg.replace("\n", "<br>"),
+                showConfirmButton: true,
             });
         },
         showSuccess: function(msgn) {
             Swal.fire({
                 type: 'success',
                 title: 'Sucesso',
-                html: msg,
-                showConfirmButton: false,
+                html: msg.replace("\n", "<br>"),
+                showConfirmButton: true,
             });
         },
         showError: function(msg) {
             Swal.fire({
                 type: 'error',
                 title: 'Erro',
-                html: msg,
-                showConfirmButton: false,
+                html: msg.replace(/\n/g, "<br />"),
+                showConfirmButton: true,
             });
         }
     }

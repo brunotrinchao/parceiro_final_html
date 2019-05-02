@@ -344,10 +344,10 @@ function addSelect(label, atributos, span, options) {
 
 function addControlForm(label, input, required, span, id) {
     var new_required = (!required) ? '' : '*';
-    var new_label = (!label) ? '' : '<label id="lbl_' + id + '" class="font-weight-bold">' + label + ''+new_required+'</label>';
+    var new_label = (!label) ? '' : '<label id="lbl_' + id + '" class="font-weight-bold">' + label + '' + new_required + '</label>';
     var new_input = (!input) ? '' : input;
 
-    var html = '<div class="' + span + '" id="box_'+id+'">';
+    var html = '<div class="' + span + '" id="box_' + id + '">';
     html += '<div class="form-group">';
     html += new_label;
     html += new_input;
@@ -358,7 +358,7 @@ function addControlForm(label, input, required, span, id) {
 }
 
 function campoRequerido(atributos) {
-    return (atributos.validate == 'required')? true : false;
+    return (atributos.validate == 'required') ? true : false;
 }
 
 function getParams(url) {
@@ -388,12 +388,12 @@ function getFieldsFormCliente() {
     html += addInput(null, { type: "hidden", value: 1, name: 'produto' }, '');
     html += addInput('Nome', { type: "text", id: 'Cliente', validate: 'required', name: 'Cliente' }, 'col-md-12 col-lg-4');
     html += addInput('E-mail', { type: "email", id: 'Email', validate: 'required', name: 'Email' }, 'col-md-12 col-lg-4');
-    html += addRadio('Tipo', 'radio', {id: 'TipoCliente', name: 'TipoCliente', validate: 'required' }, 'col-md-12 col-lg-4', { PF: 'Pessoa Física', PJ: 'Pessoa Jurídica' }, true);
+    html += addRadio('Tipo', 'radio', { id: 'TipoCliente', name: 'TipoCliente', validate: 'required' }, 'col-md-12 col-lg-4', { PF: 'Pessoa Física', PJ: 'Pessoa Jurídica' }, true);
     html += addInput('<span class="pessoa_cliente">CPF</span>', { type: "text", id: 'pessoaTipo', validate: 'required', name: 'CPF' }, 'col-md-12 col-lg-3');
-    html += addInput('Telefone', { type: "text", id: 'Tefefone', validate: 'required', name: 'telefone', class: 'phone' }, 'col-md-12 col-lg-3');
+    html += addInput('Telefone', { type: "text", id: 'Tefefone', validate: 'required', name: 'Telefone', class: 'phone' }, 'col-md-12 col-lg-3');
     html += addInput('Celular', { type: "text", id: 'Celular', name: 'Celular', class: 'phone' }, 'col-md-12 col-lg-3');
     html += addInput('Nascimento', { type: "date", id: 'Nascimento', name: 'Nascimento', class: 'calendar' }, 'col-md-12 col-lg-3');
-    html += addSelect('Sexo', { id: 'Sexo', name: 'Sexo' }, 'col-md-12 col-lg-3', { 1: 'Masculino', 2: 'Feminino' });
+    html += addSelect('Sexo', { id: 'Sexo', name: 'Sexo', validate: 'required' }, 'col-md-12 col-lg-3', { M: 'Masculino', S: 'Feminino' });
     html += addInput('Contato', { type: "text", id: 'Contato', name: 'Contato', }, 'col-md-12 col-lg-9');
     html += '<script>';
     html += '$(function() {';
@@ -448,13 +448,6 @@ function getFieldsFormEndereco() {
     return html;
 }
 
-function montaErro(string){
-    var itens = string.split('\n');
-    var ret = '';
-    ret += '<ul>';
-    $.each(itens, function(key, value) {
-        ret += value;
-    });
-    ret += '</ul>';
-    return ret;
+function montaErro(string) {
+    return string.replace("\n", "<br>");
 }

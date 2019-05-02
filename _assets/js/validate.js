@@ -33,7 +33,7 @@
         if (msg.length > 0) {
             ret = false;
             Swal.close();
-            alerta('Erro', msg, 'error');
+            alerta('Erro', montaErro(msg), 'error');
             // jQuery.gDisplay.showError(msg, '');
         }
         return ret;
