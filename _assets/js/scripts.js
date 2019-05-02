@@ -55,6 +55,7 @@ Parceiro = function() {
                 if (!jQuery.lockrStorage.get('usuario') ||
                     jQuery.lockrStorage.get('usuario') === undefined) {
                     ParceiroMethods.showLogado(false);
+                    document.location.reload();
                 }
                 return false;
             });
@@ -63,16 +64,18 @@ Parceiro = function() {
             $(document).on('submit', '#nova-indicacao', function(e) {
                 var dados = $(this).serializeObject();
                 if ($('form#nova-indicacao').gValidate()) {
-                    jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/Parceiros/Usuarios/' + dados.login + '/' + dados.senha, {},
+                    var param = ParceiroMethods.montaObjPost(dados);
+                    jQuery.gApi.exec('POST', 'http://integracaogtsis.tempsite.ws/api/V1/Indicacoes/Supercredito', param,
                         function(json) {
-                            if (sizeObj(json) > 0) {
-                                jQuery.lockrStorage.set('usuario', json);
-                                // ParceiroMethods.showProdutos();
-                                ParceiroMethods.showLogado(true);
+                            console.log(json);
+                            if (json.Code >= 200 && json.Code < 300) {
+                                jQuery.gDisplay.showSuccess(json.Message.Success);
+                            }else{
+                                jQuery.gDisplay.showError(montaErro(json.Message.Error));
                             }
                         },
                         function(err) {
-                            console.log(err);
+                            jQuery.gDisplay.showError(montaErro(err.responseJSON.Message.Error));
                         });
                 }
                 return false;
@@ -224,6 +227,28 @@ Parceiro = function() {
             var string = str,
             substring = search;
             return string.indexOf(substring) !== -1;
+        },
+        montaObjPost: function(data){
+            var ret = {};
+            var prod = {};
+            $.each(data, function(i, item) {
+                var exp = i.split('_');
+                if(exp[1]){
+                    prod[exp[1]] = item;
+                }else{
+                    ret[i] = item;
+                }
+            });
+            ret.idUsuarioParceiro = ParceiroMethods.getIdParceiro();
+            ret['Produto'] = prod;
+            return ret;
+        },
+        getIdParceiro(){
+            var usuario = jQuery.lockrStorage.get('usuario');
+            if(usuario.id){
+                return usuario.id
+            }
+            return false;
         }
     };
     ParceiroMethods.initialize();

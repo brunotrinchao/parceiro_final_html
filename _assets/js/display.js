@@ -13,9 +13,29 @@
         loadStop: function(target) {
             Swal.close();
         },
-        loadError: function(target, msg) {},
-        showAlert: function(json, success, error) {},
-        showSuccess: function(msg, success, plugin) {},
-        showError: function(msg, error, plugin) {}
+        showAlert: function(json) {
+            Swal.fire({
+                type: 'warning',
+                title: 'Atenção',
+                html: msg,
+                showConfirmButton: false,
+            });
+        },
+        showSuccess: function(msgn) {
+            Swal.fire({
+                type: 'success',
+                title: 'Sucesso',
+                html: msg,
+                showConfirmButton: false,
+            });
+        },
+        showError: function(msg) {
+            Swal.fire({
+                type: 'error',
+                title: 'Erro',
+                html: msg,
+                showConfirmButton: false,
+            });
+        }
     }
 }(jQuery));

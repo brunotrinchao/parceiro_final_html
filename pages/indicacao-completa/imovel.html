@@ -48,69 +48,17 @@
             buildForm: function() {
                 var html = '';
                 html += '<div class="row">';
-                html += addInput(null, {
-                    type: "hidden",
-                    value: 1,
-                    name: 'idProdutoIndicacao'
-                }, '');
-                html += addSelect('Tipo do negócio', {
-                    id: 'tipo',
-                    validate: 'required',
-                    name: 'tipo'
-                }, 'col-md-12 col-lg-2', {
-                    1: 'Proprietário',
-                    2: 'Interessado',
-                });
-                html += addSelect('Operação', {
-                    id: 'idTipoOperacao',
-                    validate: 'required',
-                    name: 'idTipoOperacao'
-                }, 'col-md-12 col-lg-2', {
-                    1: 'Comprar',
-                    2: 'Alugar',
-                    3: 'Vender'
-                });
-                html += addSelect('Tipo de uso', {
-                    id: 'idTipoUso',
-                    validate: 'required',
-                    name: 'idTipoUso'
-                }, 'col-md-12 col-lg-2', {
-                    1: 'Residêncial',
-                    2: 'Comercial'
-                });
-                html += addSelect('Tipo do imóvel', {
-                    id: 'idTipoImovel',
-                    validate: 'required',
-                    name: 'idTipoImovel',
-                    disabled: true
-                }, 'col-md-12 col-lg-3', {});
-                html += addInput('Valor do bem', {
-                    type: "text",
-                    id: 'ValorBem',
-                    name: 'ValorBem',
-                    class: 'money',
-                    validate: 'required'
-                }, 'col-md-12 col-lg-3');
-                html += addInput('Bairro de preferência (1)', {
-                    type: "text",
-                    id: 'PrimeiroBairroPreferencia',
-                    name: 'PrimeiroBairroPreferencia'
-                }, 'col-md-12 col-lg-4');
-                html += addInput('Bairro de preferência (2)', {
-                    type: "text",
-                    id: 'SegundoBairroPreferencia',
-                    name: 'SegundoBairroPreferencia'
-                }, 'col-md-12 col-lg-4');
-                html += addInput('Bairro de preferência (3)', {
-                    type: "text",
-                    id: 'TerceiroBairroPreferencia',
-                    name: 'TerceiroBairroPreferencia'
-                }, 'col-md-12 col-lg-4');
-                html += addTextarea('Observações', {
-                    row: "3",
-                    name: 'observacoes'
-                }, '', 'col-md-12 col-lg-12');
-
+                
+                html += addInput(null, {type: "hidden",value: 1,name: 'produto_idProdutoIndicacao'}, '');
+                html += addSelect('Tipo do cliente', {id: 'idTipoCliente',validate: 'required',name: 'idTipoCliente'}, 'col-md-12 col-lg-2', {1: 'Proprietário',2: 'Interessado',});
+                html += addSelect('Operação', {id: 'idTipoOperacao',validate: 'required',name: 'produto_idTipoOperacao'}, 'col-md-12 col-lg-2', {1: 'Comprar',2: 'Alugar',3: 'Vender'});
+                html += addSelect('Tipo de uso', {id: 'idTipoUso',validate: 'required',name: 'produto_idTipoUso'}, 'col-md-12 col-lg-2', {1: 'Residêncial',2: 'Comercial'});
+                html += addSelect('Tipo do imóvel', {id: 'idTipoImovel',validate: 'required',name: 'produto_idTipoImovel',disabled: true}, 'col-md-12 col-lg-3', {});
+                html += addInput('Valor do bem', {type: "text",id: 'ValorBem',name: 'produto_ValorBem',class: 'money',validate: 'required'}, 'col-md-12 col-lg-3');
+                html += addInput('Bairro de preferência (1)', {type: "text",id: 'PrimeiroBairroPreferencia',name: 'produto_PrimeiroBairroPreferencia'}, 'col-md-12 col-lg-4');
+                html += addInput('Bairro de preferência (2)', {type: "text",id: 'SegundoBairroPreferencia',name: 'produto_SegundoBairroPreferencia'}, 'col-md-12 col-lg-4');
+                html += addInput('Bairro de preferência (3)', {type: "text",id: 'TerceiroBairroPreferencia',name: 'produto_TerceiroBairroPreferencia'}, 'col-md-12 col-lg-4');
+                html += addTextarea('Observações', {row: "3",name: 'produto_Observacao'}, '', 'col-md-12 col-lg-12');
 
                 html += '<script>';
                 html += '$(function() {';

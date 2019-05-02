@@ -387,11 +387,11 @@ function getFieldsFormCliente() {
     html += '<div class="row">';
     html += addInput(null, { type: "hidden", value: 1, name: 'produto' }, '');
     html += addInput('Nome', { type: "text", id: 'Cliente', validate: 'required', name: 'Cliente' }, 'col-md-12 col-lg-4');
-    html += addInput('E-mail', { type: "email", id: 'Email', validate: 'required', name: 'email' }, 'col-md-12 col-lg-4');
-    html += addRadio('Tipo', 'radio', {id: 'TipoCliente', name: 'TipoCliente', validate: 'required' }, 'col-md-12 col-lg-4', { F: 'Pessoa Física', J: 'Pessoa Jurídica' }, true);
+    html += addInput('E-mail', { type: "email", id: 'Email', validate: 'required', name: 'Email' }, 'col-md-12 col-lg-4');
+    html += addRadio('Tipo', 'radio', {id: 'TipoCliente', name: 'TipoCliente', validate: 'required' }, 'col-md-12 col-lg-4', { PF: 'Pessoa Física', PJ: 'Pessoa Jurídica' }, true);
     html += addInput('<span class="pessoa_cliente">CPF</span>', { type: "text", id: 'pessoaTipo', validate: 'required', name: 'CPF' }, 'col-md-12 col-lg-3');
     html += addInput('Telefone', { type: "text", id: 'Tefefone', validate: 'required', name: 'telefone', class: 'phone' }, 'col-md-12 col-lg-3');
-    html += addInput('Celular', { type: "text", id: 'Celular', name: 'celular', class: 'phone' }, 'col-md-12 col-lg-3');
+    html += addInput('Celular', { type: "text", id: 'Celular', name: 'Celular', class: 'phone' }, 'col-md-12 col-lg-3');
     html += addInput('Nascimento', { type: "date", id: 'Nascimento', name: 'Nascimento', class: 'calendar' }, 'col-md-12 col-lg-3');
     html += addSelect('Sexo', { id: 'Sexo', name: 'Sexo' }, 'col-md-12 col-lg-3', { 1: 'Masculino', 2: 'Feminino' });
     html += addInput('Contato', { type: "text", id: 'Contato', name: 'Contato', }, 'col-md-12 col-lg-9');
@@ -401,8 +401,8 @@ function getFieldsFormCliente() {
     html += "$('input[name=TipoCliente]').change(";
     html += "function(){";
     html += "var vTipo =  $(this).val();";
-    html += "var maskTipo = (vTipo == 'F')? '999.999.999-99' : '99.999.999/9999-99';";
-    html += "$('span.pessoa_cliente').text((vTipo == 'F')? 'CPF' : 'CNPJ');";
+    html += "var maskTipo = (vTipo == 'PF')? '999.999.999-99' : '99.999.999/9999-99';";
+    html += "$('span.pessoa_cliente').text((vTipo == 'PF')? 'CPF' : 'CNPJ');";
     html += "$('#pessoaTipo').mask(maskTipo, {reverse: true});";
     html += "}";
     html += ")";
@@ -446,4 +446,15 @@ function getFieldsFormEndereco() {
     html += '</div>';
     html += '</div>';
     return html;
+}
+
+function montaErro(string){
+    var itens = string.split('\n');
+    var ret = '';
+    ret += '<ul>';
+    $.each(itens, function(key, value) {
+        ret += value;
+    });
+    ret += '</ul>';
+    return ret;
 }

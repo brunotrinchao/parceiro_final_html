@@ -51,12 +51,12 @@
                 html += addInput(null, {
                     type: "hidden",
                     value: 2,
-                    name: 'idProdutoIndicacao'
+                    name: 'produto_idProdutoIndicacao'
                 }, '');
                 html += addSelect('Tipo de negócio', {
                     id: 'tipo',
                     validate: 'required',
-                    name: 'tipo'
+                    name: 'produto_tipo'
                 }, 'col-md-12 col-lg-2', {
                     1: 'Automóvel',
                     2: 'Imóvel',
@@ -66,7 +66,7 @@
                 
                 html += addTextarea('Observações', {
                     row: "3",
-                    name: 'observacoes'
+                    name: 'produto_Observacao'
                 }, '', 'col-md-12 col-lg-12');
 
                 return html;
@@ -76,14 +76,14 @@
                     var id = $(this).val();
                     var html = '';
                     if (id == '1') {
-                        html += addRadio('Tipo de veículo', 'checkbox', {name: 'idTipoOperacao',validate: 'required'}, 'col-md-12 col-lg-5', {1: 'Passeio',2: 'Náutico',3: 'Caminhão',4: 'Moto'}, false);
+                        html += addRadio('Tipo de veículo', 'checkbox', {name: 'produto_idTipoOperacao',validate: 'required'}, 'col-md-12 col-lg-5', {1: 'Passeio',2: 'Náutico',3: 'Caminhão',4: 'Moto'}, false);
                     }
                     if (id == '2') {
-                        html += addRadio('Tipo de veículo', 'checkbox', {name: 'idTipoOperacao',validate: 'required'}, 'col-md-12 col-lg-7', {1: 'Residencial',2: 'Comercial',3: 'Terreno',4: 'Construção/reforma'}, false);
+                        html += addRadio('Tipo de veículo', 'checkbox', {name: 'produto_idTipoOperacao',validate: 'required'}, 'col-md-12 col-lg-7', {1: 'Residencial',2: 'Comercial',3: 'Terreno',4: 'Construção/reforma'}, false);
                     }
 
-                    html += addInput(' Entrada', {type: "text",id: 'ValorEntrada',name: 'ValorEntrada',class: 'money',validate: 'required'}, 'col-md-12 col-lg-2');
-                    html += addInput('Valor do bem', {type: "text",id: 'ValorBem',name: 'ValorBem',class: 'money',validate: 'required'}, 'col-md-12 col-lg-3');
+                    html += addInput(' Entrada', {type: "text",id: 'ValorEntrada',name: 'produto_ValorEntrada',class: 'money',validate: 'required'}, 'col-md-12 col-lg-2');
+                    html += addInput('Valor do bem', {type: "text",id: 'ValorBem',name: 'produto_ValorBem',class: 'money',validate: 'required'}, 'col-md-12 col-lg-3');
 
                     $('.load-input-con').html(html);
                     $('.money').maskMoney({
