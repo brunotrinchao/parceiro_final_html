@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="col-12">
-                <a href="#" data-page="indicar" data-title="Indicação" data-produto="1" class="item-load-page btn btn-link">Cadastro rápido</a>
+                <a href="#" data-page="indicar" class="item-load-page btn btn-link link-voltar-cad">Cadastro rápido</a>
                 <button type="submit" class="btn btn-success float-right">Salvar</button>
             </div>
         </form>
@@ -41,6 +41,9 @@
                     affixesStay: false
                 });
                 $('.phone').mask(SPMaskBehavior, spOptions);
+                $('.link-voltar-cad').attr('data-produto',PARAM_PAGE.produto);
+                $('.link-voltar-cad').attr('data-title',PARAM_PAGE.title);
+
             },
             buildForm: function() {
                 var html = '';
@@ -50,7 +53,7 @@
                     value: 1,
                     name: 'idProdutoIndicacao'
                 }, '');
-                html += addSelect('Tipo*', {
+                html += addSelect('Tipo do negócio', {
                     id: 'tipo',
                     validate: 'required',
                     name: 'tipo'
@@ -58,7 +61,7 @@
                     1: 'Proprietário',
                     2: 'Interessado',
                 });
-                html += addSelect('Operação*', {
+                html += addSelect('Operação', {
                     id: 'idTipoOperacao',
                     validate: 'required',
                     name: 'idTipoOperacao'
@@ -67,7 +70,7 @@
                     2: 'Alugar',
                     3: 'Vender'
                 });
-                html += addSelect('Tipo de uso*', {
+                html += addSelect('Tipo de uso', {
                     id: 'idTipoUso',
                     validate: 'required',
                     name: 'idTipoUso'
@@ -75,17 +78,18 @@
                     1: 'Residêncial',
                     2: 'Comercial'
                 });
-                html += addSelect('Tipo do imóvel*', {
+                html += addSelect('Tipo do imóvel', {
                     id: 'idTipoImovel',
                     validate: 'required',
                     name: 'idTipoImovel',
                     disabled: true
                 }, 'col-md-12 col-lg-3', {});
-                html += addInput('Valor do bem*', {
+                html += addInput('Valor do bem', {
                     type: "text",
                     id: 'ValorBem',
                     name: 'ValorBem',
-                    class: 'money'
+                    class: 'money',
+                    validate: 'required'
                 }, 'col-md-12 col-lg-3');
                 html += addInput('Bairro de preferência (1)', {
                     type: "text",

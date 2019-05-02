@@ -96,10 +96,9 @@
                 this.onLoad();
             },
             onLoad: function() {
-                $('.titulo_pagina h1').text('Relatório');
 
                 // Date ranger
-                var start = moment().subtract(1, 'years');
+                var start = moment().subtract(29, 'days');
                 var end = moment();
 
                 function cb(start, end) {

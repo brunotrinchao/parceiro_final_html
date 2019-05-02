@@ -261,7 +261,9 @@ function addInput(label, atributos, span, placeholder) {
     html += ' class="form-control ' + classe + '"';
     html += '>';
 
-    return addControlForm(label, html, null, span, id);
+    var required = campoRequerido(atributos);
+
+    return addControlForm(label, html, required, span, id);
 
 }
 
@@ -290,7 +292,9 @@ function addRadio(label, type, atributos, span, options, checkFirst) {
     });
     html += '</div>';
 
-    return addControlForm(label, html, null, span, id);
+    var required = campoRequerido(atributos);
+
+    return addControlForm(label, html, required, span, id);
 
 }
 
@@ -309,7 +313,9 @@ function addTextarea(label, atributos, value, span, placeholder) {
     html += ' class="form-control"';
     html += '>' + value + '</textarea>';
 
-    return addControlForm(label, html, null, span, id);
+    var required = campoRequerido(atributos);
+
+    return addControlForm(label, html, required, span, id);
 
 }
 
@@ -330,17 +336,19 @@ function addSelect(label, atributos, span, options) {
     });
     html += '</select>';
 
-    return addControlForm(label, html, null, span, id);
+    var required = campoRequerido(atributos);
+
+    return addControlForm(label, html, required, span, id);
 
 }
 
-function addControlForm(label, input, classe, span, id) {
-    var new_class = (!classe) ? '' : classe;
-    var new_label = (!label) ? '' : '<label id="lbl_' + id + '" class="font-weight-bold">' + label + '</label>';
+function addControlForm(label, input, required, span, id) {
+    var new_required = (!required) ? '' : '*';
+    var new_label = (!label) ? '' : '<label id="lbl_' + id + '" class="font-weight-bold">' + label + ''+new_required+'</label>';
     var new_input = (!input) ? '' : input;
 
-    var html = '<div class="' + span + '">';
-    html += '<div class="form-group ' + new_class + '">';
+    var html = '<div class="' + span + '" id="box_'+id+'">';
+    html += '<div class="form-group">';
     html += new_label;
     html += new_input;
     html += '</div>';
@@ -349,8 +357,8 @@ function addControlForm(label, input, classe, span, id) {
     return html;
 }
 
-function montaLinkPaginate(link) {
-
+function campoRequerido(atributos) {
+    return (atributos.validate == 'required')? true : false;
 }
 
 function getParams(url) {
@@ -378,11 +386,11 @@ function getFieldsFormCliente() {
 
     html += '<div class="row">';
     html += addInput(null, { type: "hidden", value: 1, name: 'produto' }, '');
-    html += addInput('Nome*', { type: "text", id: 'Cliente', validate: 'required', name: 'Cliente' }, 'col-md-12 col-lg-4');
-    html += addInput('E-mail*', { type: "email", id: 'Email', validate: 'required', name: 'email' }, 'col-md-12 col-lg-4');
-    html += addRadio('Tipo*', 'radio', { name: 'TipoCliente' }, 'col-md-12 col-lg-4', { F: 'Pessoa Física', J: 'Pessoa Jurídica' }, true);
-    html += addInput('<span class="pessoa_cliente">CPF</span>*', { type: "text", id: 'pessoaTipo', validate: 'required', name: 'CPF' }, 'col-md-12 col-lg-3');
-    html += addInput('Telefone*', { type: "text", id: 'Tefefone', validate: 'required', name: 'telefone', class: 'phone' }, 'col-md-12 col-lg-3');
+    html += addInput('Nome', { type: "text", id: 'Cliente', validate: 'required', name: 'Cliente' }, 'col-md-12 col-lg-4');
+    html += addInput('E-mail', { type: "email", id: 'Email', validate: 'required', name: 'email' }, 'col-md-12 col-lg-4');
+    html += addRadio('Tipo', 'radio', {id: 'TipoCliente', name: 'TipoCliente', validate: 'required' }, 'col-md-12 col-lg-4', { F: 'Pessoa Física', J: 'Pessoa Jurídica' }, true);
+    html += addInput('<span class="pessoa_cliente">CPF</span>', { type: "text", id: 'pessoaTipo', validate: 'required', name: 'CPF' }, 'col-md-12 col-lg-3');
+    html += addInput('Telefone', { type: "text", id: 'Tefefone', validate: 'required', name: 'telefone', class: 'phone' }, 'col-md-12 col-lg-3');
     html += addInput('Celular', { type: "text", id: 'Celular', name: 'celular', class: 'phone' }, 'col-md-12 col-lg-3');
     html += addInput('Nascimento', { type: "date", id: 'Nascimento', name: 'Nascimento', class: 'calendar' }, 'col-md-12 col-lg-3');
     html += addSelect('Sexo', { id: 'Sexo', name: 'Sexo' }, 'col-md-12 col-lg-3', { 1: 'Masculino', 2: 'Feminino' });
@@ -416,7 +424,7 @@ function getFieldsFormEndereco() {
     html += '</div>';
     html += '<div class="card-body">';
     html += '<div class="row">';
-    html += addInput('CEP*', { type: "text", id: 'cep', validate: 'required', name: 'Cep' }, 'col-md-12 col-lg-3');
+    html += addInput('CEP', { type: "text", id: 'cep', validate: 'required', name: 'Cep' }, 'col-md-12 col-lg-3');
     html += addInput('Endereço', { type: "text", id: 'Logradouro', validate: 'required', name: 'Logradouro', class: 'autocomplete-address' }, 'col-md-12 col-lg-9');
     html += addInput('Número', { type: "text", id: 'Numero', validate: 'required', name: 'Numero' }, 'col-md-12 col-lg-3');
     html += addInput('Bairro', { type: "text", id: 'Bairro', validate: 'required', name: 'Bairro', class: 'autocomplete-neighborhood' }, 'col-md-12 col-lg-3');
