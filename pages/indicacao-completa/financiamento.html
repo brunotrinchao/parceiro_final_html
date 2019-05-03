@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="col-12">
-                <a href="#" data-page="indicar" class="item-load-page btn btn-link link-voltar-cad">Cadastro rápido</a>
+                <a href="#" data-page="indicacao" class="item-load-page btn btn-link link-voltar-cad">Cadastro rápido</a>
                 <button type="submit" class="btn btn-success float-right">Salvar</button>
             </div>
         </form>
@@ -41,18 +41,32 @@
                     affixesStay: false
                 });
                 $('.phone').mask(SPMaskBehavior, spOptions);
-                $('.link-voltar-cad').attr('data-produto',PARAM_PAGE.produto);
-                $('.link-voltar-cad').attr('data-title',PARAM_PAGE.title);
+                $('.link-voltar-cad').attr('data-produto', PARAM_PAGE.produto);
+                $('.link-voltar-cad').attr('data-title', PARAM_PAGE.title);
             },
             buildForm: function() {
                 var html = '';
                 html += '<div class="row">';
-                
-                html += addInput(null, {type: "hidden",value: 2,name: 'produtos_idProdutoIndicacao'}, '');
-                html += addSelect('Tipo de negócio', {id: 'tipo',validate: 'required',name: 'produtos_tipo'}, 'col-md-12 col-lg-2', {1: 'Tradicional',2: 'Refinanciamento',});
+
+                html += addInput(null, {
+                    type: "hidden",
+                    value: 2,
+                    name: 'produtos_idProdutoIndicacao'
+                }, '');
+                html += addSelect('Tipo de negócio', {
+                    id: 'tipo',
+                    validate: 'required',
+                    name: 'produtos_tipo'
+                }, 'col-md-12 col-lg-2', {
+                    1: 'Tradicional',
+                    2: 'Refinanciamento',
+                });
                 html += '<div class="col-md-12 col-lg-10">';
                 html += '<div class="row load-input-fin"></div></div>';
-                html += addTextarea('Observações', {row: "3",name: 'produto_Observacao'}, '', 'col-md-12 col-lg-12');
+                html += addTextarea('Observações', {
+                    row: "3",
+                    name: 'produto_Observacao'
+                }, '', 'col-md-12 col-lg-12');
 
                 return html;
             },
@@ -61,28 +75,78 @@
                     var id = $(this).val();
                     var html = '';
                     if (id == '1') {
-                        
-                        html += addInput(null, { type: "hidden",value: 2,name: 'produto_CompraImediata'}, '');
-                        html += addInput('Renda comprovada', { type: "text", id: 'RendaComprovadaFaturamento',name: 'produto_RendaComprovadaFaturamento', class: 'money',validate: 'required'}, 'col-md-12 col-lg-3');
-                        html += addInput('Valor do financiamento', { type: "text", id: 'ValorFinanciamento',name: 'produto_ValorFinanciamento', class: 'money',validate: 'required'}, 'col-md-12 col-lg-3');
+
+                        html += addInput(null, {
+                            type: "hidden",
+                            value: 2,
+                            name: 'produto_CompraImediata'
+                        }, '');
+                        html += addInput('Renda comprovada', {
+                            type: "text",
+                            id: 'RendaComprovadaFaturamento',
+                            name: 'produto_RendaComprovadaFaturamento',
+                            class: 'money',
+                            validate: 'required'
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Valor do financiamento', {
+                            type: "text",
+                            id: 'ValorFinanciamento',
+                            name: 'produto_ValorFinanciamento',
+                            class: 'money',
+                            validate: 'required'
+                        }, 'col-md-12 col-lg-3');
                     }
                     if (id == '2') {
-                        html += addSelect('Compra imediata?', {id: 'CompraImediata',validate: 'required',name: 'produto_CompraImediata' }, 'col-md-12 col-lg-3', {1: 'true',2: 'false' });
-                        html += addSelect('Necessidade de crédito?', {id: 'NessecitaCredito',validate: 'required',name: 'produto_NessecitaCredito'}, 'col-md-12 col-lg-3', {1: 'Sim',2: 'Não'});
-                        html += addSelect('Bem alienado?', {id: 'BemAlienado',validate: 'required',name: 'produto_BemAlienado'}, 'col-md-12 col-lg-3', {1: 'Sim',2: 'Não'});
+                        html += addSelect('Compra imediata?', {
+                            id: 'CompraImediata',
+                            validate: 'required',
+                            name: 'produto_CompraImediata'
+                        }, 'col-md-12 col-lg-3', {
+                            1: 'true',
+                            2: 'false'
+                        });
+                        html += addSelect('Necessidade de crédito?', {
+                            id: 'NessecitaCredito',
+                            validate: 'required',
+                            name: 'produto_NessecitaCredito'
+                        }, 'col-md-12 col-lg-3', {
+                            1: 'Sim',
+                            2: 'Não'
+                        });
+                        html += addSelect('Bem alienado?', {
+                            id: 'BemAlienado',
+                            validate: 'required',
+                            name: 'produto_BemAlienado'
+                        }, 'col-md-12 col-lg-3', {
+                            1: 'Sim',
+                            2: 'Não'
+                        });
                     }
 
-                    html += addSelect('Tipo do bem', {id: 'idTipoBem',validate: 'required', name: 'produto_idTipoBem'}, 'col-md-12 col-lg-3', {1: 'Automóvel',2: 'Imóvel'});
-                    html += addInput('Valor do bem', {type: "text",id: 'ValorBem',name: 'produto_ValorBem',class: 'money',validate: 'required'}, 'col-md-12 col-lg-3');
+                    html += addSelect('Tipo do bem', {
+                        id: 'idTipoBem',
+                        validate: 'required',
+                        name: 'produto_idTipoBem'
+                    }, 'col-md-12 col-lg-3', {
+                        1: 'Automóvel',
+                        2: 'Imóvel'
+                    });
+                    html += addInput('Valor do bem', {
+                        type: "text",
+                        id: 'ValorBem',
+                        name: 'produto_ValorBem',
+                        class: 'money',
+                        validate: 'required'
+                    }, 'col-md-12 col-lg-3');
 
                     $('.load-input-fin').html(html);
                     $('.money').maskMoney({
-                    prefix: 'R$ ',
-                    allowNegative: true,
-                    thousands: '.',
-                    decimal: ',',
-                    affixesStay: false
-                });
+                        prefix: 'R$ ',
+                        allowNegative: true,
+                        thousands: '.',
+                        decimal: ',',
+                        affixesStay: false
+                    });
                 });
             }
         }

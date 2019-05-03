@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="col-12">
-                <a href="#" data-page="indicar" class="item-load-page btn btn-link link-voltar-cad">Cadastro rápido</a>
+                <a href="#" data-page="indicacao" class="item-load-page btn btn-link link-voltar-cad">Cadastro rápido</a>
                 <button type="submit" class="btn btn-success float-right">Salvar</button>
             </div>
         </form>
@@ -42,8 +42,8 @@
                 });
                 $('.phone').mask(SPMaskBehavior, spOptions);
 
-                $('.link-voltar-cad').attr('data-produto',PARAM_PAGE.produto);
-                $('.link-voltar-cad').attr('data-title',PARAM_PAGE.title);
+                $('.link-voltar-cad').attr('data-produto', PARAM_PAGE.produto);
+                $('.link-voltar-cad').attr('data-title', PARAM_PAGE.title);
             },
             buildForm: function() {
                 var html = '';
@@ -63,7 +63,7 @@
                 });
                 html += '<div class="col-md-12 col-lg-10">';
                 html += '<div class="row load-input-con"></div></div>';
-                
+
                 html += addTextarea('Observações', {
                     row: "3",
                     name: 'produto_Observacao'
@@ -76,14 +76,42 @@
                     var id = $(this).val();
                     var html = '';
                     if (id == '1') {
-                        html += addRadio('Tipo de veículo', 'checkbox', {name: 'produto_idTipoOperacao',validate: 'required'}, 'col-md-12 col-lg-5', {1: 'Passeio',2: 'Náutico',3: 'Caminhão',4: 'Moto'}, false);
+                        html += addRadio('Tipo de veículo', 'checkbox', {
+                            name: 'produto_idTipoOperacao',
+                            validate: 'required'
+                        }, 'col-md-12 col-lg-5', {
+                            1: 'Passeio',
+                            2: 'Náutico',
+                            3: 'Caminhão',
+                            4: 'Moto'
+                        }, false);
                     }
                     if (id == '2') {
-                        html += addRadio('Tipo de veículo', 'checkbox', {name: 'produto_idTipoOperacao',validate: 'required'}, 'col-md-12 col-lg-7', {1: 'Residencial',2: 'Comercial',3: 'Terreno',4: 'Construção/reforma'}, false);
+                        html += addRadio('Tipo de veículo', 'checkbox', {
+                            name: 'produto_idTipoOperacao',
+                            validate: 'required'
+                        }, 'col-md-12 col-lg-7', {
+                            1: 'Residencial',
+                            2: 'Comercial',
+                            3: 'Terreno',
+                            4: 'Construção/reforma'
+                        }, false);
                     }
 
-                    html += addInput(' Entrada', {type: "text",id: 'ValorEntrada',name: 'produto_ValorEntrada',class: 'money',validate: 'required'}, 'col-md-12 col-lg-2');
-                    html += addInput('Valor do bem', {type: "text",id: 'ValorBem',name: 'produto_ValorBem',class: 'money',validate: 'required'}, 'col-md-12 col-lg-3');
+                    html += addInput(' Entrada', {
+                        type: "text",
+                        id: 'ValorEntrada',
+                        name: 'produto_ValorEntrada',
+                        class: 'money',
+                        validate: 'required'
+                    }, 'col-md-12 col-lg-2');
+                    html += addInput('Valor do bem', {
+                        type: "text",
+                        id: 'ValorBem',
+                        name: 'produto_ValorBem',
+                        class: 'money',
+                        validate: 'required'
+                    }, 'col-md-12 col-lg-3');
 
                     $('.load-input-con').html(html);
                     $('.money').maskMoney({
