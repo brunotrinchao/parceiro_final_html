@@ -54,7 +54,7 @@
                 // Select Produtos
                 var selectData = {
                     id: '',
-                    text: 'Selecione um produto',
+                    text: 'Todos produtos',
                     selectDefault: false,
                     selected: true
                 };
@@ -64,10 +64,8 @@
                 var listaProdutos = jQuery.lockrStorage.get('produtos');
                 if (listaProdutos) {
                     $.each(listaProdutos, function(i, item) {
-                        if (item.Titulo != 'Regula') {
-                            var newOption = new Option(item.Titulo, item.id, false, false);
-                            $('#select-produtos').append(newOption);
-                        }
+                        var newOption = new Option(item.Titulo, item.id, false, false);
+                        $('#select-produtos').append(newOption);
                     });
                 }
                 $('#select-produtos').select2({
@@ -75,7 +73,9 @@
                 });
 
                 $('#select-produtos').on('select2:select', function(e) {
-                    ArquivosMethods.filtraTabela($(this).val());
+                    var items = ArquivosMethods.filtraTabela($(this).val());
+                    var htmlTabela = ArquivosMethods.buildTable(items);
+                    $('.table-load').html(htmlTabela);
                 });
 
 
@@ -95,7 +95,7 @@
             buildTable: function(data) {
                 console.log(data);
                 var html = "";
-                if (data == null || data == undefined) {
+                if (data == null || data == undefined || data.length == 0) {
                     html += '<tr>';
                     html += '<td scope="row" colspan="5">';
                     html += '<p class="text-center text-secondary"> Nenhum resultado encontrado! </p>';
@@ -117,12 +117,17 @@
                 return html;
             },
             filtraTabela: function(produto) {
-                data = [];
-                $.each(ARQ_LIST, function(i, item) {
-                    if (item.ProdutoIndicacao.id == produto) {
-                        data.push(item);
-                    }
-                });
+                var data = [];
+                if (!produto) {
+                    data = ARQ_LIST;
+                } else {
+                    $.each(ARQ_LIST, function(i, item) {
+                        if (item.ProdutoIndicacao.id == produto) {
+                            data.push(item);
+                        }
+                    });
+                }
+                return data;
             }
         }
         ArquivosMethods.initialize();
