@@ -51,6 +51,20 @@
                     }
                 }
             });
+        },
+        showForm: function(param, form, callBackAfter) {
+
+            Swal.fire({
+                type: 'info',
+                title: param.title,
+                html: form,
+                showConfirmButton: true,
+                onAfterClose: function() {
+                    if (typeof callBackAfter === "function") {
+                        callBackAfter.call(this);
+                    }
+                }
+            });
         }
     }
 }(jQuery));
