@@ -106,22 +106,50 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="col col-md-12 col-lg-8 px-0">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead class="thead-light">
+                    <div class="form-row align-items-end alert alert-secondary">
+                        <div class="col-md-12 col-lg-12" id="box_categoria">
+                            <h4 class="alert-heading">Nova Categoria</h4>
+                            <hr>
+                        </div>
+                        <div class="col-md-12 col-lg-5" id="box_categoria">
+                            <div class="form-group">
+                                <label id="lbl_categoria" class="font-weight-bold">Categoria*</label>
+                                <input type="text" name="Titulo" validate="required" id="Titulo" value="" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-3" id="box_produto">
+                            <div class="form-group">
+                                <label id="lbl_produto" class="font-weight-bold">Produto*</label>
+                                <select id="produtos" validate="required" name="idProduto" class="form-control">
+									<option value="">.: Selecione :.</option>
+								</select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4" id="box_produto">
+                            <div class="form-group clearfix">
+                                <button type="submit" " class="btn btn-primary float-right ">Salvar</button>
+							</div>
+                        </div>
+                    </div>
+                    <div class="row mb-4 ">
+                        <div class="col col-12 mb-3 mt-4 ">
+							<h4>Categorias</h4>
+						</div>
+                        <div class="col col-md-12 col-lg-12 px-0 ">
+                            <div class="table-responsive ">
+                                <table class="table ">
+                                    <thead class="thead-light ">
                                         <tr>
-                                            <th scope="col">Título</th>
-                                            <th scope="col">Produto</th>
-                                            <th scope="col">Ação</th>
+                                            <th scope="col ">Título</th>
+                                            <th scope="col ">Produto</th>
+                                            <th scope="col ">Ação</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="table-load-cat">
+                                    <tbody class="table-load-cat ">
 
                                         <tr>
-                                            <td scope="row" colspan="3">
-                                                <p class="text-center text-secondary"> Nenhum resultado encontrado! </p>
+                                            <td scope="row " colspan="3 ">
+                                                <p class="text-center text-secondary "> Nenhum resultado encontrado! </p>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -131,8 +159,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn"></button>
+            <div class="modal-footer ">
+                <button type="submit " class="btn "></button>
             </div>
         </div>
     </div>
@@ -169,10 +197,11 @@
                     $.each(listaProdutos, function(i, item) {
                         var newOption = new Option(item.Titulo, item.id, false, false);
                         $('#select-produtos').append(newOption);
+                        $('#produtos').append(newOption);
                     });
                 }
                 $('#select-produtos').select2({
-                    theme: "bootstrap4"
+                    theme: "bootstrap4 "
                 });
 
                 $('#select-produtos').on('select2:select', function(e) {
@@ -189,7 +218,7 @@
                         storeCategoria = json;
                         $('.table-load-cat').html(AjudaMethods.buildTableCategoria(storeCategoria));
                         $.each(storeCategoria, function(i, item) {
-                            $('#categoria').append('<option value="' + item.id + '">' + item.Titulo + ' (' + item.Produto.Titulo + ')</option>');
+                            $('#categoria').append('<option value=" ' + item.id + ' ">' + item.Titulo + ' (' + item.Produto.Titulo + ')</option>');
                         });
                     },
                     function(err) {
@@ -244,19 +273,19 @@
             },
             buildTableCategoria: function(data) {
 
-                var html = "";
+                var html = " ";
                 if (data == null || data == undefined || data.length == 0) {
                     html += '<tr>';
-                    html += '<td scope="row" colspan="5">';
-                    html += '<p class="text-center text-secondary"> Nenhum resultado encontrado! </p>';
+                    html += '<td scope="row " colspan="5 ">';
+                    html += '<p class="text-center text-secondary "> Nenhum resultado encontrado! </p>';
                     html += '</td>';
                     html += '</tr>';
                 }
                 $.each(data, function(i, item) {
                     html += '<tr>';
-                    html += '<td data-title="Título" scope="row">' +
+                    html += '<td data-title="Título " scope="row ">' +
                         addInput('', {
-                            type: "text",
+                            type: "text ",
                             value: checkNull(item.Titulo),
                             disabled: true
                         }, 'col-12') +
@@ -265,7 +294,7 @@
                     $.each(storeCategoria, function(i, item) {
                         cat[item.Produto.id] = item.Produto.Titulo;
                     });
-                    html += '<td data-title="Categoria">' +
+                    html += '<td data-title="Categoria " class="align-items-end ">' +
                         addSelect('', {
                             id: 'idCategoria',
                             validate: 'required',
@@ -274,33 +303,33 @@
                             selected: item.Produto.id
                         }, 'col-12', cat) +
                         '</td>';
-                    html += '<td data-title="Ação"> <a href="#" data-categoria="' + item.id + '">Editar</a> </td>';
+                    html += '<td data-title="Ação "> <a href="# " data-categoria=" ' + item.id + ' ">Editar</a> </td>';
                     html += '</tr>';
                 });
                 return html;
             },
             buildTable: function(data) {
-                var html = "";
+                var html = " ";
                 if (data == null || data == undefined || data.length == 0) {
                     html += '<tr>';
-                    html += '<td scope="row" colspan="5">';
-                    html += '<p class="text-center text-secondary"> Nenhum resultado encontrado! </p>';
+                    html += '<td scope="row " colspan="5 ">';
+                    html += '<p class="text-center text-secondary "> Nenhum resultado encontrado! </p>';
                     html += '</td>';
                     html += '</tr>';
                 }
                 $.each(data, function(i, item) {
                     html += '<tr>';
                     html +=
-                        '<td data-title="Título" scope="row"><a href="#" class="btn btn-link detalhe" data-id="' +
+                        '<td data-title="Título " scope="row "><a href="# " class="btn btn-link detalhe " data-id=" ' +
                         item.id +
-                        '">' +
+                        ' ">' +
                         checkNull(item.Nome) +
                         '</a></td>';
-                    html += '<td data-title="Categoria">' + checkNull(item.CategoriaAjuda.Titulo) +
+                    html += '<td data-title="Categoria ">' + checkNull(item.CategoriaAjuda.Titulo) +
                         '</td>';
-                    html += '<td data-title="Produto">' + checkNull(item.CategoriaAjuda.Produto
+                    html += '<td data-title="Produto ">' + checkNull(item.CategoriaAjuda.Produto
                         .Titulo) + '</td>';
-                    html += '<td data-title="Cadastrado">' + checkNull(item.DataInclusao) + '</td>';
+                    html += '<td data-title="Cadastrado ">' + checkNull(item.DataInclusao) + '</td>';
                     html += '</tr>';
                 });
                 return html;
