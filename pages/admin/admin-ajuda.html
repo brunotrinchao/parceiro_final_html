@@ -106,31 +106,33 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
-                    <div class="form-row align-items-end alert alert-secondary">
-                        <div class="col-md-12 col-lg-12" id="box_categoria">
-                            <h4 class="alert-heading">Nova Categoria</h4>
-                            <hr>
-                        </div>
-                        <div class="col-md-12 col-lg-5" id="box_categoria">
-                            <div class="form-group">
-                                <label id="lbl_categoria" class="font-weight-bold">Categoria*</label>
-                                <input type="text" name="Titulo" validate="required" id="Titulo" value="" class="form-control ">
+                    <form id="form-categoria">
+                        <div class="form-row align-items-end alert alert-secondary">
+                            <div class="col-md-12 col-lg-12" id="box_categoria">
+                                <h4 class="alert-heading">Nova Categoria</h4>
+                                <hr>
                             </div>
-                        </div>
-                        <div class="col-md-12 col-lg-3" id="box_produto">
-                            <div class="form-group">
-                                <label id="lbl_produto" class="font-weight-bold">Produto*</label>
-                                <select id="produtos" validate="required" name="idProduto" class="form-control">
-									<option value="">.: Selecione :.</option>
-								</select>
+                            <div class="col-md-12 col-lg-5" id="box_categoria">
+                                <div class="form-group">
+                                    <label id="lbl_categoria" class="font-weight-bold">Categoria*</label>
+                                    <input type="text" name="Titulo" validate="required" id="categoria" value="" class="form-control ">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12 col-lg-4" id="box_produto">
-                            <div class="form-group clearfix">
-                                <button type="submit" " class="btn btn-primary float-right ">Salvar</button>
+                            <div class="col-md-12 col-lg-3" id="box_produto">
+                                <div class="form-group">
+                                    <label id="lbl_produto" class="font-weight-bold">Produto*</label>
+                                    <select id="produto" validate="required" name="idProduto" class="form-control">
+										<option value="">.: Selecione :.</option>
+									</select>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-4" id="box_produto">
+                                <div class="form-group clearfix">
+                                    <button type="submit" " class="btn btn-primary float-right ">Salvar</button>
+								</div>
 							</div>
-                        </div>
                     </div>
+						</form>
                     <div class="row mb-4 ">
                         <div class="col col-12 mb-3 mt-4 ">
 							<h4>Categorias</h4>
@@ -197,7 +199,7 @@
                     $.each(listaProdutos, function(i, item) {
                         var newOption = new Option(item.Titulo, item.id, false, false);
                         $('#select-produtos').append(newOption);
-                        $('#produtos').append(newOption);
+                        $('#produto').append(newOption);
                     });
                 }
                 $('#select-produtos').select2({
@@ -211,20 +213,31 @@
                 });
 
                 AjudaMethods.loadAjuda();
+                AjudaMethods.loadCategoria();
 
                 var urlCat = 'http://integracaogtsis.tempsite.ws/api/Ajuda/Categorias';
-                jQuery.gApi.exec('GET', urlCat, {},
-                    function(json) {
-                        storeCategoria = json;
-                        $('.table-load-cat').html(AjudaMethods.buildTableCategoria(storeCategoria));
-                        $.each(storeCategoria, function(i, item) {
-                            $('#categoria').append('<option value=" ' + item.id + ' ">' + item.Titulo + ' (' + item.Produto.Titulo + ')</option>');
-                        });
-                    },
-                    function(err) {
-                        alerta('Erro', err.responseJSON.Message.Error, 'error');
-
-                    });
+                $(document).on('submit', 'form#form-categoria', function() {
+                    var dados = $(this).serializeObject();
+					console.log(dados);
+                    if ($('form#form-categoria').gValidate()) {
+                        jQuery.gApi.exec('POST',urlCat, dados,
+                            function(json) {
+								console.log(json);
+                                if (json.Code >= 200 && json.Code < 300) {
+                                    jQuery.gDisplay.showSuccess(json.Message.Success,
+                                        function() {
+                                            AjudaMethods.loadCategoria();
+                                        });
+                                } else {
+                                    jQuery.gDisplay.showAlert(json.Message.Error);
+                                }
+                            },
+                            function(xhr, status, error) {
+                                jQuery.gDisplay.showError(xhr.responseJSON.Message.Error);
+                            });
+                    }
+                    return false;
+                });
 
                 $(document).on('click', 'a.detalhe', function(e) {
                     e.preventDefault();
@@ -251,8 +264,7 @@
                     var dados = $(this).serializeObject();
                     if ($('form#form-ajuda').gValidate()) {
                         var method = (dados.id != '') ? 'PUT' : 'POST';
-                        jQuery.gApi.exec(method,
-                            'http://integracaogtsis.tempsite.ws/api/Ajuda/Texto', dados,
+                        jQuery.gApi.exec(method,urlCat, dados,
                             function(json) {
                                 if (json.Code >= 200 && json.Code < 300) {
                                     jQuery.gDisplay.showSuccess(json.Message.Success,
@@ -409,6 +421,21 @@
                         alerta('Erro', err.responseJSON.Message.Error, 'error');
 
                     });
+            },
+            loadCategoria: function() {
+                var urlCat = 'http://integracaogtsis.tempsite.ws/api/Ajuda/Categorias';
+                jQuery.gApi.exec('GET', urlCat, {},
+                    function(json) {
+                        storeCategoria = json;
+                        $('.table-load-cat').html(AjudaMethods.buildTableCategoria(storeCategoria));
+                        $.each(storeCategoria, function(i, item) {
+                            $('#categoria').append('<option value=" ' + item.id + ' ">' + item.Titulo + ' (' + item.Produto.Titulo + ')</option>');
+                        });
+                    },
+                    function(err) {
+                        alerta('Erro', err.responseJSON.Message.Error, 'error');
+
+				});
             }
         }
         AjudaMethods.initialize();
