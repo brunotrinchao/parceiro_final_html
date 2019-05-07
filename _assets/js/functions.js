@@ -45,7 +45,7 @@
                 container;
             var new_param = jQuery.isEmptyObject(param) ? null : $.param(param);
 
-
+                console.log("./pages/" + page);
             jQuery.ajax({
                 type: "GET",
                 url: "./pages/" + page,

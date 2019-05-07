@@ -81,7 +81,7 @@ Parceiro = function() {
                 return false;
             });
         },
-        buidDropDown: function(titulo, data) {
+        buidDropDown: function(titulo, data) {           
             // Monta menu
 
             var html = '';

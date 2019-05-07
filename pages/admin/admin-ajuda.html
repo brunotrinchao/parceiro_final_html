@@ -1,0 +1,278 @@
+<div id="ajuda">
+    <div class="row">
+        <div class="col col-12 mb-5 alert filtro">
+            <form name="filtra-relatorio" id="filtra-relatorio">
+                <div class="form-row filtros align-items-end">
+                    <div class="col-md-12 col-lg-3">
+                        <div class="form-group">
+                            <label id="lbl_select-produtos" for="select-produtos">Filtrar por</label>
+                            <select style="width: 100%" name="idProduto" id="select-produtos">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-3">
+                        <div class="form-group">
+                        <a href="#" class="btn btn-primary">Nova Ajuda</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col col-12 px-0">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Título</th>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Produto</th>
+                            <th scope="col">Cadastrado</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-load">
+
+                        <tr>
+                            <td scope="row" colspan="5">
+                                <p class="text-center text-secondary"> Nenhum resultado encontrado! </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="detalhe">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <form id="form-ajuda">
+                <input type="hidden" name="id" value="" class="form-control ">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajuda</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-8" id="box_nome">
+                            <div class="form-group">
+                                <label id="lbl_nome" class="font-weight-bold">Ajuda*</label>
+                                <input  type="text" name="Nome" validate="required" id="nome" value="" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4" id="box_categoria">
+                            <div class="form-group">
+                                <label id="lbl_categoria" class="font-weight-bold">Categoria*</label>
+                                    <select id="categoria" validate="required" name="idCategoria" class="form-control">
+                                    <option value="">.: Selecione :.</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12" id="box_titulo">
+                            <div class="form-group">
+                                <label id="lbl_titulo"  class="font-weight-bold">Título*</label>
+                                    <input type="text" name="Titulo" id="titulo" validate="required" value="" class="form-control ">
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12" id="box_descricao">
+                            <div class="form-group">
+                                <label id="lbl_descricao" class="font-weight-bold">Descrição*</label>
+                                    <textarea row="8" cols="80"  name="Descricao" validate="required" id="descricao" class="form-control"></textarea>                                  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    Ajuda = function () {
+        $this = this;
+        var storeCategoria = {};
+        var editor;
+
+        AjudaMethods = {
+            initialize: function () {
+                this.onLoad();
+            },
+            onLoad: function () {
+
+                CKEDITOR.replace('descricao',{
+                    language: 'pt-br'
+                });
+
+                var selectData = {
+                    id: '',
+                    text: 'Todos produtos',
+                    selectDefault: false,
+                    selected: true
+                };
+                var newOption = new Option(selectData.text, selectData.id, selectData.selectDefault,
+                    selectData.selected);
+                $('#select-produtos').append(newOption);
+                var listaProdutos = jQuery.lockrStorage.get('produtos');
+                if (listaProdutos) {
+                    $.each(listaProdutos, function (i, item) {
+                        var newOption = new Option(item.Titulo, item.id, false, false);
+                        $('#select-produtos').append(newOption);
+                    });
+                }
+                $('#select-produtos').select2({
+                    theme: "bootstrap4"
+                });
+
+                $('#select-produtos').on('select2:select', function (e) {
+                    var items = AjudaMethods.filtraTabela($(this).val());
+                    var htmlTabela = AjudaMethods.buildTable(items);
+                    $('.table-load').html(htmlTabela);
+                });
+
+                AjudaMethods.loadAjuda();
+
+                var urlCat = 'http://integracaogtsis.tempsite.ws/api/Ajuda/Categorias';
+                jQuery.gApi.exec('GET', urlCat, {},
+                    function (json) {
+                        storeCategoria = json;
+                        $.each(storeCategoria, function (i, item) {
+                            $('#categoria').append('<option value="'+item.id+'">'+item.Titulo+'</option>');
+                        });
+                    },
+                    function (err) {
+                        alerta('Erro', err.responseJSON.Message.Error, 'error');
+
+                    });
+
+                $(document).on('click', 'a.detalhe', function (e) {
+                    e.preventDefault();
+                    var id = $(this).data('id');
+                    AjudaMethods.buildModalDetail(id);
+                    return false;
+                });
+
+
+
+                $(document).on('submit', 'form#form-ajuda', function () {
+                    var dados = $(this).serializeObject();
+                    if ($('form#form-ajuda').gValidate()) {
+                        jQuery.gApi.exec('PUT',
+                            'http://integracaogtsis.tempsite.ws/api/Ajuda/Texto', dados,
+                            function (json) {
+                                if (json.Code >= 200 && json.Code < 300) {
+                                    jQuery.gDisplay.showSuccess(json.Message.Success,
+                                        function () {
+                                            $('#detalhe').modal('hide');
+                                            AjudaMethods.loadAjuda();
+                                        });
+                                } else {
+                                    jQuery.gDisplay.showAlert(json.Message.Error);
+                                }
+                            },
+                            function (xhr, status, error) {
+                                jQuery.gDisplay.showError(xhr.responseJSON.Message.Error);
+                            });
+                    }
+                    return false;
+                });
+            },
+            buildTable: function (data) {
+                var html = "";
+                if (data == null || data == undefined || data.length == 0) {
+                    html += '<tr>';
+                    html += '<td scope="row" colspan="5">';
+                    html += '<p class="text-center text-secondary"> Nenhum resultado encontrado! </p>';
+                    html += '</td>';
+                    html += '</tr>';
+                }
+                $.each(data, function (i, item) {
+                    html += '<tr>';
+                    html +=
+                        '<td data-title="Título" scope="row"><a href="#" class="btn btn-link detalhe" data-id="' +
+                        item.id +
+                        '">' +
+                        checkNull(item.Nome) +
+                        '</a></td>';
+                    html += '<td data-title="Categoria">' + checkNull(item.CategoriaAjuda.Titulo) +
+                        '</td>';
+                    html += '<td data-title="Produto">' + checkNull(item.CategoriaAjuda.Produto
+                        .Titulo) + '</td>';
+                    html += '<td data-title="Cadastrado">' + checkNull(item.DataInclusao) + '</td>';
+                    html += '</tr>';
+                });
+                return html;
+            },
+            buildModalDetail: function (id) {
+                var detail = AjudaMethods.filtraAjuda(id);
+                var cat = {};
+
+                $('#form-ajuda #id').val(detail.id);
+                $('#form-ajuda #nome').val(detail.Nome);
+                $('#form-ajuda #categoria').val(detail.idCategoria);
+                $('#form-ajuda #titulo').val(detail.Titulo);
+                $('#form-ajuda #descricao').val(detail.Descricao);
+                CKEDITOR.instances.descricao.setData(detail.Descricao);
+
+                $('#form-ajuda button[type=submit]')
+                .addClass('btn-info')
+                .removeClass('btn-success')
+                .text('Atualizar');
+
+                $('#detalhe').modal('show');
+
+                
+            },
+            filtraAjuda(id) {
+                var ret = null;
+                $.each(storeAjuda, function (i, item) {
+                    if (item.id == id) {
+                        ret = item;
+                    }
+                });
+                return ret;
+            },
+            filtraTabela: function (produto) {
+                var data = [];
+                if (!produto) {
+                    data = storeAjuda;
+                } else {
+                    $.each(storeAjuda, function (i, item) {
+                        if (item.CategoriaAjuda.Produto.id == produto) {
+                            data.push(item);
+                        }
+                    });
+                }
+                return data;
+            },
+            loadAjuda: function () {
+                var url = 'http://integracaogtsis.tempsite.ws/api/Ajuda/Texto';
+                jQuery.gApi.exec('GET', url, {},
+                    function (json) {
+                        storeAjuda = json;
+                        var htmlTabela = AjudaMethods.buildTable(json);
+                        $('.table-load').html(htmlTabela);
+
+                    },
+                    function (err) {
+                        alerta('Erro', err.responseJSON.Message.Error, 'error');
+
+                    });
+            }
+        }
+        AjudaMethods.initialize();
+    };
+
+    $(function () {
+        Ajuda();
+    });
+</script>
+
+<style>
+
+</style>
