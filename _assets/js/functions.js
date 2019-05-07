@@ -45,7 +45,7 @@
                 container;
             var new_param = jQuery.isEmptyObject(param) ? null : $.param(param);
 
-                console.log("./pages/" + page);
+            console.log("./pages/" + page);
             jQuery.ajax({
                 type: "GET",
                 url: "./pages/" + page,
@@ -321,18 +321,23 @@ function addTextarea(label, atributos, value, span, placeholder) {
 
 function addSelect(label, atributos, span, options) {
     var id = '';
+    var selected = '';
     var html = '<select ';
     $.each(atributos, function(key, value) {
         html += key + '="' + value + '"';
         if (key == 'id') {
             id = value;
         }
+        if (key == 'selected') {
+            selected = value;
+        }
     });
     html += ' class="form-control"';
     html += '>';
     html += '<option value="">.: Selecione :.</option>';
     $.each(options, function(key, value) {
-        html += '<option value="' + key + '">' + value + '</option>';
+        var sel = (selected == key) ? 'selected' : '';
+        html += '<option value="' + key + '" ' + sel + '>' + value + '</option>';
     });
     html += '</select>';
 

@@ -10,9 +10,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-12 col-lg-3">
+                    <div class="col-md-12 col-lg-9">
                         <div class="form-group">
-                        <a href="#" class="btn btn-primary">Nova Ajuda</a>
+                            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                                <a href="#" id="nova-ajuda" class="btn btn-primary">Nova Ajuda</a>
+                                <a href="#" id="page-categorias" class="btn btn-warning">Categorias</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -59,27 +62,27 @@
                         <div class="col-md-12 col-lg-8" id="box_nome">
                             <div class="form-group">
                                 <label id="lbl_nome" class="font-weight-bold">Ajuda*</label>
-                                <input  type="text" name="Nome" validate="required" id="nome" value="" class="form-control ">
+                                <input type="text" name="Nome" validate="required" id="nome" value="" class="form-control ">
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-4" id="box_categoria">
                             <div class="form-group">
                                 <label id="lbl_categoria" class="font-weight-bold">Categoria*</label>
-                                    <select id="categoria" validate="required" name="idCategoria" class="form-control">
+                                <select id="categoria" validate="required" name="idCategoria" class="form-control">
                                     <option value="">.: Selecione :.</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12" id="box_titulo">
                             <div class="form-group">
-                                <label id="lbl_titulo"  class="font-weight-bold">Título*</label>
-                                    <input type="text" name="Titulo" id="titulo" validate="required" value="" class="form-control ">
+                                <label id="lbl_titulo" class="font-weight-bold">Título*</label>
+                                <input type="text" name="Titulo" id="titulo" validate="required" value="" class="form-control ">
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12" id="box_descricao">
                             <div class="form-group">
                                 <label id="lbl_descricao" class="font-weight-bold">Descrição*</label>
-                                    <textarea row="8" cols="80"  name="Descricao" validate="required" id="descricao" class="form-control"></textarea>                                  
+                                <textarea row="8" cols="80" name="Descricao" validate="required" id="descricao" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -92,20 +95,63 @@
     </div>
 </div>
 
+<div class="modal" tabindex="-1" role="dialog" id="show-categorias">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Categorias</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col col-md-12 col-lg-8 px-0">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">Título</th>
+                                            <th scope="col">Produto</th>
+                                            <th scope="col">Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-load-cat">
+
+                                        <tr>
+                                            <td scope="row" colspan="3">
+                                                <p class="text-center text-secondary"> Nenhum resultado encontrado! </p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
-    Ajuda = function () {
+    Ajuda = function() {
         $this = this;
         var storeCategoria = {};
         var editor;
 
         AjudaMethods = {
-            initialize: function () {
+            initialize: function() {
                 this.onLoad();
             },
-            onLoad: function () {
+            onLoad: function() {
 
-                CKEDITOR.replace('descricao',{
+                CKEDITOR.replace('descricao', {
                     language: 'pt-br'
                 });
 
@@ -120,7 +166,7 @@
                 $('#select-produtos').append(newOption);
                 var listaProdutos = jQuery.lockrStorage.get('produtos');
                 if (listaProdutos) {
-                    $.each(listaProdutos, function (i, item) {
+                    $.each(listaProdutos, function(i, item) {
                         var newOption = new Option(item.Titulo, item.id, false, false);
                         $('#select-produtos').append(newOption);
                     });
@@ -129,7 +175,7 @@
                     theme: "bootstrap4"
                 });
 
-                $('#select-produtos').on('select2:select', function (e) {
+                $('#select-produtos').on('select2:select', function(e) {
                     var items = AjudaMethods.filtraTabela($(this).val());
                     var htmlTabela = AjudaMethods.buildTable(items);
                     $('.table-load').html(htmlTabela);
@@ -139,35 +185,49 @@
 
                 var urlCat = 'http://integracaogtsis.tempsite.ws/api/Ajuda/Categorias';
                 jQuery.gApi.exec('GET', urlCat, {},
-                    function (json) {
+                    function(json) {
                         storeCategoria = json;
-                        $.each(storeCategoria, function (i, item) {
-                            $('#categoria').append('<option value="'+item.id+'">'+item.Titulo+'</option>');
+                        $('.table-load-cat').html(AjudaMethods.buildTableCategoria(storeCategoria));
+                        $.each(storeCategoria, function(i, item) {
+                            $('#categoria').append('<option value="' + item.id + '">' + item.Titulo + ' (' + item.Produto.Titulo + ')</option>');
                         });
                     },
-                    function (err) {
+                    function(err) {
                         alerta('Erro', err.responseJSON.Message.Error, 'error');
 
                     });
 
-                $(document).on('click', 'a.detalhe', function (e) {
+                $(document).on('click', 'a.detalhe', function(e) {
                     e.preventDefault();
                     var id = $(this).data('id');
                     AjudaMethods.buildModalDetail(id);
                     return false;
                 });
 
+                $(document).on('click', 'a#nova-ajuda', function(e) {
+                    e.preventDefault();
+                    AjudaMethods.buildModalNew();
+                    return false;
+                });
+
+                $(document).on('click', 'a#page-categorias', function(e) {
+                    e.preventDefault();
+                    $('#show-categorias').modal('show');
+                    return false;
+                });
 
 
-                $(document).on('submit', 'form#form-ajuda', function () {
+
+                $(document).on('submit', 'form#form-ajuda', function() {
                     var dados = $(this).serializeObject();
                     if ($('form#form-ajuda').gValidate()) {
-                        jQuery.gApi.exec('PUT',
+                        var method = (dados.id != '') ? 'PUT' : 'POST';
+                        jQuery.gApi.exec(method,
                             'http://integracaogtsis.tempsite.ws/api/Ajuda/Texto', dados,
-                            function (json) {
+                            function(json) {
                                 if (json.Code >= 200 && json.Code < 300) {
                                     jQuery.gDisplay.showSuccess(json.Message.Success,
-                                        function () {
+                                        function() {
                                             $('#detalhe').modal('hide');
                                             AjudaMethods.loadAjuda();
                                         });
@@ -175,14 +235,15 @@
                                     jQuery.gDisplay.showAlert(json.Message.Error);
                                 }
                             },
-                            function (xhr, status, error) {
+                            function(xhr, status, error) {
                                 jQuery.gDisplay.showError(xhr.responseJSON.Message.Error);
                             });
                     }
                     return false;
                 });
             },
-            buildTable: function (data) {
+            buildTableCategoria: function(data) {
+
                 var html = "";
                 if (data == null || data == undefined || data.length == 0) {
                     html += '<tr>';
@@ -191,7 +252,43 @@
                     html += '</td>';
                     html += '</tr>';
                 }
-                $.each(data, function (i, item) {
+                $.each(data, function(i, item) {
+                    html += '<tr>';
+                    html += '<td data-title="Título" scope="row">' +
+                        addInput('', {
+                            type: "text",
+                            value: checkNull(item.Titulo),
+                            disabled: true
+                        }, 'col-12') +
+                        '</td>';
+                    var cat = {};
+                    $.each(storeCategoria, function(i, item) {
+                        cat[item.Produto.id] = item.Produto.Titulo;
+                    });
+                    html += '<td data-title="Categoria">' +
+                        addSelect('', {
+                            id: 'idCategoria',
+                            validate: 'required',
+                            name: 'idCategoria',
+                            disabled: true,
+                            selected: item.Produto.id
+                        }, 'col-12', cat) +
+                        '</td>';
+                    html += '<td data-title="Ação"> <a href="#" data-categoria="' + item.id + '">Editar</a> </td>';
+                    html += '</tr>';
+                });
+                return html;
+            },
+            buildTable: function(data) {
+                var html = "";
+                if (data == null || data == undefined || data.length == 0) {
+                    html += '<tr>';
+                    html += '<td scope="row" colspan="5">';
+                    html += '<p class="text-center text-secondary"> Nenhum resultado encontrado! </p>';
+                    html += '</td>';
+                    html += '</tr>';
+                }
+                $.each(data, function(i, item) {
                     html += '<tr>';
                     html +=
                         '<td data-title="Título" scope="row"><a href="#" class="btn btn-link detalhe" data-id="' +
@@ -208,9 +305,11 @@
                 });
                 return html;
             },
-            buildModalDetail: function (id) {
-                var detail = AjudaMethods.filtraAjuda(id);
-                var cat = {};
+            buildModalDetail: function(id) {
+                var detail = {};
+                if (id) {
+                    detail = AjudaMethods.filtraAjuda(id);
+                }
 
                 $('#form-ajuda #id').val(detail.id);
                 $('#form-ajuda #nome').val(detail.Nome);
@@ -220,29 +319,47 @@
                 CKEDITOR.instances.descricao.setData(detail.Descricao);
 
                 $('#form-ajuda button[type=submit]')
-                .addClass('btn-info')
-                .removeClass('btn-success')
-                .text('Atualizar');
+                    .addClass('btn-info')
+                    .removeClass('btn-success')
+                    .text('Atualizar');
 
                 $('#detalhe').modal('show');
 
-                
+
+            },
+            buildModalNew: function() {
+                console.log('OK');
+                $('#form-ajuda #id').val('');
+                $('#form-ajuda #nome').val('');
+                $('#form-ajuda #categoria').val('');
+                $('#form-ajuda #titulo').val('');
+                $('#form-ajuda #descricao').val('');
+                CKEDITOR.instances.descricao.setData('');
+
+                $('#form-ajuda button[type=submit]')
+                    .addClass('btn-success')
+                    .removeClass('btn-info')
+                    .text('Salvar');
+
+                $('#detalhe').modal('show');
+
+
             },
             filtraAjuda(id) {
                 var ret = null;
-                $.each(storeAjuda, function (i, item) {
+                $.each(storeAjuda, function(i, item) {
                     if (item.id == id) {
                         ret = item;
                     }
                 });
                 return ret;
             },
-            filtraTabela: function (produto) {
+            filtraTabela: function(produto) {
                 var data = [];
                 if (!produto) {
                     data = storeAjuda;
                 } else {
-                    $.each(storeAjuda, function (i, item) {
+                    $.each(storeAjuda, function(i, item) {
                         if (item.CategoriaAjuda.Produto.id == produto) {
                             data.push(item);
                         }
@@ -250,16 +367,16 @@
                 }
                 return data;
             },
-            loadAjuda: function () {
+            loadAjuda: function() {
                 var url = 'http://integracaogtsis.tempsite.ws/api/Ajuda/Texto';
                 jQuery.gApi.exec('GET', url, {},
-                    function (json) {
+                    function(json) {
                         storeAjuda = json;
                         var htmlTabela = AjudaMethods.buildTable(json);
                         $('.table-load').html(htmlTabela);
 
                     },
-                    function (err) {
+                    function(err) {
                         alerta('Erro', err.responseJSON.Message.Error, 'error');
 
                     });
@@ -268,7 +385,7 @@
         AjudaMethods.initialize();
     };
 
-    $(function () {
+    $(function() {
         Ajuda();
     });
 </script>
