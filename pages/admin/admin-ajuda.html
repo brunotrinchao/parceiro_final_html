@@ -334,6 +334,10 @@
                     // });
                     $('#show-categorias').modal('hide');
                     doModal('idMyModal', param.title, html, "", '');
+                });
+
+                $('#show-categorias').on('hidden.bs.modal', function(e) {
+                    AjudaMethods.loadAjuda();
                 })
 
 
