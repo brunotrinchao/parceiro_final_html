@@ -267,6 +267,28 @@ function addInput(label, atributos, span, placeholder) {
 
 }
 
+function addButton(atributos, texto, span) {
+    var id = '';
+    var html = '';
+    var classe = '';
+    html += '<button type="submit"';
+    $.each(atributos, function(key, value) {
+        if (key != 'class') {
+            html += key + '="' + value + '"';
+        } else {
+            classe += ' ' + value;
+        }
+        if (key == 'id') {
+            id = value;
+        }
+
+    });
+    html += ' class="btn ' + classe + '">';
+    html += texto;
+    html += '</button>';
+    return addControlForm('', html, false, span, id);
+}
+
 function addRadio(label, type, atributos, span, options, checkFirst) {
     var id = '';
     var html = '<div>';
@@ -455,4 +477,36 @@ function getFieldsFormEndereco() {
 
 function montaErro(string) {
     return string.replace("\n", "<br>");
+}
+
+
+function doModal(placementId, heading, formContent, strSubmitFunc, btnText) {
+
+    var html = '<div class="modal fade" tabindex="-1" role="dialog" id="modalWindow" style="z-index: 1000000; display:none;">';
+    html += '<div class="modal-dialog modal-xl" role="document">';
+    html += '<div class="modal-content">';
+    html += '<div class="modal-header">';
+    html += '<h5 class="modal-title">' + heading + '</h5>'
+    html += '<a class="close" data-dismiss="modal">×</a>';
+    html += '</div>';
+    html += '<div class="modal-body">';
+    html += formContent;
+    html += '</div>';
+    if (btnText != '') {
+        html += '<div class="modal-footer">';
+        html += '<span class="btn btn-success"';
+        html += ' onClick="' + strSubmitFunc + '">' + btnText;
+        html += '</span>';
+        html += '</div>'; // footer
+    }
+    html += '</div>'; // modalWindow
+    html += '</div>'; // modalWindow
+    html += '</div>'; // modalWindow
+    $("#" + placementId).html(html);
+    $("#modalWindow").modal();
+    $("#dynamicModal").modal('show');
+
+    $('#modalWindow').on('hidden.bs.modal', function(e) {
+        $(this).remove();
+    });
 }

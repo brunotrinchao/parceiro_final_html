@@ -53,12 +53,15 @@
             });
         },
         showForm: function(param, form, callBackAfter) {
-
+            var titleButton = (param.titleButton) ? param.titleButton : 'Ok'
             Swal.fire({
-                type: 'info',
                 title: param.title,
                 html: form,
                 showConfirmButton: true,
+                showCancelButton: true,
+                confirmButtonText: titleButton,
+                cancelButtonText: 'Cancelar',
+                focusConfirm: false,
                 onAfterClose: function() {
                     if (typeof callBackAfter === "function") {
                         callBackAfter.call(this);
