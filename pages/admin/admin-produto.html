@@ -1,0 +1,145 @@
+<div id="indicar" class="container">
+    <div class="load-cadastro">
+        <div class="card">
+            <div class="card-header">
+                Editar produto
+            </div>
+            <div class="card-body">
+                <form id="nova-indicacao">
+                    <div class="load-form"></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success float-right">Atualizar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    Produto = function() {
+        $this = this;
+        var storeProduto = {};
+
+        ProdutoMethods = {
+            initialize: function() {
+                // jQuery.gDisplay.loadStart();
+                this.onLoad();
+                this.getProduto();
+            },
+            onLoad: function() {
+                storeProduto = jQuery.lockrStorage.get('produtos');
+
+                $('.load-form').empty().html(ProdutoMethods.buildForm());
+
+
+            },
+            buildForm: function() {
+                var html = '';
+                var objProd = {};
+                if (storeProduto) {
+                    $.each(storeProduto, function(i, item) {
+                        objProd[item.id] = item.Titulo
+                    });
+                }
+
+                html += '<form enctype="multipart/form-data">';
+                html += '<div class="row">';
+                html += addInput('', {
+                    type: "hidden",
+                    id: 'imagemBase64',
+                    name: 'imagem',
+                }, 'col-md-12 col-lg-5');
+                html += addSelect('Produto', {
+                    id: 'produto',
+                    validate: 'required',
+                    name: 'idProduto'
+                }, 'col-md-12 col-lg-4', objProd);
+
+                html += addSelect('Status', {
+                    id: 'ativo',
+                    validate: 'required',
+                    name: 'ativo',
+                    disabled: true
+                }, 'col-md-12 col-lg-3', {
+                    1: 'Ativo',
+                    2: 'Inativo'
+                });
+                html += addInput('Imagem', {
+                    type: "file",
+                    id: 'imagem',
+                    name: '_imagem',
+                    disabled: true,
+                    accept: ".png,.jpg"
+                }, 'col-md-12 col-lg-5');
+                html += addInput('Título', {
+                    type: "text",
+                    id: 'titulo',
+                    validate: 'required',
+                    name: 'titulo',
+                    disabled: true
+                }, 'col-md-12 col-lg-4');
+                html += addInput('Subtitulo', {
+                    type: "text",
+                    id: 'subtitulo',
+                    validate: 'required',
+                    name: 'subtitulo',
+                    disabled: true
+                }, 'col-md-12 col-lg-4');
+                html += '</div>';
+                html += '</form>';
+
+                return html;
+
+            },
+            getProduto: function() {
+                $('#produto').change(function() {
+                    var id = $(this).val();
+                    var produto = ProdutoMethods.filtraProduto(id);
+                    if (produto) {
+                        $('#ativo').val((produto.Ativo) ? '1' : '2').removeAttr('disabled');
+                        $('#imagem').removeAttr('disabled');
+                        $('#titulo').val(produto.Titulo).removeAttr('disabled');
+                        $('#subtitulo').val(produto.SubTitulo).removeAttr('disabled');
+                    } else {
+                        $('#ativo').val('').attr('disabled', 'disabled');
+                        $('#imagem').val('').attr('disabled', 'disabled');
+                        $('#titulo').val('').attr('disabled', 'disabled');
+                        $('#subtitulo').val('').attr('disabled', 'disabled');
+                    }
+                });
+
+                $('#imagem').change(function() {
+                    var file = $(this).get(0).files[0];
+                    if (file.size) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = function() {
+                            $('#imagemBase64').val(reader.result);
+                        };
+                    }
+                });
+            },
+            filtraProduto(id) {
+                var ret = null;
+                $.each(storeProduto, function(i, item) {
+                    if (item.id == id) {
+                        ret = item;
+                    }
+                });
+                return ret;
+            },
+        }
+        ProdutoMethods.initialize();
+    };
+
+    $(function() {
+        Produto();
+    });
+</script>
+
+<style>
+
+</style>

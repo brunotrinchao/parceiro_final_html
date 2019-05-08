@@ -510,3 +510,35 @@ function doModal(placementId, heading, formContent, strSubmitFunc, btnText) {
         $(this).remove();
     });
 }
+
+function ToSeoUrl(url) {
+
+    // make the url lowercase         
+    var encodedUrl = url.toString().toLowerCase();
+
+    // replace & with and           
+    encodedUrl = encodedUrl.split(/\&+/).join("-e-")
+
+    // remove invalid characters 
+    encodedUrl = encodedUrl.split(/[^a-z0-9]/).join("-");
+
+    // remove duplicates 
+    encodedUrl = encodedUrl.split(/-+/).join("-");
+
+    // trim leading & trailing characters 
+    encodedUrl = encodedUrl.trim('-');
+
+    return encodedUrl;
+}
+
+function getBase64(file) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+        return reader.result;
+    };
+    reader.onerror = function(error) {
+        //   console.log('Error: ', error);
+        return;
+    };
+}
