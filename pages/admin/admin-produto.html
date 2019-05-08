@@ -46,12 +46,12 @@
                 }
 
                 html += '<form enctype="multipart/form-data">';
-                html += '<div class="row">';
                 html += addInput('', {
                     type: "hidden",
                     id: 'imagemBase64',
                     name: 'imagem',
-                }, 'col-md-12 col-lg-5');
+                }, '-');
+                html += '<div class="row">';
                 html += addSelect('Produto', {
                     id: 'produto',
                     validate: 'required',
