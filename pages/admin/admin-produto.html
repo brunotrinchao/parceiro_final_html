@@ -1,17 +1,17 @@
-<div id="indicar" class="container">
+<div id="adm-produto" class="container">
     <div class="load-cadastro">
         <div class="card">
             <div class="card-header">
                 Editar produto
             </div>
             <div class="card-body">
-                <form id="nova-indicacao">
-                    <div class="load-form"></div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-success float-right">Atualizar</button>
-                        </div>
+                    <form id="form-produto-editar" enctype="multipart/form-data">
+                <div class="load-form"></div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-success float-right">Atualizar</button>
                     </div>
+                </div>
                 </form>
             </div>
         </div>
@@ -19,11 +19,11 @@
 </div>
 
 <script>
-    Produto = function() {
+    AdmProduto = function() {
         $this = this;
         var storeProduto = {};
 
-        ProdutoMethods = {
+        AdmProdutoMethods = {
             initialize: function() {
                 // jQuery.gDisplay.loadStart();
                 this.onLoad();
@@ -32,7 +32,64 @@
             onLoad: function() {
                 storeProduto = jQuery.lockrStorage.get('produtos');
 
-                $('.load-form').empty().html(ProdutoMethods.buildForm());
+                $('.load-form').empty().html(AdmProdutoMethods.buildForm());
+
+                $(document).on('submit', 'form#form-produto-editar', function(){
+                    var dados = $(this).serializeObject();
+                    dados.url = ToSeoUrl(dados.titulo);
+                    if (dados.imagemBase64) {
+                        var res = dados.imagemBase64.split(",");
+                        var extensao = res[0].split(";");
+                        dados.extensao = '.' + extensao[0].split("/")[1];
+                    }
+                    if ($('form#form-produto').gValidate()) {
+                        var urlProd = 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao';
+                        jQuery.gApi.exec('PUT', urlProd, dados,
+                            function(json) {
+                                if (json.Code >= 200 && json.Code < 300) {
+                                    jQuery.gDisplay.showSuccess(json.Message.Success,
+                                        function() {
+                                            jQuery.lockrStorage.removeItem('produtos');
+                                            if (!jQuery.lockrStorage.get('produtos') ||
+                                                jQuery.lockrStorage.get('produtos') === undefined) {
+                                                jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao', {},
+                                                function(json) {
+                                                    if (json.length > 0) {
+                                                        storeProduto = json;
+                                                        jQuery.lockrStorage.set('produtos', json);
+                                                        var listaProdutos = ParceiroMethods.buildListPro();
+                                                        var menuProdutos = ParceiroMethods.buidDropDown('Indicação', listaProdutos);
+                                                        $('.nav-item-produtos').html(menuProdutos);
+
+                                                        var html = '';
+                                                        if (storeProduto) {
+                                                            html += '<option value="">.: Selecione :.</option>';
+                                                            $.each(storeProduto, function(i, item) {
+                                                               html += '<option value="'+item.id+'">'+item.Titulo+'</option>';
+                                                            });
+
+                                                            $('#produto').empty().html(html);
+                                                            $('#produto').val(dados.id);
+                                                        }
+                                                    }
+                                                },
+                                                function(err) {
+                                                    console.log(err);
+                                                });
+                                                
+                                            }
+                                        });
+                                } else {
+                                    jQuery.gDisplay.showAlert(json.Message.Error);
+                                }
+                            },
+                            function(xhr, status, error) {
+                                jQuery.gDisplay.showError(xhr.responseJSON.Message.Error);
+                            });
+
+                    }
+                    return false;
+                });
 
 
             },
@@ -45,17 +102,17 @@
                     });
                 }
 
-                html += '<form enctype="multipart/form-data">';
+
                 html += addInput('', {
                     type: "hidden",
                     id: 'imagemBase64',
-                    name: 'imagem',
+                    name: 'imagemBase64',
                 }, '-');
                 html += '<div class="row">';
                 html += addSelect('Produto', {
                     id: 'produto',
                     validate: 'required',
-                    name: 'idProduto'
+                    name: 'id'
                 }, 'col-md-12 col-lg-4', objProd);
 
                 html += addSelect('Status', {
@@ -64,8 +121,8 @@
                     name: 'ativo',
                     disabled: true
                 }, 'col-md-12 col-lg-3', {
-                    1: 'Ativo',
-                    2: 'Inativo'
+                    true: 'Ativo',
+                    false: 'Inativo'
                 });
                 html += addInput('Imagem', {
                     type: "file",
@@ -84,12 +141,10 @@
                 html += addInput('Subtitulo', {
                     type: "text",
                     id: 'subtitulo',
-                    validate: 'required',
                     name: 'subtitulo',
                     disabled: true
                 }, 'col-md-12 col-lg-4');
                 html += '</div>';
-                html += '</form>';
 
                 return html;
 
@@ -97,9 +152,9 @@
             getProduto: function() {
                 $('#produto').change(function() {
                     var id = $(this).val();
-                    var produto = ProdutoMethods.filtraProduto(id);
+                    var produto = AdmProdutoMethods.filtraProduto(id);
                     if (produto) {
-                        $('#ativo').val((produto.Ativo) ? '1' : '2').removeAttr('disabled');
+                        $('#ativo').val((produto.Ativo) ? 'true' : 'false').removeAttr('disabled');
                         $('#imagem').removeAttr('disabled');
                         $('#titulo').val(produto.Titulo).removeAttr('disabled');
                         $('#subtitulo').val(produto.SubTitulo).removeAttr('disabled');
@@ -130,13 +185,13 @@
                     }
                 });
                 return ret;
-            },
+            }
         }
-        ProdutoMethods.initialize();
+        AdmProdutoMethods.initialize();
     };
 
     $(function() {
-        Produto();
+        AdmProduto();
     });
 </script>
 
