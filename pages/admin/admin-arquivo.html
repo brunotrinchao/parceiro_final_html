@@ -6,7 +6,7 @@
                     <div class="col-md-12 col-lg-3">
                         <div class="form-group">
                             <label id="lbl_select-produtos" for="select-produtos">Filtrar por</label>
-                            <select style="width: 100%" name="idProduto" id="select-produtos">
+                            <select style="width: 100%" class="form-control" name="idProduto" id="select-produtos">
                                 </select>
                         </div>
                     </div>
@@ -74,11 +74,11 @@
                         $('#select-produtos').append(newOption);
                     });
                 }
-                $('#select-produtos').select2({
-                    theme: "bootstrap4"
-                });
+                // $('#select-produtos').select2({
+                //     theme: "bootstrap4"
+                // });
 
-                $('#select-produtos').on('select2:select', function(e) {
+                $('#select-produtos').on('change', function(e) {
                     var items = ArquivosMethods.filtraTabela($(this).val());
                     var htmlTabela = ArquivosMethods.buildTable(items);
                     $('.table-load').html(htmlTabela);
