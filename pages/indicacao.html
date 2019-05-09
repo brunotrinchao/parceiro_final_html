@@ -1,4 +1,4 @@
-<div id="indicar" class="container">
+<div id="indicar" class="container-fluid">
     <div class="load-cadastro">
         <div class="card">
             <div class="card-header">
@@ -49,9 +49,10 @@
                 $('.phone').mask(SPMaskBehavior, spOptions);
 
                 // Carrega formulario completo
-                $('.show-form-completo').on('click', function() {
+                $('.show-form-completo').click('click', function() {
                     $('#indicar').addClass('completo');
                     var param = $(this).data();
+                    console.log(param);
                     PARAM_PAGE.title = (param.title) ? param.title : PARAM_PAGE.title;
                     PARAM_PAGE.page = (param.page) ? param.page : PARAM_PAGE.page;
                     PARAM_PAGE.url = (param.url) ? param.url : PARAM_PAGE.url;

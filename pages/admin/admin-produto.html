@@ -1,17 +1,17 @@
-<div id="adm-produto" class="container">
+<div id="adm-produto" class="container-fluid">
     <div class="load-cadastro">
         <div class="card">
             <div class="card-header">
                 Editar produto
             </div>
             <div class="card-body">
-                    <form id="form-produto-editar" enctype="multipart/form-data">
-                <div class="load-form"></div>
-                <div class="row">
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success float-right">Atualizar</button>
+                <form id="form-produto-editar" enctype="multipart/form-data">
+                    <div class="load-form"></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success float-right">Atualizar</button>
+                        </div>
                     </div>
-                </div>
                 </form>
             </div>
         </div>
@@ -34,7 +34,7 @@
 
                 $('.load-form').empty().html(AdmProdutoMethods.buildForm());
 
-                $(document).on('submit', 'form#form-produto-editar', function(){
+                $(document).on('submit', 'form#form-produto-editar', function() {
                     var dados = $(this).serializeObject();
                     dados.url = ToSeoUrl(dados.titulo);
                     if (dados.imagemBase64) {
@@ -53,30 +53,30 @@
                                             if (!jQuery.lockrStorage.get('produtos') ||
                                                 jQuery.lockrStorage.get('produtos') === undefined) {
                                                 jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao', {},
-                                                function(json) {
-                                                    if (json.length > 0) {
-                                                        storeProduto = json;
-                                                        jQuery.lockrStorage.set('produtos', json);
-                                                        var listaProdutos = ParceiroMethods.buildListPro();
-                                                        var menuProdutos = ParceiroMethods.buidDropDown('Indicação', listaProdutos);
-                                                        $('.nav-item-produtos').html(menuProdutos);
+                                                    function(json) {
+                                                        if (json.length > 0) {
+                                                            storeProduto = json;
+                                                            jQuery.lockrStorage.set('produtos', json);
+                                                            var listaProdutos = ParceiroMethods.buildListPro();
+                                                            var menuProdutos = ParceiroMethods.buidDropDown('Indicação', listaProdutos);
+                                                            $('.nav-item-produtos').html(menuProdutos);
 
-                                                        var html = '';
-                                                        if (storeProduto) {
-                                                            html += '<option value="">.: Selecione :.</option>';
-                                                            $.each(storeProduto, function(i, item) {
-                                                               html += '<option value="'+item.id+'">'+item.Titulo+'</option>';
-                                                            });
+                                                            var html = '';
+                                                            if (storeProduto) {
+                                                                html += '<option value="">.: Selecione :.</option>';
+                                                                $.each(storeProduto, function(i, item) {
+                                                                    html += '<option value="' + item.id + '">' + item.Titulo + '</option>';
+                                                                });
 
-                                                            $('#produto').empty().html(html);
-                                                            $('#produto').val(dados.id);
+                                                                $('#produto').empty().html(html);
+                                                                $('#produto').val(dados.id);
+                                                            }
                                                         }
-                                                    }
-                                                },
-                                                function(err) {
-                                                    console.log(err);
-                                                });
-                                                
+                                                    },
+                                                    function(err) {
+                                                        console.log(err);
+                                                    });
+
                                             }
                                         });
                                 } else {
