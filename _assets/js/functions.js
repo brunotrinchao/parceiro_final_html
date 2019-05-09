@@ -45,7 +45,6 @@
                 container;
             var new_param = jQuery.isEmptyObject(param) ? null : $.param(param);
 
-            console.log("./pages/" + page);
             jQuery.ajax({
                 type: "GET",
                 url: "./pages/" + page,
@@ -125,7 +124,6 @@
         show: function(links, callback) {
             if (links.Count > 1) {
                 var url = new URL(links.Self);
-                console.log(url);
                 var html = '<nav class="pt-5">';
                 html += '<ul class="pagination justify-content-center">';
                 // html += '<li class="page-item disabled">';
@@ -522,16 +520,4 @@ function ToSeoUrl(url) {
         .replace(/-+/g, '-') // Remove duplicate dashes
         .replace(/^-*/, '') // Remove starting dashes
         .replace(/-*$/, '');
-}
-
-function getBase64(file) {
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function() {
-        return reader.result;
-    };
-    reader.onerror = function(error) {
-        //   console.log('Error: ', error);
-        return;
-    };
 }

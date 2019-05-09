@@ -52,7 +52,11 @@
                 $('.show-form-completo').on('click', function() {
                     $('#indicar').addClass('completo');
                     var param = $(this).data();
-                    console.log(param);
+                    PARAM_PAGE.title = (param.title) ? param.title : PARAM_PAGE.title;
+                    PARAM_PAGE.page = (param.page) ? param.page : PARAM_PAGE.page;
+                    PARAM_PAGE.url = (param.url) ? param.url : PARAM_PAGE.url;
+                    PARAM_PAGE.produto = (param.produto) ? param.produto : PARAM_PAGE.produto;
+
                     jQuery.gApi.load('indicacao-completa/' + param.page + '.html', '', param);
                     return false;
                 });

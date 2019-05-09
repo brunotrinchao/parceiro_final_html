@@ -44,7 +44,6 @@ Parceiro = function() {
             $(document).on('click', '.item-load-page', function(e) {
                 e.preventDefault();
                 var data = $(this).data();
-                console.log(data);
                 ParceiroMethods.buildLoadPage(data);
                 var li = $(this).parents('li.nav-item');
                 $('.nav-item').removeClass('active');
@@ -68,7 +67,6 @@ Parceiro = function() {
                     var param = ParceiroMethods.montaObjPost(dados);
                     jQuery.gApi.exec('POST', 'http://integracaogtsis.tempsite.ws/api/V1/Indicacoes/Supercredito', param,
                         function(json) {
-                            console.log(json);
                             if (json.Code >= 200 && json.Code < 300) {
                                 jQuery.gDisplay.showSuccess(json.Message.Success, function() {
                                     $('form#nova-indicacao')[0].reset();
@@ -78,7 +76,6 @@ Parceiro = function() {
                             }
                         },
                         function(xhr, status, error) {
-                            console.log(montaErro(xhr.responseJSON.Message.Error));
                             jQuery.gDisplay.showError(montaErro(xhr.responseJSON.Message.Error));
                         });
                 }
@@ -182,7 +179,10 @@ Parceiro = function() {
             // window.history.pushState(data.page, data.title, data.page + '.html');
             $('#navbarToggler').collapse('hide');
             jQuery.gApi.load(data.page + '.html', '', data, function(params) {
-                PARAM_PAGE = params;
+                PARAM_PAGE.title = (params.title) ? params.title : PARAM_PAGE.title;
+                PARAM_PAGE.page = (params.page) ? params.page : PARAM_PAGE.page;
+                PARAM_PAGE.url = (params.url) ? params.url : PARAM_PAGE.url;
+                PARAM_PAGE.produto = (params.produto) ? params.produto : PARAM_PAGE.produto;
                 $('.titulo_pagina h1').text(PARAM_PAGE.title);
             });
         },
