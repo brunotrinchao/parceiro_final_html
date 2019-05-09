@@ -16,7 +16,7 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-success float-right">Salvar</button>
+                            <button type="submit" class="btn btn-primary float-right">Salvar</button>
                         </div>
                     </div>
                 </form>
@@ -62,7 +62,7 @@
                 html += addInput(null, {
                     type: "hidden",
                     value: produto,
-                    name: 'idProdutoIndicacao'
+                    name: 'produto_idProdutoIndicacao'
                 }, '');
                 html += '<div class="row">';
                 var produtoText = (produto == '1') ? 'Imóvel' : (produto == '2') ? 'Financiamento' : 'Consórcio';
@@ -89,7 +89,7 @@
                         html += addSelect('Qual a necessidade?', {
                             id: 'idNecessidade',
                             validate: 'required',
-                            name: 'idNecessidade'
+                            name: 'produto_Necessidade'
                         }, 'col-md-12 col-lg-3', {
                             1: 'Comprar',
                             2: 'Vender',
@@ -98,7 +98,7 @@
                         html += addSelect('Tipo', {
                             id: 'idSituacaoCliente',
                             validate: 'required',
-                            name: 'idSituacaoCliente'
+                            name: 'produto_SituacaoCliente'
                         }, 'col-md-12 col-lg-3', {
                             1: 'Proprietário',
                             2: 'Interessado',
@@ -107,7 +107,7 @@
                     case 2: // financimento           
                         html += addRadio('Qual a necessidade?', 'checkbox', {
                             validate: 'required',
-                            name: 'idTipoBem',
+                            name: 'produto_TipoBem',
                             id: 'idTipoBem'
                         }, 'col-md-12 col-lg-6', {
                             1: 'Imóvel',
@@ -118,7 +118,7 @@
                     case 3: // consorcio
                         html += addRadio('Qual a necessidade?', 'checkbox', {
                             validate: 'required',
-                            name: 'idTipoBem',
+                            name: 'produto_TipoBem',
                             id: 'idTipoBem'
                         }, 'col-md-12 col-lg-5', {
                             1: 'Imóvel',
@@ -135,12 +135,12 @@
                     type: "text",
                     id: 'ValorBem',
                     validate: 'required',
-                    name: 'bem',
+                    name: 'produto_ValorBem',
                     class: 'money'
                 }, 'col-md-12 col-lg-3');
                 html += addTextarea('Observações', {
                     row: "3",
-                    name: 'observacoes'
+                    name: 'produto_Observacoes'
                 }, '', 'col-md-12 col-lg-12');
 
                 return html;

@@ -32,9 +32,9 @@
         });
         if (msg.length > 0) {
             ret = false;
-            Swal.close();
-            alerta('Erro', montaErro(msg), 'error');
-            // jQuery.gDisplay.showError(msg, '');
+            // alerta('Erro', msg, 'error');
+            // jQuery.gDisplay.loadStop();
+            jQuery.gDisplay.showError(msg);
         }
         return ret;
     }

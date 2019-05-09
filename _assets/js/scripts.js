@@ -18,7 +18,7 @@ Parceiro = function() {
                         function(json) {
                             if (sizeObj(json) > 0) {
                                 jQuery.lockrStorage.set('usuario', json);
-                                // ParceiroMethods.showProdutos();
+                                ParceiroMethods.getAdm();
                                 ParceiroMethods.showLogado(true);
                             }
                         },
@@ -44,6 +44,7 @@ Parceiro = function() {
             $(document).on('click', '.item-load-page', function(e) {
                 e.preventDefault();
                 var data = $(this).data();
+                console.log(data);
                 ParceiroMethods.buildLoadPage(data);
                 var li = $(this).parents('li.nav-item');
                 $('.nav-item').removeClass('active');
@@ -69,19 +70,22 @@ Parceiro = function() {
                         function(json) {
                             console.log(json);
                             if (json.Code >= 200 && json.Code < 300) {
-                                jQuery.gDisplay.showSuccess(json.Message.Success);
+                                jQuery.gDisplay.showSuccess(json.Message.Success, function() {
+                                    $('form#nova-indicacao')[0].reset();
+                                });
                             } else {
                                 jQuery.gDisplay.showAlert(json.Message.Error);
                             }
                         },
                         function(xhr, status, error) {
-                            jQuery.gDisplay.showError(xhr.responseJSON.Message.Error);
+                            console.log(montaErro(xhr.responseJSON.Message.Error));
+                            jQuery.gDisplay.showError(montaErro(xhr.responseJSON.Message.Error));
                         });
                 }
                 return false;
             });
         },
-        buidDropDown: function(titulo, data) {           
+        buidDropDown: function(titulo, data) {
             // Monta menu
 
             var html = '';
@@ -214,12 +218,14 @@ Parceiro = function() {
                 $('.logado').css('display', 'block');
                 $('.logado .load-nome').text(jQuery.lockrStorage.get('usuario').Nome);
                 $('form[name=form-login]').css('display', 'none');
+                ParceiroMethods.getAdm();
             } else {
                 $('html').removeClass('user-logado');
                 $('.menu-lista').css('display', 'none');
                 $('.logado').css('display', 'none');
                 $('form[name=form-login]').css('display', 'inline-flex');
                 $('.logado .load-nome').text('');
+                $('.item-nav-admin').html('');
                 ParceiroMethods.buildLoadPage({ page: home });
             }
         },
@@ -249,6 +255,19 @@ Parceiro = function() {
                 return usuario.id
             }
             return false;
+        },
+        getAdm: function() {
+            var usuario = jQuery.lockrStorage.get('usuario');
+            var html = '';
+            if (usuario.EhMaster) {
+                html += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>';
+                html += '<div class="dropdown-menu" aria-labelledby="navbarDropdownAdm">';
+                html += '<a class="dropdown-item item-load-page" data-page="admin/admin-ajuda" data-title="Admin - Ajuda" href="#">Ajuda</a>';
+                html += '<a class="dropdown-item item-load-page" data-page="admin/admin-arquivo" data-title="Admin - Arquivos" href="#">Arquivos</a>';
+                html += '<a class="dropdown-item item-load-page" data-page="admin/admin-produto" data-title="Admin - Produtos" href="#">Produto</a>';
+                html += '</div>';
+            }
+            $('.nav-item-admin').html(html);
         }
     };
     ParceiroMethods.initialize();

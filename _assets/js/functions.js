@@ -476,7 +476,7 @@ function getFieldsFormEndereco() {
 }
 
 function montaErro(string) {
-    return string.replace("\n", "<br>");
+    return string.replace(/(\r\n|\n|\r)/gm, "</br>");
 }
 
 
@@ -512,16 +512,16 @@ function doModal(placementId, heading, formContent, strSubmitFunc, btnText) {
 }
 
 function ToSeoUrl(url) {
-    return url.toString()               // Convert to string
-        .normalize('NFD')               // Change diacritics
-        .replace(/[\u0300-\u036f]/g,'') // Remove illegal characters
-        .replace(/\s+/g,'-')            // Change whitespace to dashes
-        .toLowerCase()                  // Change to lowercase
-        .replace(/&/g,'-and-')          // Replace ampersand
-        .replace(/[^a-z0-9\-]/g,'')     // Remove anything that is not a letter, number or dash
-        .replace(/-+/g,'-')             // Remove duplicate dashes
-        .replace(/^-*/,'')              // Remove starting dashes
-        .replace(/-*$/,''); 
+    return url.toString() // Convert to string
+        .normalize('NFD') // Change diacritics
+        .replace(/[\u0300-\u036f]/g, '') // Remove illegal characters
+        .replace(/\s+/g, '-') // Change whitespace to dashes
+        .toLowerCase() // Change to lowercase
+        .replace(/&/g, '-and-') // Replace ampersand
+        .replace(/[^a-z0-9\-]/g, '') // Remove anything that is not a letter, number or dash
+        .replace(/-+/g, '-') // Remove duplicate dashes
+        .replace(/^-*/, '') // Remove starting dashes
+        .replace(/-*$/, '');
 }
 
 function getBase64(file) {

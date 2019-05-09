@@ -1,214 +1,298 @@
 <div id="arquivos">
-        <div class="row">
-            <div class="col col-12 mb-5 alert filtro">
-                <form name="filtra-relatorio" id="filtra-relatorio">
-                    <div class="form-row filtros align-items-end">
-                        <div class="col-md-12 col-lg-3">
-                            <div class="form-group">
-                                <label id="lbl_select-produtos" for="select-produtos">Filtrar por</label>
-                                <select style="width: 100%" name="idProduto" id="select-produtos">
+    <div class="row">
+        <div class="col col-12 mb-5 alert filtro">
+            <form name="filtra-relatorio" id="filtra-relatorio">
+                <div class="form-row filtros align-items-end">
+                    <div class="col-md-12 col-lg-3">
+                        <div class="form-group">
+                            <label id="lbl_select-produtos" for="select-produtos">Filtrar por</label>
+                            <select style="width: 100%" name="idProduto" id="select-produtos">
                                 </select>
-                            </div>
                         </div>
-                        <div class="col-md-12 col-lg-9">
-                                <div class="form-group clearfix">
-                                        <a href="#" id="nova-ajuda" class="btn btn-primary float-right">Novo Arquivo</a>
-                                </div>
-                            </div>
                     </div>
-                </form>
-            </div>
-            <div class="col col-12 px-0">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">Título</th>
-                                <th scope="col">Produto</th>
-                                <th scope="col">Cadastrado</th>
-                                <th scope="col">Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-load">
-    
-                            <tr>
-                                <td scope="row" colspan="5">
-                                    <p class="text-center text-secondary"> Nenhum resultado encontrado! </p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="col-md-12 col-lg-9">
+                        <div class="form-group clearfix">
+                            <a href="#" id="novo-arquivo" class="btn btn-primary float-right">Novo Arquivo</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col col-12 load-paginate">
+            </form>
+        </div>
+        <div class="col col-12 px-0">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Título</th>
+                            <th scope="col">Produto</th>
+                            <th scope="col">Cadastrado</th>
+                            <th scope="col">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-load">
+
+                        <tr>
+                            <td scope="row" colspan="5">
+                                <p class="text-center text-secondary"> Nenhum resultado encontrado! </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+        <div class="col col-12 load-paginate">
+        </div>
     </div>
-    
-    <script>
-        Arquivos = function() {
-            $this = this;
-            ARQ_LIST = {};
-    
-            ArquivosMethods = {
-                initialize: function() {
-                    // jQuery.gDisplay.loadStart();
-                    this.onLoad();
-                },
-                onLoad: function() {
+</div>
 
-                    // Select Produtos
-                    var selectData = {
-                        id: '',
-                        text: 'Todos produtos',
-                        selectDefault: false,
-                        selected: true
-                    };
-                    var newOption = new Option(selectData.text, selectData.id, selectData.selectDefault,
-                        selectData.selected);
-                    $('#select-produtos').append(newOption);
-                    var listaProdutos = jQuery.lockrStorage.get('produtos');
-                    if (listaProdutos) {
-                        $.each(listaProdutos, function(i, item) {
-                            var newOption = new Option(item.Titulo, item.id, false, false);
-                            $('#select-produtos').append(newOption);
-                        });
-                    }
-                    $('#select-produtos').select2({
-                        theme: "bootstrap4"
-                    });
-    
-                    $('#select-produtos').on('select2:select', function(e) {
-                        var items = ArquivosMethods.filtraTabela($(this).val());
-                        var htmlTabela = ArquivosMethods.buildTable(items);
-                        $('.table-load').html(htmlTabela);
-                    });
-    
-    
-                    var url = 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao/CatalogoArquivos';
-                    jQuery.gApi.exec('GET', url, {},
-                        function(json) {
-                            ARQ_LIST = json;
-                            var htmlTabela = ArquivosMethods.buildTable(json);
-                            $('.table-load').html(htmlTabela);
-    
-                        },
-                        function(err) {
-                            alerta('Erro', err.responseJSON.Message.Error, 'error');
-    
-                        });
+<script>
+    Arquivos = function() {
+        $this = this;
+        ARQ_LIST = {};
 
-                    $(document).on('click','.edita-arquivo', function(){
-                        var id = $(this).data('id');
-                        var arquivo = ArquivosMethods.filtraArquivo(id);
-                        var html = ArquivosMethods.buildModal(arquivo);
-                        console.log(arquivo);
-                        console.log(html);
-                        doModal('idMyModal', 'Editar arquivo', html, "", '');
-                        CKEDITOR.replace('descricao', {
-                    language: 'pt-br'
+        ArquivosMethods = {
+            initialize: function() {
+                // jQuery.gDisplay.loadStart();
+                this.onLoad();
+            },
+            onLoad: function() {
+
+                // Select Produtos
+                var selectData = {
+                    id: '',
+                    text: 'Todos produtos',
+                    selectDefault: false,
+                    selected: true
+                };
+                var newOption = new Option(selectData.text, selectData.id, selectData.selectDefault,
+                    selectData.selected);
+                $('#select-produtos').append(newOption);
+                var listaProdutos = jQuery.lockrStorage.get('produtos');
+                if (listaProdutos) {
+                    $.each(listaProdutos, function(i, item) {
+                        var newOption = new Option(item.Titulo, item.id, false, false);
+                        $('#select-produtos').append(newOption);
+                    });
+                }
+                $('#select-produtos').select2({
+                    theme: "bootstrap4"
                 });
-                        return false;
-                    });
-                },
-                buildModal: function(arquivo){
-                    var objProd = {};
-                    var listaProdutos = jQuery.lockrStorage.get('produtos');
-                    if (listaProdutos) {
-                        $.each(listaProdutos, function(i, item) {
-                            objProd[item.id] = item.Titulo
-                        });
-                    }
-                    var html = '';
-                    html += '<form id="form-arquivo">';
-                    html += '<div class="row">';
-                    html += addInput('Título', {
-                        type: "text",
-                        id: 'titulo',
-                        validate: 'required',
-                        name: 'Titulo',
-                        value: arquivo.Titulo
-                    }, 'col-md-12 col-lg-8');
-                    html += addSelect('Produto', {
-                        id: 'tipo',
-                        validate: 'required',
-                        name: 'idProduto',
-                        selected: arquivo.ProdutoIndicacao.id
-                    }, 'col-md-12 col-lg-4', objProd);
-                    html += addInput('Arquivo', {
-                        type: "file",
-                        id: 'arquivo',
-                        name: 'arquivo'
-                    }, 'col-12');
-                    html += addTextarea('Descrição', {
-                        rows: '4', 
-                        id:"descricao",
-                        name:"descricao"
-                    }, arquivo.Descricao, 'col-12', 'Descrição');
-                    html += addButton({
-                        class: ' btn-success float-right'
-                    }, 'Atualizar', 'col-12');
-                    html += '</form>';
-                    html += '</div>';
-                    html += '</form>';
 
-                    return html;                  
+                $('#select-produtos').on('select2:select', function(e) {
+                    var items = ArquivosMethods.filtraTabela($(this).val());
+                    var htmlTabela = ArquivosMethods.buildTable(items);
+                    $('.table-load').html(htmlTabela);
+                });
 
-                },
-                buildTable: function(data) {
-                    console.log(data);
-                    var html = "";
-                    if (data == null || data == undefined || data.length == 0) {
-                        html += '<tr>';
-                        html += '<td scope="row" colspan="5">';
-                        html += '<p class="text-center text-secondary"> Nenhum resultado encontrado! </p>';
-                        html += '</td>';
-                        html += '</tr>';
-                    }
-                    $.each(data, function(i, item) {
-                        html += '<tr>';
-                        html +=
-                            '<td data-title="Título" scope="row">' +
-                            checkNull(item.Titulo) +
-                            '</td>';
-                            html += '<td data-title="Produto">' + checkNull(item.ProdutoIndicacao.Produto) + '</td>';
-                            html += '<td data-title="Cadastrado">' + checkNull(item.DataInclusao) + '</td>';
-                            html += '<td data-title="Descrição"><a href="#" data-id="'+item.id+'" class="btn btn-link edita-arquivo">Editar</a></td>';
-                        html += '</tr>';
+
+                ArquivosMethods.loadArquivos();
+
+                $(document).on('click', '.edita-arquivo', function() {
+                    var id = $(this).data('id');
+                    var arquivo = ArquivosMethods.filtraArquivo(id);
+                    var html = ArquivosMethods.buildModal(arquivo);
+                    doModal('idMyModal', 'Editar arquivo', html, "", '');
+                    CKEDITOR.replace('descricao', {
+                        language: 'pt-br'
                     });
-                    return html;
-                },
-                filtraTabela: function(produto) {
-                    var data = [];
-                    if (!produto) {
-                        data = ARQ_LIST;
-                    } else {
-                        $.each(ARQ_LIST, function(i, item) {
-                            if (item.ProdutoIndicacao.id == produto) {
-                                data.push(item);
-                            }
-                        });
+                    return false;
+                });
+
+                $(document).on('change', '#arquivo', function() {
+                    var file = $(this).get(0).files[0];
+                    console.log(file);
+                    if (file.size) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = function() {
+                            $('#arquivoBase64').val(reader.result);
+                            var exp = reader.result.split(';')
+                            exp = exp[0].split('/')[1]
+                            $('#Extensao').val(exp);
+                        };
                     }
-                    return data;
-                },
-                filtraArquivo: function(id){
-                    var ret = null;
+                });
+
+                $(document).on('submit', 'form#form-arquivo', function() {
+                    var dados = $(this).serializeObject();
+                    console.log(dados);
+                    var urlArq = 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao/CatalogoArquivos';
+
+                    if ($('form#form-arquivo').gValidate()) {
+                        var method = (dados.id != '') ? 'PUT' : 'POST';
+                        jQuery.gApi.exec(method, urlArq, dados,
+                            function(json) {
+                                if (json.Code >= 200 && json.Code < 300) {
+                                    $('#modalWindow').modal('hide');
+                                    jQuery.gDisplay.showSuccess(json.Message.Success,
+                                        function() {
+                                            ArquivosMethods.loadArquivos();
+                                        });
+                                } else {
+                                    jQuery.gDisplay.showAlert(json.Message.Error);
+                                }
+                            },
+                            function(xhr, status, error) {
+                                jQuery.gDisplay.showError(xhr.responseJSON.Message.Error);
+                            });
+                    }
+                    return false;
+                });
+
+                $(document).on('click', '#novo-arquivo', function() {
+                    var html = ArquivosMethods.buildModal(null);
+                    doModal('idMyModal', 'Novo arquivo', html, "", '');
+                    CKEDITOR.replace('descricao', {
+                        language: 'pt-br'
+                    });
+                    return false;
+                });
+                s
+            },
+            buildModal: function(arquivo) {
+                var arqId = '',
+                    arqTit = '',
+                    arqProId = '',
+                    arqDes = '',
+                    btnClass = ' btn-primary',
+                    btnTexto = 'Salvar';
+                if (arquivo) {
+                    arqId = arquivo.id;
+                    arqTit = arquivo.Titulo;
+                    arqProId = arquivo.ProdutoIndicacao.id;
+                    arqDes = arquivo.Descricao;
+                    btnClass = ' btn-success';
+                    btnTexto = 'Atualizar';
+                }
+                var objProd = {};
+                var listaProdutos = jQuery.lockrStorage.get('produtos');
+                if (listaProdutos) {
+                    $.each(listaProdutos, function(i, item) {
+                        objProd[item.id] = item.Titulo
+                    });
+                }
+                var html = '';
+                html += '<form id="form-arquivo">';
+                html += addInput('', {
+                    type: "hidden",
+                    name: 'id',
+                    id: 'id',
+                    value: arqId
+                }, '');
+                html += addInput('', {
+                    type: "hidden",
+                    name: 'ArquivoBase64',
+                    id: 'arquivoBase64'
+                }, '');
+                html += addInput('', {
+                    type: "hidden",
+                    name: 'Extensao',
+                    id: 'Extensao'
+                }, '');
+                html += '<div class="row">';
+
+                html += addInput('Título', {
+                    type: "text",
+                    id: 'titulo',
+                    validate: 'required',
+                    name: 'Titulo',
+                    value: arqTit
+                }, 'col-md-12 col-lg-8');
+                html += addSelect('Produto', {
+                    id: 'tipo',
+                    validate: 'required',
+                    name: 'idProduto',
+                    selected: arqProId
+                }, 'col-md-12 col-lg-4', objProd);
+                html += addInput('Arquivo', {
+                    type: "file",
+                    id: 'arquivo',
+                    name: 'arquivo'
+                }, 'col-12');
+                html += addTextarea('Descrição', {
+                    rows: '4',
+                    id: "descricao",
+                    name: "Descricao"
+                }, arqDes, 'col-12', 'Descrição');
+                html += addButton({
+                    class: btnClass + '  float-right'
+                }, btnTexto, 'col-12');
+                html += '</form>';
+                html += '</div>';
+                html += '</form>';
+
+                return html;
+
+            },
+            buildTable: function(data) {
+                console.log(data);
+                var html = "";
+                if (data == null || data == undefined || data.length == 0) {
+                    html += '<tr>';
+                    html += '<td scope="row" colspan="5">';
+                    html += '<p class="text-center text-secondary"> Nenhum resultado encontrado! </p>';
+                    html += '</td>';
+                    html += '</tr>';
+                }
+                $.each(data, function(i, item) {
+                    html += '<tr>';
+                    html +=
+                        '<td data-title="Título" scope="row"><a href="http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao/CatalogoArquivos/Arquivo/' + item.id + '" target="_blank" class="btn btn-link" data-id="' + item.id +
+                        '">' +
+                        checkNull(item.Titulo) +
+                        '</a></td>';
+                    html += '<td data-title="Produto">' + checkNull(item.ProdutoIndicacao.Produto) + '</td>';
+                    html += '<td data-title="Cadastrado">' + checkNull(item.DataInclusao) + '</td>';
+                    html += '<td data-title="Descrição"><a href="#" data-id="' + item.id + '" class="btn btn-link edita-arquivo">Editar</a></td>';
+                    html += '</tr>';
+                });
+                return html;
+            },
+            filtraTabela: function(produto) {
+                var data = [];
+                if (!produto) {
+                    data = ARQ_LIST;
+                } else {
                     $.each(ARQ_LIST, function(i, item) {
-                        if (item.id == id) {
-                            ret = item;
+                        if (item.ProdutoIndicacao.id == produto) {
+                            data.push(item);
                         }
                     });
-                    return ret;
                 }
+                return data;
+            },
+            filtraArquivo: function(id) {
+                var ret = null;
+                $.each(ARQ_LIST, function(i, item) {
+                    if (item.id == id) {
+                        ret = item;
+                    }
+                });
+                return ret;
+            },
+            loadArquivos: function() {
+                var urlArq = 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao/CatalogoArquivos';
+                jQuery.gApi.exec('GET', urlArq, {},
+                    function(json) {
+                        ARQ_LIST = json;
+                        var htmlTabela = ArquivosMethods.buildTable(json);
+                        $('.table-load').html(htmlTabela);
+
+                    },
+                    function(err) {
+                        alerta('Erro', err.responseJSON.Message.Error, 'error');
+
+                    });
             }
-            ArquivosMethods.initialize();
-        };
-    
-        $(function() {
-            Arquivos();
-        });
-    </script>
-    
-    <style>
-    
-    </style>
+        }
+        ArquivosMethods.initialize();
+    };
+
+    $(function() {
+        Arquivos();
+    });
+</script>
+
+<style>
+
+</style>
