@@ -13,8 +13,8 @@
                     <div class="col-md-12 col-lg-4">
                         <div class="form-group">
                             <label id="lbl_DataRange" for="reportrange">Período</label>
-							<div></div>
-							<button id="reportrange" type="button" class="btn btn-light btn-block">
+                            <div></div>
+                            <button id="reportrange" type="button" class="btn btn-light btn-block">
 								<i class="fa fa-calendar-alt"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
 							</button>
@@ -27,37 +27,37 @@
                         </div>
                     </div>
                 </div>
-			</form>
+            </form>
         </div>
-    <div class="col col-12 px-0">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">Celular</th>
-                        <th scope="col">E-mail</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="table-load">
-                    
-                    <tr>
-                        <td scope="row" colspan="5">
-                        <p class="text-center text-secondary"> Nenhum resultado encontrado! </p>
-                        </td>
+        <div class="col col-12 px-0">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Telefone</th>
+                            <th scope="col">Celular</th>
+                            <th scope="col">E-mail</th>
+                            <th scope="col">Status</th>
                         </tr>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="table-load">
+
+                        <tr>
+                            <td scope="row" colspan="5">
+                                <p class="text-center text-secondary"> Nenhum resultado encontrado! </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col col-12 load-paginate">
         </div>
     </div>
-    <div class="col col-12 load-paginate">
-    </div>
-</div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="detalhe">
+<div class="modal fade" tabindex="-1" role="dialog" id="detalhe">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -67,19 +67,19 @@
 				</button>
             </div>
             <div class="modal-body">
-				<ul class="nav nav-tabs" id="myTab" role="tablist">
-					<li class="nav-item">
-						<a class="nav-link active" id="cliente-tab" data-toggle="tab" href="#cliente" role="tab" aria-controls="cliente" aria-selected="true">Cliente</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="endereco-tab" data-toggle="tab" href="#endereco" role="tab" aria-controls="endereco" aria-selected="false">Endereço</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="detalhes-tab" data-toggle="tab" href="#detalhes" role="tab" aria-controls="detalhes" aria-selected="false">Negócio</a>
-					</li>
-				</ul>
-				<div class="load-detalhes">
-				</div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="cliente-tab" data-toggle="tab" href="#cliente" role="tab" aria-controls="cliente" aria-selected="true">Cliente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="endereco-tab" data-toggle="tab" href="#endereco" role="tab" aria-controls="endereco" aria-selected="false">Endereço</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="detalhes-tab" data-toggle="tab" href="#detalhes" role="tab" aria-controls="detalhes" aria-selected="false">Negócio</a>
+                    </li>
+                </ul>
+                <div class="load-detalhes">
+                </div>
             </div>
         </div>
     </div>
@@ -146,7 +146,7 @@
                     },
                     alwaysShowCalendars: false,
                     autoUpdateInput: false,
-					showDropdowns: true
+                    showDropdowns: true
                 }, cb);
 
 
@@ -202,7 +202,7 @@
                                 storeRelatorio = json.Data;
                                 var htmlTabela = RelatorioMethods.buildTable(json.Data);
                                 $('.table-load').html(htmlTabela);
-                                jQuery.gPaginate.show(json._Links, function(e){
+                                jQuery.gPaginate.show(json._Links, function(e) {
                                     $('.load-paginate').html(e);
                                 });
                             },
@@ -220,9 +220,9 @@
                     RelatorioMethods.buildModalDetail(id);
                     return false;
                 });
-				$('#detalhe').on('hidden.bs.modal', function (e) {
-				    $('#detalhe a[href="#cliente"]').tab('show')
-				});
+                $('#detalhe').on('hidden.bs.modal', function(e) {
+                    $('#detalhe a[href="#cliente"]').tab('show')
+                });
 
 
                 // Paginação
@@ -233,22 +233,22 @@
                     var url = $(this).attr('href');
                     jQuery.gApi.exec('GET', url, {},
 
-                            function(json) {
-                                storeRelatorio = json.Data;
-                                var htmlTabela = RelatorioMethods.buildTable(json.Data);
-                                $('.table-load').html(htmlTabela);
-                            },
-                            function(err) {
-                                alerta('Erro', err.responseJSON.Message.Error, 'error');
+                        function(json) {
+                            storeRelatorio = json.Data;
+                            var htmlTabela = RelatorioMethods.buildTable(json.Data);
+                            $('.table-load').html(htmlTabela);
+                        },
+                        function(err) {
+                            alerta('Erro', err.responseJSON.Message.Error, 'error');
 
-                            });
+                        });
                     return false;
                 });
 
 
             },
             buildTable: function(data) {
-				console.log(data);
+                console.log(data);
                 var html = "";
                 if (data == null || data == undefined) {
                     html += '<tr>';
@@ -280,7 +280,7 @@
                     var html = '';
                     html += '<div class="tab-content" id="myTabContent">';
                     html += '<div class="container-fluid tab-content">';
-					// Cliente
+                    // Cliente
                     html += '<div class="tab-pane fade show active" id="cliente">';
                     html += '<div class="row py-3">';
                     html += addInput('E-mail', {
@@ -315,167 +315,167 @@
                     html += '';
                     html += '</div>';
                     html += '</div>';
-					// Endereco
-					html += '<div class="tab-pane fade" id="endereco">';
-					html += '<div class="row py-3">';
-					html += addInput('Endereço', {
+                    // Endereco
+                    html += '<div class="tab-pane fade" id="endereco">';
+                    html += '<div class="row py-3">';
+                    html += addInput('Endereço', {
                         type: "text",
                         value: detail.Cliente.Endereco,
                         disabled: true
                     }, 'col-md-12 col-lg-10');
-					html += addInput('Número', {
+                    html += addInput('Número', {
                         type: "text",
                         value: checkNull(detail.Cliente.Numero),
                         disabled: true
                     }, 'col-md-12 col-lg-2');
-					html += addInput('Complemento', {
+                    html += addInput('Complemento', {
                         type: "text",
                         value: checkNull(detail.Cliente.Complemento),
                         disabled: true
                     }, 'col-md-12 col-lg-12');
-					html += addInput('Bairro', {
+                    html += addInput('Bairro', {
                         type: "text",
                         value: checkNull(detail.Cliente.Bairro.Nome),
                         disabled: true
                     }, 'col-md-12 col-lg-4');
-					html += addInput('CEP', {
+                    html += addInput('CEP', {
                         type: "text",
                         value: checkNull(detail.Cliente.Cep),
                         disabled: true
                     }, 'col-md-12 col-lg-3');
-					html += addInput('Cidade', {
+                    html += addInput('Cidade', {
                         type: "text",
                         value: checkNull(detail.Cliente.Bairro.Cidade.Nome),
                         disabled: true
                     }, 'col-md-12 col-lg-3');
-					html += addInput('UF', {
+                    html += addInput('UF', {
                         type: "text",
                         value: checkNull(detail.Cliente.Bairro.Cidade.UF),
                         disabled: true
                     }, 'col-md-12 col-lg-2');
                     html += '</div>';
                     html += '</div>';
-					// Detalhes
-					html += '<div class="tab-pane fade" id="detalhes">';
-					html += '<div class="row py-3">';
-					if(detail.Cliente.DetalhesIndicacaoConsorcios){
-						html += addInput('Produto', {
-							type: "text",
-							value: 'Consórcio',
-							disabled: true
-							}, 'col-md-12 col-lg-2');
-						html += addInput('Tipo do bem', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.TipoBem),
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-						html += addInput('Valor (R$)', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.ValorBem),
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-						html += addInput('Situação', {
-							type: "text",
-							value: checkNull(detail.StatusProspect.Descricao),
-							disabled: true
-							}, 'col-md-12 col-lg-4');
-						html += addTextarea('Observação', {
-                        row: "3",
-                        disabled: true
-                    }, checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.Observacao), 'col-md-12 col-lg-12');
-					}
-					if(detail.Cliente.DetalhesIndicacaoFinanciamentos){
-						html += addInput('Produto', {
-							type: "text",
-							value: 'Financiamento',
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-						html += addInput('Tipo do bem', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.TipoBem),
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-						html += addInput('Tipo do financiamento', {
-							type: "text",
-							value: detail.Cliente.DetalhesIndicacaoFinanciamentos.TipoFinanciamento,
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-						html += addInput('Valor do bem (R$)', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.ValorBem),
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-						html += addInput('Financiamento (R$)', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.ValorFinanciamento),
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-						html += addInput('Imediato?', {
-							type: "text",
-							value: (detail.Cliente.DetalhesIndicacaoFinanciamentos.CompraImediata)?'Sim':'Não',
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-
-						html += addInput('Situação', {
-							type: "text",
-							value: checkNull(detail.StatusProspect.Descricao),
-							disabled: true
-							}, 'col-md-12 col-lg-4');
-					}
-					if(detail.Cliente.DetalhesIndicacaoImovel){
-						html += addInput('Produto', {
-							type: "text",
-							value: 'Imóvel',
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-                        html += addInput('Cliente tipo', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoCliente),
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-                        html += addInput('Imóvel tipo', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoImovel),
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-                        html += addInput('Uso', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoUso),
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-                        html += addInput('Operação', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoOperacao),
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-                        html += addInput('Valor do bem (R$)', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.ValorBem),
-							disabled: true
-							}, 'col-md-12 col-lg-3');
-                    html += '</div>';
+                    // Detalhes
+                    html += '<div class="tab-pane fade" id="detalhes">';
                     html += '<div class="row py-3">';
-                        html += addInput('Bairro 1', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.PrimeiroBairroPreferencia),
-							disabled: true
-							}, 'col-md-12 col-lg-4');
-                        html += addInput('Bairro 2', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.SegundoBairroPreferencia),
-							disabled: true
-							}, 'col-md-12 col-lg-4');
-                        html += addInput('Bairro 3', {
-							type: "text",
-							value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TerceiroBairroPreferencia),
-							disabled: true
-							}, 'col-md-12 col-lg-4');
+                    if (detail.Cliente.DetalhesIndicacaoConsorcios) {
+                        html += addInput('Produto', {
+                            type: "text",
+                            value: 'Consórcio',
+                            disabled: true
+                        }, 'col-md-12 col-lg-2');
+                        html += addInput('Tipo do bem', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.TipoBem),
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Valor (R$)', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.ValorBem),
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
                         html += addInput('Situação', {
-							type: "text",
-							value: checkNull(detail.StatusProspect.Descricao),
-							disabled: true
-							}, 'col-md-12 col-lg-4');
-					}
+                            type: "text",
+                            value: checkNull(detail.StatusProspect.Descricao),
+                            disabled: true
+                        }, 'col-md-12 col-lg-4');
+                        html += addTextarea('Observação', {
+                            row: "3",
+                            disabled: true
+                        }, checkNull(detail.Cliente.DetalhesIndicacaoConsorcios.Observacao), 'col-md-12 col-lg-12');
+                    }
+                    if (detail.Cliente.DetalhesIndicacaoFinanciamentos) {
+                        html += addInput('Produto', {
+                            type: "text",
+                            value: 'Financiamento',
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Tipo do bem', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.TipoBem),
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Tipo do financiamento', {
+                            type: "text",
+                            value: detail.Cliente.DetalhesIndicacaoFinanciamentos.TipoFinanciamento,
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Valor do bem (R$)', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.ValorBem),
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Financiamento (R$)', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoFinanciamentos.ValorFinanciamento),
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Imediato?', {
+                            type: "text",
+                            value: (detail.Cliente.DetalhesIndicacaoFinanciamentos.CompraImediata) ? 'Sim' : 'Não',
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+
+                        html += addInput('Situação', {
+                            type: "text",
+                            value: checkNull(detail.StatusProspect.Descricao),
+                            disabled: true
+                        }, 'col-md-12 col-lg-4');
+                    }
+                    if (detail.Cliente.DetalhesIndicacaoImovel) {
+                        html += addInput('Produto', {
+                            type: "text",
+                            value: 'Imóvel',
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Cliente tipo', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoCliente),
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Imóvel tipo', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoImovel),
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Uso', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoUso),
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Operação', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoOperacao),
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += addInput('Valor do bem (R$)', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.ValorBem),
+                            disabled: true
+                        }, 'col-md-12 col-lg-3');
+                        html += '</div>';
+                        html += '<div class="row py-3">';
+                        html += addInput('Bairro 1', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.PrimeiroBairroPreferencia),
+                            disabled: true
+                        }, 'col-md-12 col-lg-4');
+                        html += addInput('Bairro 2', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.SegundoBairroPreferencia),
+                            disabled: true
+                        }, 'col-md-12 col-lg-4');
+                        html += addInput('Bairro 3', {
+                            type: "text",
+                            value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TerceiroBairroPreferencia),
+                            disabled: true
+                        }, 'col-md-12 col-lg-4');
+                        html += addInput('Situação', {
+                            type: "text",
+                            value: checkNull(detail.StatusProspect.Descricao),
+                            disabled: true
+                        }, 'col-md-12 col-lg-4');
+                    }
                     html += '</div>';
                     html += '</div>';
                     html += '</div>';
