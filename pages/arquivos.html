@@ -6,36 +6,36 @@
                     <div class="col-md-12 col-lg-3">
                         <div class="form-group">
                             <label id="lbl_select-produtos" for="select-produtos">Filtrar por</label>
-                            <select style="width: 100%" name="idProduto" id="select-produtos">
-							</select>
+                            <!-- <select style="width: 100%" class="form-control" name="idProduto" id="select-produtos"></select> -->
+                            <select style="width: 100%" class="form-control" name="idProduto" id="select-produtos"></select>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="col col-12 px-0">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead class="thead-light">
+        <div class="col col-12 px-0 ">
+            <div class="table-responsive ">
+                <table class="table table-striped ">
+                    <thead class="thead-light ">
                         <tr>
-                            <th scope="col">Título</th>
-                            <th scope="col">Descricao</th>
-                            <th scope="col">Produto</th>
-                            <th scope="col">Cadastrado</th>
+                            <th scope="col ">Título</th>
+                            <th scope="col ">Descricao</th>
+                            <th scope="col ">Produto</th>
+                            <th scope="col ">Cadastrado</th>
                         </tr>
                     </thead>
-                    <tbody class="table-load">
+                    <tbody class="table-load ">
 
                         <tr>
-                            <td scope="row" colspan="5">
-                                <p class="text-center text-secondary"> Nenhum resultado encontrado! </p>
+                            <td scope="row " colspan="5 ">
+                                <p class="text-center text-secondary "> Nenhum resultado encontrado! </p>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="col col-12 load-paginate">
+        <div class="col col-12 load-paginate ">
         </div>
     </div>
 </div>
@@ -68,11 +68,11 @@
                         $('#select-produtos').append(newOption);
                     });
                 }
-                $('#select-produtos').select2({
-                    theme: "bootstrap4"
-                });
+                // $('#select-produtos').select2({
+                //     theme: "bootstrap4 "
+                // });
 
-                $('#select-produtos').on('select2:select', function(e) {
+                $('#select-produtos').on('change', function(e) {
                     var items = ArquivosMethods.filtraTabela($(this).val());
                     var htmlTabela = ArquivosMethods.buildTable(items);
                     $('.table-load').html(htmlTabela);
@@ -94,24 +94,24 @@
             },
             buildTable: function(data) {
                 console.log(data);
-                var html = "";
+                var html = " ";
                 if (data == null || data == undefined || data.length == 0) {
                     html += '<tr>';
-                    html += '<td scope="row" colspan="5">';
-                    html += '<p class="text-center text-secondary"> Nenhum resultado encontrado! </p>';
+                    html += '<td scope="row " colspan="5 ">';
+                    html += '<p class="text-center text-secondary "> Nenhum resultado encontrado! </p>';
                     html += '</td>';
                     html += '</tr>';
                 }
                 $.each(data, function(i, item) {
                     html += '<tr>';
                     html +=
-                        '<td data-title="Título" scope="row"><a href="http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao/CatalogoArquivos/Arquivo/' + item.id + '" target="_blank" class="btn btn-link" data-id="' + item.id +
-                        '">' +
+                        '<td data-title="Título " scope="row "><a href="http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao/CatalogoArquivos/Arquivo/ ' + item.id + ' " target="_blank " class="btn btn-link " data-id=" ' + item.id +
+                        ' ">' +
                         checkNull(item.Titulo) +
                         '</a></td>';
-                    html += '<td data-title="Descrição">' + checkNull(item.Descricao) + '</td>';
-                    html += '<td data-title="Produto">' + checkNull(item.ProdutoIndicacao.Produto) + '</td>';
-                    html += '<td data-title="Cadastrado">' + checkNull(item.DataInclusao) + '</td>';
+                    html += '<td data-title="Descrição ">' + checkNull(item.Descricao) + '</td>';
+                    html += '<td data-title="Produto ">' + checkNull(item.ProdutoIndicacao.Produto) + '</td>';
+                    html += '<td data-title="Cadastrado ">' + checkNull(item.DataInclusao) + '</td>';
                     html += '</tr>';
                 });
                 return html;

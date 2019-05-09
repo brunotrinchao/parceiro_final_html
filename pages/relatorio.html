@@ -6,7 +6,7 @@
                     <div class="col-md-12 col-lg-3">
                         <div class="form-group">
                             <label id="lbl_select-produtos" for="select-produtos">Produtos</label>
-                            <select style="width: 100%" validate="required" name="idProduto" id="select-produtos">
+                            <select style="width: 100%" class="form-control" validate="required" name="idProduto" id="select-produtos">
 							</select>
                         </div>
                     </div>
@@ -171,9 +171,9 @@
                         }
                     });
                 }
-                $('#select-produtos').select2({
-                    theme: "bootstrap4"
-                });
+                // $('#select-produtos').select2({
+                //     theme: "bootstrap4"
+                // });
 
                 // Busca pelos filtros
                 $('form[name=filtra-relatorio]').submit(function(e) {
