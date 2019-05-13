@@ -13,8 +13,8 @@
                     <div class="col-md-12 col-lg-9">
                         <div class="form-group">
                             <div class="btn-group float-right" role="group" aria-label="Basic example">
-                                <a href="#" id="nova-ajuda" class="btn btn-primary">Nova Ajuda</a>
-                                <a href="#" id="page-categorias" class="btn btn-warning">Categorias</a>
+                                <a href="#" id="nova-ajuda" class="btn btn-primary"><i class="fas fa-plus"></i> Nova Ajuda</a>
+                                <a href="#" id="page-categorias" class="btn btn-warning"><i class="fas fa-list"></i> Categorias</a>
                             </div>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                     <div class="row mb-4">
                         <div class="col col-md-12 col-lg-12 px-0 ">
                             <div class="alert alert-light clearfix">
-                                <a href="#" class="btn btn-primary float-right" id="nova-categoria">Nova categoria</a>
+                                <a href="#" class="btn btn-primary float-right" id="nova-categoria"><i class="fas fa-plus"></i> Nova categoria</a>
                             </div>
                             <div class="table-responsive ">
                                 <table class="table ">
@@ -265,7 +265,7 @@
                     }, 'col-12', objProd);
                     html += addButton({
                         class: ' btn-success float-right'
-                    }, 'Atualizar', 'col-12');
+                    }, '<i class="fas fa-check"></i> Atualizar', 'col-12');
                     html += '</form>';
 
                     $('#show-categorias').modal('hide');
@@ -324,10 +324,10 @@
                     }, 'col-12', objProd);
                     html += addButton({
                         class: ' btn-primary float-right'
-                    }, 'Salvar', 'col-12');
+                    }, '<i class="fas fa-check"></i> Salvar', 'col-12');
                     html += '</form>';
                     param.title = 'Nova categoria';
-                    param.titleButton = 'Salvar';
+                    param.titleButton = '<i class="fas fa-check"></i> Salvar';
                     // jQuery.gDisplay.showForm(param, html, function(e) {
                     //     console.log(e);
                     // });
@@ -360,7 +360,7 @@
                     html += '<td data-title="Categoria " class="align-items-end ">' +
                         item.Produto.Titulo +
                         '</td>';
-                    html += '<td data-title="Ação "> <a href="# " data-categoria=" ' + item.id + ' " class="btn btn-link edita_cat">Editar</a> </td>';
+                    html += '<td data-title="Ação "> <a href="# " data-categoria=" ' + item.id + ' " class="btn btn-link edita_cat"><i class="fas fa-edit"></i> Editar</a> </td>';
                     html += '</tr>';
                 });
                 return html;
@@ -395,6 +395,7 @@
                 var detail = {};
                 if (id) {
                     detail = AjudaMethods.filtraAjuda(id);
+					console.log(detail);
                 }
 
                 $('#form-ajuda #id').val(detail.id);
@@ -407,7 +408,7 @@
                 $('#form-ajuda button[type=submit]')
                     .addClass('btn-success')
                     .removeClass('btn-primary')
-                    .text('Atualizar');
+                    .html('<i class="fas fa-check"></i> Atualizar');
 
                 $('#detalhe').modal('show');
 
@@ -425,7 +426,7 @@
                 $('#form-ajuda button[type=submit]')
                     .addClass('btn-primary')
                     .removeClass('btn-success')
-                    .text('Salvar');
+                    .html('<i class="fas fa-check"></i> Salvar');
 
                 $('#detalhe').modal('show');
 
@@ -474,7 +475,7 @@
                         storeCategoria = json;
                         $('.table-load-cat').html(AjudaMethods.buildTableCategoria(storeCategoria));
                         $.each(storeCategoria, function(i, item) {
-                            $('#categoria').append('<option value=" ' + item.id + ' ">' + item.Titulo + ' (' + item.Produto.Titulo + ')</option>');
+                            $('#categoria').append('<option value="' + item.id + '">' + item.Titulo + ' (' + item.Produto.Titulo + ')</option>');
                         });
                     },
                     function(err) {

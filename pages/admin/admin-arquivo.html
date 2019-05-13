@@ -12,7 +12,7 @@
                     </div>
                     <div class="col-md-12 col-lg-9">
                         <div class="form-group clearfix">
-                            <a href="#" id="novo-arquivo" class="btn btn-primary float-right">Novo Arquivo</a>
+                            <a href="#" id="novo-arquivo" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Novo Arquivo</a>
                         </div>
                     </div>
                 </div>
@@ -155,14 +155,14 @@
                     arqProId = '',
                     arqDes = '',
                     btnClass = ' btn-primary',
-                    btnTexto = 'Salvar';
+                    btnTexto = '<i class="fas fa-check"></i> Salvar';
                 if (arquivo) {
                     arqId = arquivo.id;
                     arqTit = arquivo.Titulo;
                     arqProId = arquivo.ProdutoIndicacao.id;
                     arqDes = arquivo.Descricao;
                     btnClass = ' btn-success';
-                    btnTexto = 'Atualizar';
+                    btnTexto = '<i class="fas fa-check"></i> Atualizar';
                 }
                 var objProd = {};
                 var listaProdutos = jQuery.lockrStorage.get('produtos');
@@ -243,7 +243,7 @@
                         '</a></td>';
                     html += '<td data-title="Produto">' + checkNull(item.ProdutoIndicacao.Produto) + '</td>';
                     html += '<td data-title="Cadastrado">' + checkNull(item.DataInclusao) + '</td>';
-                    html += '<td data-title="Ação"><a href="#" data-id="' + item.id + '" class="btn btn-link edita-arquivo">Editar</a></td>';
+                    html += '<td data-title="Ação"><a href="#" data-id="' + item.id + '" class="btn btn-link edita-arquivo"><i class="fas fa-edit"></i> Editar</a></td>';
                     html += '</tr>';
                 });
                 return html;
