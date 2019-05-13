@@ -22,6 +22,7 @@
 					height: (altLoadPage - 150),
 					maxHeight: 440
 				});
+
             },
             buildCards: function() {
                 var produtos = jQuery.lockrStorage.get('produtos');
@@ -32,18 +33,26 @@
                         var extensao = item.Extensao.substring(1, 5);
                         var src = 'data:image/' + extensao + ';base64,' + base;
 
-                        html += '<div class="col-lg-3 col-md-6 col-sm-12 p-3">';
+						var classLoad = (HomeMethods.serachString(item.Url, 'http')) ? '' : 'item-load-page';
+                		var linkUrl = (!HomeMethods.serachString(item.Url, 'http')) ? '' : item.Url;
+
+                        html += '<a href="' + linkUrl + '" class="col-lg-3 col-md-6 col-sm-12 p-3 btn-menu-produtos-load ' + classLoad + '" target="_blank" data-page="indicacao" data-url="' + item.Url + '" data-title="Indicação - ' + item.Titulo + '" data-produto="' + item.id + '" >';
                         html += '<div class="card h-200 shadow border-0">';
                         html += '<div class="card-img-box" style="background-image:url('+src+')"></div>';
                         html += '<div class="card-body">';
                         html += '<h5 class="card-title">' + item.Titulo + '</h5>';
                         html += '</div>';
                         html += '</div>';
-                        html += '</div>';
+                        html += '</a>';
                     });
                     $('.load-cards').html(html);
                 }
-            }
+            },
+			serachString: function(str, search) {
+            var string = str,
+                substring = search;
+            return string.indexOf(substring) !== -1;
+			},
         }
         HomeMethods.initialize();
     };
@@ -56,3 +65,43 @@
 		var altLoadPage = $('#load_page').innerHeight();
 		$('.card-img-box').height(altLoadPage - 150);	});
 </script>
+
+<style>
+	#home .btn-menu-produtos-load .card-img-box{
+	position:relative;
+	}
+
+#home .btn-menu-produtos-load .card-img-box:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #d7cd91;
+  background: -moz-linear-gradient(top, #d7cd91 0%, #2c546d 100%);
+  background: -webkit-linear-gradient(top, #d7cd91 0%, #2c546d 100%);
+  background: linear-gradient(to bottom, #d7cd91 0%, #2c546d 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d7cd91', endColorstr='#2c546d', GradientType=0);
+  z-index: 1;
+  content: "";
+  opacity: 0.4;
+  -webkit-transition: all 0.17s linear;
+  -moz-transition: all 0.17s linear;
+  -ms-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.17s linear;
+}
+#home .btn-menu-produtos-load:hover .card-img-box:after {
+  opacity: 0.1;
+}
+#home .btn-menu-produtos-load .card {
+  -webkit-transition: all 0.17s linear;
+  -moz-transition: all 0.17s linear;
+  -ms-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.17s linear;
+}
+#home .btn-menu-produtos-load:hover .card {
+  box-shadow: none !important;
+}
+</style>

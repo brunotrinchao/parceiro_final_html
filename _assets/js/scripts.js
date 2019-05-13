@@ -44,6 +44,7 @@ Parceiro = function() {
             $(document).on('click', '.item-load-page', function(e) {
                 e.preventDefault();
                 var data = $(this).data();
+				console.log(data);
                 ParceiroMethods.buildLoadPage(data);
                 var li = $(this).parents('li.nav-item');
                 $('.nav-item').removeClass('active');
