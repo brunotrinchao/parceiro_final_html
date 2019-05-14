@@ -29,6 +29,7 @@
                 var html = '';
                 if (produtos.length) {
                     $.each(produtos, function(i, item) {
+                        if(item.Ativo){
                         var base = item.ImagemBase64;
                         var extensao = item.Extensao.substring(1, 5);
                         var src = 'data:image/' + extensao + ';base64,' + base;
@@ -44,6 +45,7 @@
                         html += '</div>';
                         html += '</div>';
                         html += '</a>';
+                        }
                     });
                     $('.load-cards').html(html);
                 }

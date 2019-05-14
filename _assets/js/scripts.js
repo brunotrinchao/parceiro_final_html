@@ -93,11 +93,13 @@ Parceiro = function() {
             html += '</a>';
             html += '<div class="dropdown-menu" aria-labelledby="navbarDropdown">';
             $.each(data, function(i, item) {
+                if(item.Ativo){
                 var classLoad = (ParceiroMethods.serachString(item.Url, 'http')) ? '' : 'item-load-page';
                 var linkUrl = (!ParceiroMethods.serachString(item.Url, 'http')) ? '' : item.Url;
                 html += '<a class="dropdown-item ' + classLoad + '" href="' + linkUrl + '" target="_blank" data-page="indicacao" data-url="' + item.Url + '" data-title="Indicação - ' + item.Titulo + '" data-produto="' + item.id + '">';
                 html += item.Titulo;
                 html += '</a>';
+                }
             });
             html += '</div>';
             html += '</li>';
