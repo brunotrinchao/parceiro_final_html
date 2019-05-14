@@ -49,6 +49,7 @@
     Dashboard = function() {
         $this = this;
 		_STORE = {};
+		_CHART = {};
 
         DashboardMethods = {
             initialize: function() {
@@ -59,13 +60,14 @@
 				// var titulo = ($('html').hasClass('user-logado'))? 'Produtos': 'Seja bem vindo ao portal do parceiro';
                 $('.titulo_pagina h1').text('Seja bem vindo ao portal do parceiro');
                 DashboardMethods.getDados();
+				
 
             },
             buildWidgets: function() {
-				console.log('teste');
+				// console.log('teste');
                  jQuery.gApi.load('widgets/dosemeses.html', '#load-charts', {},
                     function(json) {
-                        console.log(json);
+                        // console.log(json);
                     },
                     function(err) {
                         console.log(err);
@@ -90,8 +92,23 @@
 					jQuery.gApi.exec('GET', url + '?' + jQuery.param(jsonUrl), {},
 
 					function(json) {
-						console.log(json);
+						var imovel, financiamento, consorcio = 0;
 						_STORE = json.Data;
+						var charts = groupJsonProdutos(_STORE);
+						
+
+						$.each(splitProdutos(charts.imovel), function(i, item){
+							imovel = imovel + item.length;
+						});
+						$.each(splitProdutos(charts.financiamento), function(i, item){
+							financiamento = financiamento + item.length;
+						});
+						$.each(splitProdutos(charts.consorcio), function(i, item){
+							consorcio = consorcio + item.length;
+						});
+
+						console.log(imovel,financiamento, consorcio);
+
 						DashboardMethods.buildWidgets();
 					},
 					function(err) {
