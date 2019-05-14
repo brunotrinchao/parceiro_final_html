@@ -36,7 +36,7 @@
 
                 $(document).on('submit', 'form#form-produto-editar', function() {
                     var dados = $(this).serializeObject();
-                    dados.url = ToSeoUrl(dados.titulo);
+                    dados.url = (dados.url)? dados.url : ToSeoUrl(dados.titulo);
                     if (dados.imagemBase64) {
                         var res = dados.imagemBase64.split(",");
                         var extensao = res[0].split(";");
@@ -144,6 +144,12 @@
                     name: 'subtitulo',
                     disabled: true
                 }, 'col-md-12 col-lg-4');
+                html += addInput('Url', {
+                    type: "text",
+                    id: 'url',
+                    name: 'url',
+                    disabled: true
+                }, 'col-md-12 col-lg-4');
                 html += '</div>';
 
                 return html;
@@ -158,11 +164,13 @@
                         $('#imagem').removeAttr('disabled');
                         $('#titulo').val(produto.Titulo).removeAttr('disabled');
                         $('#subtitulo').val(produto.SubTitulo).removeAttr('disabled');
+                        $('#url').val(produto.Url).removeAttr('disabled');
                     } else {
                         $('#ativo').val('').attr('disabled', 'disabled');
                         $('#imagem').val('').attr('disabled', 'disabled');
                         $('#titulo').val('').attr('disabled', 'disabled');
                         $('#subtitulo').val('').attr('disabled', 'disabled');
+                        $('#url').val('').attr('disabled', 'disabled');
                     }
                 });
 
