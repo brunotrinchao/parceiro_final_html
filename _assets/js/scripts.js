@@ -7,7 +7,7 @@ Parceiro = function() {
             this.onLoad();
         },
         onLoad: function() {
-
+			ParceiroMethods.initLogado();
             // Login
             var usuariosStorage = jQuery.lockrStorage.get('usuario');
             if (!usuariosStorage || usuariosStorage === undefined) {
@@ -43,6 +43,11 @@ Parceiro = function() {
             // Carrega Pagina
             $(document).on('click', '.item-load-page', function(e) {
                 e.preventDefault();
+				var usuariosStorage = jQuery.lockrStorage.get('usuario');
+				if (!usuariosStorage || usuariosStorage === undefined) {
+					jQuery.gDisplay.showError('Acesso negado!');
+					return;
+				}
                 var data = $(this).data();
 				console.log(data);
                 ParceiroMethods.buildLoadPage(data);
@@ -83,6 +88,14 @@ Parceiro = function() {
                 return false;
             });
         },
+		initLogado: function(){
+			var usuario = jQuery.lockrStorage.get('usuario');
+			if(usuario){
+				ParceiroMethods.showLogado(true);
+				return;
+			}
+			ParceiroMethods.showLogado(false);
+		},
         buidDropDown: function(titulo, data) {
             // Monta menu
 
@@ -101,34 +114,6 @@ Parceiro = function() {
             });
             html += '</div>';
             html += '</li>';
-            // html += '<div class="dropdown">';
-            // html += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-            // html += titulo;
-            // html += '</a>';
-            // html += '<ul class="dropdown-menu">';
-            // $.each(data, function(i, item) {
-            //     html += '<li class="dropdown-submenu">';
-            //     html += '<a tabindex="-1" href="#" class="test dropdown-item item-load-page"  data-page="indicacao" data-title="Indicação" data-produto="' + item.id + '">';
-            //     html += item.Titulo;
-            //     // if (item.Submenu) {
-            //     //     html += '<i class="fas fa-caret-right"></i>';
-            //     // }
-            //     // html += '</a>';
-            //     // if (item.Submenu) {
-            //     //     html += '<ul class="dropdown-menu">';
-            //     //     $.each(item.Submenu, function(i, submenu) {
-            //     //         html += '<li class="dropdown-submenu">';
-            //     //         html += '<a tabindex="-1" href="#" data-page="indicacao" data-title="Indicação" data-produto="' + item.id + '" data-tipo="' + submenu.Url + '" class="dropdown-item item-load-page">';
-            //     //         html += submenu.Titulo;
-            //     //         html += '</a>';
-            //     //         html += '</li>';
-            //     //     })
-            //     //     html += '</ul>';
-            //     // }
-            //     html += '</li>';
-            // })
-            // html += '</ul>';
-            // html += '</div>';
             return html;
         },
         buildListPro: function() {
@@ -198,7 +183,7 @@ Parceiro = function() {
                             var listaProdutos = $this.ParceiroMethods.buildListPro();
                             var menuProdutos = $this.ParceiroMethods.buidDropDown('Indicação', listaProdutos);
                             $('.nav-item-produtos').html(menuProdutos);
-                            jQuery.gApi.load('home.html');
+                            // jQuery.gApi.load('dashboard.html');
                         }
                     },
                     function(err) {
@@ -209,7 +194,7 @@ Parceiro = function() {
                 var listaProdutos = this.buildListPro();
                 var menuProdutos = this.buidDropDown('Indicação', listaProdutos);
                 $('.nav-item-produtos').html(menuProdutos);
-                jQuery.gApi.load('home.html');
+                // jQuery.gApi.load('dashboard.html');
             }
         },
         showLogado: function(logado) {
@@ -220,6 +205,10 @@ Parceiro = function() {
                 $('.logado .load-nome').text(jQuery.lockrStorage.get('usuario').Nome);
                 $('form[name=form-login]').css('display', 'none');
                 ParceiroMethods.getAdm();
+				var usuario = jQuery.lockrStorage.get('usuario');
+				if(usuario.EhMaster){
+					ParceiroMethods.buildLoadPage({ page: 'dashboard' });
+				}
             } else {
                 $('html').removeClass('user-logado');
                 $('.menu-lista').css('display', 'none');
@@ -227,7 +216,7 @@ Parceiro = function() {
                 $('form[name=form-login]').css('display', 'inline-flex');
                 $('.logado .load-nome').text('');
                 $('.item-nav-admin').html('');
-                ParceiroMethods.buildLoadPage({ page: home });
+                ParceiroMethods.buildLoadPage({ page: 'home' });
             }
         },
         serachString: function(str, search) {

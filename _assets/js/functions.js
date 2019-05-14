@@ -533,3 +533,43 @@ function getBase64(file) {
         return;
     };
 }
+
+function groupJsonProdutos(json){
+	ret = {imovel:[], financiamento:[], consorcio:[]};
+	$.each(json, function(i, item){
+		if(item.Cliente.DetalhesIndicacaoImovel != null){
+			ret.imovel.push(item);
+		}
+		if(item.Cliente.DetalhesIndicacaoFinanciamentos != null){
+			ret.financiamento.push(item);
+		}
+		if(item.Cliente.DetalhesIndicacaoConsorcios != null){
+			ret.consorcio.push(item);
+		}
+	});
+	return ret;
+}
+
+function splitProdutos(json){
+	arr = {};
+	$.each(json, function(i, item){
+		arr[item.DataCadastro] = [];
+	});
+	$.each(json, function(i, item){
+		$.each(arr, function(r, a){
+			if(r == item.DataCadastro){
+				arr[r].push(item);
+			}
+		});
+	});
+	return arr;
+}
+
+function objectToArray(myObj){
+	var objArr = [];
+	$.each(myObj,function(idx,obj){
+    objArr.push([obj.id,obj.nome,obj.cpf]);  
+   });
+
+   return objArr;
+}

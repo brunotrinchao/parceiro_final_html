@@ -1,0 +1,93 @@
+<div class="card" id="chart-dosemeses">
+	<div class="card-header">
+		Últimos 12 meses
+	</div>
+	<div class="card-body">
+		<canvas style="width:100%; height:350px;"></canvas>
+	</div>
+</div>
+
+<script>
+    DoseMeses = function() {
+        $this = this;
+		_CHART = {};
+        DoseMesesMethods = {
+            initialize: function() {
+                // jQuery.gDisplay.loadStart();
+                this.onLoad();
+            },
+            onLoad: function() {
+				_CHART = groupJsonProdutos(_STORE);
+				DoseMesesMethods.buildWidget();
+				
+            },
+            buildWidget: function() {
+
+				var imoveis = DoseMesesMethods.montaMeses(splitProdutos(_CHART.imovel));
+				var financiamentos = DoseMesesMethods.montaMeses(splitProdutos(_CHART.financiamento));
+				var consorcios = DoseMesesMethods.montaMeses(splitProdutos(_CHART.consocio));
+
+				var teste = Object.values(consorcios);
+				console.log(teste);
+
+                var ctx = $('#chart-dosemeses canvas').get(0).getContext('2d');
+				var myChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: ['01','02','03','04','05','06','07','08','09','10','11','12'],
+						datasets: [{
+							label: ['Imoveis'],
+							data: Object.values(imoveis),
+							backgroundColor: 'rgba(255, 99, 132, 0.2)',
+							borderColor: 'rgba(255, 99, 132, 1)',
+							borderWidth: 1
+						},
+						{
+							label: ['Financiamento'],
+							data: Object.values(financiamentos),
+							backgroundColor: 'rgba(54, 162, 235, 0.2)',
+							borderColor: 'rgba(54, 162, 235, 1)',
+							borderWidth: 1
+						},
+						{
+							label: ['Consórcio'],
+							data: Object.values(consorcios),
+							backgroundColor: 'rgba(153, 102, 255, 0.2)',
+							borderColor: 'rgba(153, 102, 255, 1)',
+							borderWidth: 1
+						}
+						]
+					},
+					options: {
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero: true
+								}
+							}]
+						}
+					}
+				});
+            },
+			montaMeses: function(json){
+				arr = {'01': 0,'02': 0,'03': 0,'04': 0,'05': 0,'06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0};
+				$.each(json, function(i, item){
+					var mes = i.split('/')[1];
+					$.each(arr, function(a, r){
+						if(mes == a){
+							arr[mes] = item.length;
+						}
+					});
+				});
+				return arr;
+			}
+			
+        }
+        DoseMesesMethods.initialize();
+    };
+
+    $(function() {
+        DoseMeses();
+    });
+
+</script>

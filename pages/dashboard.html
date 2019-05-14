@@ -1,0 +1,110 @@
+<div id="dashboard">
+    <div class="row">
+		<div class="col-md-12 col-lg-9" id="load-charts"></div>
+		<div class="col-md-12 col-lg-3" id="load-indicadores">
+			<div class="card text-white bg-primary mb-3">
+						<div class="card-body">
+				<div class="row no-gutters">
+					<div class="col-md-4 align-middle">
+						<h1 class="mb-0"><i class="fas fa-home"></i></h1>
+					</div>
+					<div class="col-md-8">
+							<h2 class="card-title mb-0">333</h2>
+							<small>Imóveis</small>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card text-white bg-success mb-3">
+						<div class="card-body">
+				<div class="row no-gutters">
+					<div class="col-md-4 align-middle">
+						<h1 class="mb-0"><i class="fas fa-money-bill-wave"></i></h1>
+					</div>
+					<div class="col-md-8">
+							<h2 class="card-title mb-0">333</h2>
+							<small>Financiamentos</small>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card text-white bg-info mb-3">
+						<div class="card-body">
+				<div class="row no-gutters">
+					<div class="col-md-4 align-middle">
+						<h1 class="mb-0"><i class="fas fa-car"></i></h1>
+					</div>
+					<div class="col-md-8">
+							<h2 class="card-title mb-0">333</h2>
+							<small>Consórcios</small>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+
+<script>
+    Dashboard = function() {
+        $this = this;
+		_STORE = {};
+
+        DashboardMethods = {
+            initialize: function() {
+                // jQuery.gDisplay.loadStart();
+                this.onLoad();
+            },
+            onLoad: function() {
+				// var titulo = ($('html').hasClass('user-logado'))? 'Produtos': 'Seja bem vindo ao portal do parceiro';
+                $('.titulo_pagina h1').text('Seja bem vindo ao portal do parceiro');
+                DashboardMethods.getDados();
+
+            },
+            buildWidgets: function() {
+				console.log('teste');
+                 jQuery.gApi.load('widgets/dosemeses.html', '#load-charts', {},
+                    function(json) {
+                        console.log(json);
+                    },
+                    function(err) {
+                        console.log(err);
+                    });
+            },
+			getDados: function(){
+				var usuario = jQuery.lockrStorage.get('usuario');
+				if(usuario){
+					var parceiro = usuario.Parceiro.id;
+					var start = moment().subtract(1, 'years');
+					var end = moment();
+						var url =
+							'http://integracaogtsis.tempsite.ws/api/Indicacoes/Supercredito/Parceiros/' + parceiro;
+						var jsonUrl = {
+							// idProduto: dados.idProduto,
+							DataInicial: start.format('YYYY-MM-DD'),
+							DataFinal: end.format('YYYY-MM-DD'),
+							TamanhoPagina: 1000,
+							idUsuarioParceiro: usuario.id,
+							NumeroPagina: 1
+						}
+					jQuery.gApi.exec('GET', url + '?' + jQuery.param(jsonUrl), {},
+
+					function(json) {
+						console.log(json);
+						_STORE = json.Data;
+						DashboardMethods.buildWidgets();
+					},
+					function(err) {
+						alerta('Erro', err.responseJSON.Message.Error, 'error');
+					});
+				}
+			}
+        }
+        DashboardMethods.initialize();
+    };
+
+    $(function() {
+        Dashboard();
+    });
+
+</script>
