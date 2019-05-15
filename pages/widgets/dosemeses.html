@@ -27,9 +27,6 @@
 				var financiamentos = DoseMesesMethods.montaMeses(splitProdutos(_CHART.financiamento));
 				var consorcios = DoseMesesMethods.montaMeses(splitProdutos(_CHART.consocio));
 
-				var teste = Object.values(consorcios);
-				console.log(teste);
-
                 var ctx = $('#chart-dosemeses canvas').get(0).getContext('2d');
 				var myChart = new Chart(ctx, {
 					type: 'bar',

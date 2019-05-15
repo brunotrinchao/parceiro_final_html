@@ -2,45 +2,7 @@
     <div class="row">
 		<div class="col-md-12 col-lg-9" id="load-charts"></div>
 		<div class="col-md-12 col-lg-3" id="load-indicadores">
-			<div class="card text-white bg-primary mb-3">
-						<div class="card-body">
-				<div class="row no-gutters">
-					<div class="col-md-4 align-middle">
-						<h1 class="mb-0"><i class="fas fa-home"></i></h1>
-					</div>
-					<div class="col-md-8">
-							<h2 class="card-title mb-0">333</h2>
-							<small>Imóveis</small>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card text-white bg-success mb-3">
-						<div class="card-body">
-				<div class="row no-gutters">
-					<div class="col-md-4 align-middle">
-						<h1 class="mb-0"><i class="fas fa-money-bill-wave"></i></h1>
-					</div>
-					<div class="col-md-8">
-							<h2 class="card-title mb-0">333</h2>
-							<small>Financiamentos</small>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="card text-white bg-info mb-3">
-						<div class="card-body">
-				<div class="row no-gutters">
-					<div class="col-md-4 align-middle">
-						<h1 class="mb-0"><i class="fas fa-car"></i></h1>
-					</div>
-					<div class="col-md-8">
-							<h2 class="card-title mb-0">333</h2>
-							<small>Consórcios</small>
-						</div>
-					</div>
-				</div>
-			</div>
+			
 		</div>
     </div>
 </div>
@@ -49,7 +11,6 @@
     Dashboard = function() {
         $this = this;
 		_STORE = {};
-		_CHART = {};
 
         DashboardMethods = {
             initialize: function() {
@@ -66,6 +27,13 @@
             buildWidgets: function() {
 				// console.log('teste');
                  jQuery.gApi.load('widgets/dosemeses.html', '#load-charts', {},
+                    function(json) {
+                        // console.log(json);
+                    },
+                    function(err) {
+                        console.log(err);
+                    });
+                 jQuery.gApi.load('widgets/indicadores.html', '#load-indicadores', {},
                     function(json) {
                         // console.log(json);
                     },
@@ -94,20 +62,20 @@
 					function(json) {
 						var imovel, financiamento, consorcio = 0;
 						_STORE = json.Data;
-						var charts = groupJsonProdutos(_STORE);
+						// var charts = groupJsonProdutos(_STORE);
 						
 
-						$.each(splitProdutos(charts.imovel), function(i, item){
-							imovel = imovel + item.length;
-						});
-						$.each(splitProdutos(charts.financiamento), function(i, item){
-							financiamento = financiamento + item.length;
-						});
-						$.each(splitProdutos(charts.consorcio), function(i, item){
-							consorcio = consorcio + item.length;
-						});
+						// $.each(splitProdutos(charts.imovel), function(i, item){
+						// 	imovel = imovel + item.length;
+						// });
+						// $.each(splitProdutos(charts.financiamento), function(i, item){
+						// 	financiamento = financiamento + item.length;
+						// });
+						// $.each(splitProdutos(charts.consorcio), function(i, item){
+						// 	consorcio = consorcio + item.length;
+						// });
 
-						console.log(imovel,financiamento, consorcio);
+						// console.log(imovel,financiamento, consorcio);
 
 						DashboardMethods.buildWidgets();
 					},

@@ -1,0 +1,105 @@
+<div class="row">
+	<div class="col-12">
+		<div class="card bg-primary text-white">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-6">
+						<i class="fas fa-home"></i>
+					</div>
+					<div class="col-6 text-right">
+						<p class="announcement-heading">333</p>
+						<p class="announcement-text">Imóveis</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="card text-white bg-success mb-3">
+			<div class="card-body">
+				<div class="row no-gutters">
+					<div class="col-md-4 align-middle">
+						<h1 class="mb-0"><i class="fas fa-money-bill-wave"></i></h1>
+					</div>
+					<div class="col-md-8">
+						<h2 class="card-title mb-0">333</h2>
+						<small>Financiamentos</small>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="card text-white bg-info mb-3">
+			<div class="card-body">
+				<div class="row no-gutters">
+					<div class="col-md-4 align-middle">
+						<h1 class="mb-0"><i class="fas fa-car"></i></h1>
+					</div>
+					<div class="col-md-8">
+						<h2 class="card-title mb-0">333</h2>
+						<small>Consórcios</small>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	Indicadores = function () {
+		$this = this;
+		_CHART_INDICADOR = {};
+		IndicadoresMethods = {
+			initialize: function () {
+				// jQuery.gDisplay.loadStart();
+				this.onLoad();
+			},
+			onLoad: function () {
+				_CHART_INDICADOR = groupJsonProdutos(_STORE);
+				IndicadoresMethods.buildWidget();
+
+			},
+			buildWidget: function () {
+
+				var imoveis = IndicadoresMethods.montaMeses(splitProdutos(_CHART_INDICADOR.imovel));
+				var financiamentos = IndicadoresMethods.montaMeses(splitProdutos(_CHART_INDICADOR
+					.financiamento));
+				var consorcios = IndicadoresMethods.montaMeses(splitProdutos(_CHART_INDICADOR.consocio));
+
+				console.log(imoveis);
+			},
+			montaMeses: function (json) {
+				arr = {
+					'01': 0,
+					'02': 0,
+					'03': 0,
+					'04': 0,
+					'05': 0,
+					'06': 0,
+					'07': 0,
+					'08': 0,
+					'09': 0,
+					'10': 0,
+					'11': 0,
+					'12': 0
+				};
+				$.each(json, function (i, item) {
+					var mes = i.split('/')[1];
+					$.each(arr, function (a, r) {
+						if (mes == a) {
+							arr[mes] = item.length;
+						}
+					});
+				});
+				return arr;
+			}
+
+		}
+		IndicadoresMethods.initialize();
+	};
+
+	$(function () {
+		Indicadores();
+	});
+</script>
