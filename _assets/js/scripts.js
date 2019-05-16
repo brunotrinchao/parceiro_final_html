@@ -98,7 +98,6 @@ Parceiro = function() {
 		},
         buidDropDown: function(titulo, data) {
             // Monta menu
-
             var html = '';
             html += '<li class="nav-item dropdown">';
             html += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
@@ -176,7 +175,7 @@ Parceiro = function() {
         },
         showProdutos: function() {
             // Carrega produtos
-            var produtoStorage = jQuery.lockrStorage.get('produtos')
+            var produtoStorage = jQuery.lockrStorage.get('produtos');
             if (!produtoStorage || produtoStorage === undefined) {
                 jQuery.gApi.exec('GET', 'http://integracaogtsis.tempsite.ws/api/ProdutosIndicacao', {},
                     function(json) {

@@ -44,6 +44,33 @@
                 $('.link-voltar-cad').attr('data-produto', PARAM_PAGE.produto);
                 $('.link-voltar-cad').attr('data-title', PARAM_PAGE.title);
 
+                $(document).on('change','#idTipoCliente', function(){
+                    var id = $(this).val();
+                    var select = '<option value="">.: Selecione :.</option>';
+                    if(id){
+                        if(id == 2){
+                            select += '<option value="1">Comprar</option>';
+                        }
+                        select += '<option value="2">Alugar</option>';
+                        select += '<option value="3">Vender</option>';
+                        $('#idTipoOperacao').html(select).removeAttr('disabled');
+                    }else{
+                        $('#idTipoOperacao').html(select).attr('disabled', 'disabled');
+                        $('#idTipoUso').val('').attr('disabled', 'disabled');
+                        $('#idTipoImovel').val('').attr('disabled', 'disabled');
+                    }
+                });  
+
+                $(document).on('change','#idTipoOperacao', function(){
+                    var id = $(this).val();
+                    if(id){
+                        $('#idTipoUso').removeAttr('disabled');
+                    }else{
+                        $('#idTipoUso').val('').attr('disabled', 'disabled');
+                        $('#idTipoImovel').val('').attr('disabled', 'disabled');
+                    }
+                });                
+
             },
             buildForm: function() {
                 var html = '';
@@ -65,16 +92,14 @@
                 html += addSelect('Operação', {
                     id: 'idTipoOperacao',
                     validate: 'required',
-                    name: 'produto_idTipoOperacao'
-                }, 'col-md-12 col-lg-2', {
-                    1: 'Comprar',
-                    2: 'Alugar',
-                    3: 'Vender'
-                });
+                    name: 'produto_idTipoOperacao',
+                    disabled:'true'
+                }, 'col-md-12 col-lg-2', {});
                 html += addSelect('Tipo de uso', {
                     id: 'idTipoUso',
                     validate: 'required',
-                    name: 'produto_idTipoUso'
+                    name: 'produto_idTipoUso',
+                    disabled:'true'
                 }, 'col-md-12 col-lg-2', {
                     1: 'Residêncial',
                     2: 'Comercial'
@@ -133,12 +158,16 @@
                             function(json) {
                                 if (sizeObj(json) > 0) {
                                     $('#idTipoImovel').empty();
+                                    var html = '';
+                                    html += '<option value="">';
+                                    html += '.: Selecione :.';
+                                    html += '</option>';
                                     $.each(json, function(i, item) {
-                                        var html = '<option value="' + item.id + '">';
+                                        html += '<option value="' + item.id + '">';
                                         html += item.Tipo;
                                         html += '</option>';
-                                        $('#idTipoImovel').append(html).removeAttr('disabled');
                                     });
+                                    $('#idTipoImovel').html(html).removeAttr('disabled');
 
                                 }
                             },

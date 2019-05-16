@@ -445,7 +445,7 @@ function getFieldsFormEndereco() {
     html += '<div class="col-12 mb-3">';
     html += '<div class="card">';
     html += '<div class="card-header">';
-    html += 'Endereço';
+    html += 'Endereço do cliente';
     html += '</div>';
     html += '<div class="card-body">';
     html += '<div class="row">';
