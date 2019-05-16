@@ -122,7 +122,7 @@
 
     $.gPaginate = {
         show: function(links, callback) {
-            if (links.Count > 1) {
+            if (links.TotalPages > 1) {
                 var url = new URL(links.Self);
                 var html = '<nav class="pt-5">';
                 html += '<ul class="pagination justify-content-center">';
@@ -131,7 +131,7 @@
                 // html += '<span aria-hidden="true">&laquo;</span>';
                 // html += '</a>';
                 // html += '</li>';
-                for (var i = 0; i < links.Count; i++) {
+                for (var i = 0; i < links.TotalPages; i++) {
                     var n = i + 1;
                     var active = (n == 1) ? ' active' : '';
                     var params = getParams(links.Self);

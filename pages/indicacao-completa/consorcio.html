@@ -64,6 +64,15 @@
                 html += '<div class="col-md-12 col-lg-10">';
                 html += '<div class="row load-input-con"></div></div>';
 
+                html += addSelect('Já agendou uma visita?', {
+                    name: 'produto_idTipoOperacao',
+                    validate: 'required',
+                    id: 'agendouVisita'
+                }, 'col-md-12 col-lg-3', {
+                    1: 'Sim',
+                    2: 'Não',
+                });
+
                 html += addTextarea('Observações', {
                     row: "3",
                     name: 'produto_Observacao'

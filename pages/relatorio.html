@@ -448,7 +448,8 @@
                             value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoOperacao),
                             disabled: true
                         }, 'col-md-12 col-lg-3');
-                        html += addInput('Valor do bem (R$)', {
+                        var tipoOperacaoText = (checkNull(detail.Cliente.DetalhesIndicacaoImovel.TipoOperacao) == 'Alugar')? 'Valor do aluguel (R$)' : 'Valor do bem (R$)';
+                        html += addInput(tipoOperacaoText, {
                             type: "text",
                             value: checkNull(detail.Cliente.DetalhesIndicacaoImovel.ValorBem),
                             disabled: true

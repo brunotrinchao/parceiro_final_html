@@ -56,9 +56,11 @@
                         $('#idTipoOperacao').html(select).removeAttr('disabled');
                     }else{
                         $('#idTipoOperacao').html(select).attr('disabled', 'disabled');
-                        $('#idTipoUso').val('').attr('disabled', 'disabled');
-                        $('#idTipoImovel').val('').attr('disabled', 'disabled');
+                        
                     }
+                    $('#idTipoUso').val('').attr('disabled', 'disabled');
+                    $('#idTipoImovel').val('').attr('disabled', 'disabled');
+                    $('#load-endereco').html(ImovelMethods.getEndereco(id));
                 });  
 
                 $(document).on('change','#idTipoOperacao', function(){
@@ -117,21 +119,7 @@
                     class: 'money',
                     validate: 'required'
                 }, 'col-md-12 col-lg-3');
-                html += addInput('Bairro de preferência (1)', {
-                    type: "text",
-                    id: 'PrimeiroBairroPreferencia',
-                    name: 'produto_PrimeiroBairroPreferencia'
-                }, 'col-md-12 col-lg-4');
-                html += addInput('Bairro de preferência (2)', {
-                    type: "text",
-                    id: 'SegundoBairroPreferencia',
-                    name: 'produto_SegundoBairroPreferencia'
-                }, 'col-md-12 col-lg-4');
-                html += addInput('Bairro de preferência (3)', {
-                    type: "text",
-                    id: 'TerceiroBairroPreferencia',
-                    name: 'produto_TerceiroBairroPreferencia'
-                }, 'col-md-12 col-lg-4');
+                html += '<div class="col-12 row" id="load-endereco"></div>';
                 html += addTextarea('Observações', {
                     row: "3",
                     name: 'produto_Observacao'
@@ -177,6 +165,34 @@
                     }
 
                 });
+            },
+            getEndereco: function(id){
+                var html = '';
+                if(id == 1){
+                    html += addInput('Endereço do imóvel', {
+                        type: "text",
+                        id: 'PrimeiroBairroPreferencia',
+                        name: 'produto_PrimeiroBairroPreferencia'
+                    }, 'col-12');
+                }
+                if(id == 2){
+                    html += addInput('Bairro de preferência (1)', {
+                        type: "text",
+                        id: 'PrimeiroBairroPreferencia',
+                        name: 'produto_PrimeiroBairroPreferencia'
+                    }, 'col-md-12 col-lg-4');
+                    html += addInput('Bairro de preferência (2)', {
+                        type: "text",
+                        id: 'SegundoBairroPreferencia',
+                        name: 'produto_SegundoBairroPreferencia'
+                    }, 'col-md-12 col-lg-4');
+                    html += addInput('Bairro de preferência (3)', {
+                        type: "text",
+                        id: 'TerceiroBairroPreferencia',
+                        name: 'produto_TerceiroBairroPreferencia'
+                    }, 'col-md-12 col-lg-4');
+                }
+                return html;
             }
         }
         ImovelMethods.initialize();

@@ -98,6 +98,7 @@ Parceiro = function() {
 		},
         buidDropDown: function(titulo, data) {
             // Monta menu
+            console.log(data);
             var html = '';
             html += '<li class="nav-item dropdown">';
             html += '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';

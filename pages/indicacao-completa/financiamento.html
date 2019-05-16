@@ -74,13 +74,13 @@
                 $('#tipo').change(function() {
                     var id = $(this).val();
                     var html = '';
+                    html += addInput(null, {
+                        type: "hidden",
+                        value: 1,
+                        name: 'produto_CompraImediata'
+                    }, '');
                     if (id == '1') {
 
-                        html += addInput(null, {
-                            type: "hidden",
-                            value: 2,
-                            name: 'produto_CompraImediata'
-                        }, '');
                         html += addInput('Renda comprovada', {
                             type: "text",
                             id: 'RendaComprovadaFaturamento',
@@ -97,14 +97,14 @@
                         }, 'col-md-12 col-lg-3');
                     }
                     if (id == '2') {
-                        html += addSelect('Compra imediata?', {
-                            id: 'CompraImediata',
-                            validate: 'required',
-                            name: 'produto_CompraImediata'
-                        }, 'col-md-12 col-lg-3', {
-                            1: 'true',
-                            2: 'false'
-                        });
+                        // html += addSelect('Compra imediata?', {
+                        //     id: 'CompraImediata',
+                        //     validate: 'required',
+                        //     name: 'produto_CompraImediata'
+                        // }, 'col-md-12 col-lg-3', {
+                        //     1: 'true',
+                        //     2: 'false'
+                        // });
                         html += addSelect('Necessidade de crédito?', {
                             id: 'NessecitaCredito',
                             validate: 'required',
